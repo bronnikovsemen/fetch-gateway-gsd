@@ -12,7 +12,7 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Shared Chrome** — Next.js 15 + MUI scaffolding, theme, Inter font, provider catalog, shared `FlowLayout`/`FetchLogo`/`PermissionItem` components, and navigable route stubs for all six routes
+- [x] **Phase 1: Foundation & Shared Chrome** — Next.js 15 + MUI scaffolding, theme, Inter font, provider catalog, shared `FlowLayout`/`FetchLogo`/`PermissionItem` components, and navigable route stubs for all six routes
 - [ ] **Phase 2: Pre-Provider Flow** — Splash auto-redirect, welcome screen, and permissions disclosure grid wire `/`, `/welcome`, `/permissions` into a coherent on-brand intro
 - [ ] **Phase 3: Provider Selection & Connecting Bridge** — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance
 - [ ] **Phase 4: Success & Quality Hardening** — `/success` confirmation panel closes the loop back to `/`, with codebase-wide TypeScript, hygiene, and dependency gates enforced
@@ -30,11 +30,11 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
   3. Inter font from `next/font/google` is applied to body text (verifiable via DevTools computed font-family), and MUI theme primary `#2463EC` plus the full brand token palette (surfaces, text, success/warning/danger) drives component colors
   4. Importing from `src/lib/providers.ts` returns four entries (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) and a rendered `PermissionItem` shows a blue checkmark + bold label + muted description in one row
   5. No flicker on hard reload — `AppRouterCacheProvider` + `ThemeProvider` + `CssBaseline` are wired in `app/layout.tsx` and SSR delivers themed markup
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans executed
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Next.js 15 + MUI + Emotion, brand-token theme, root layout (FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, QUAL-04)
 - [x] 01-02-PLAN.md — Provider catalog + shared chrome components (FlowLayout, FetchLogo, PermissionItem) (FOUND-07, UI-01, UI-02, UI-03)
-- [ ] 01-03-PLAN.md — Six route stubs wired to shared chrome; end-to-end skeleton smoke test (FOUND-06)
+- [x] 01-03-PLAN.md — Six route stubs wired to shared chrome; end-to-end skeleton smoke test (FOUND-06)
 **UI hint:** yes
 
 ### Phase 2: Pre-Provider Flow
@@ -81,7 +81,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Shared Chrome | 1/3 | In Progress|  |
+| 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
 | 2. Pre-Provider Flow | 0/0 | Not started | - |
 | 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
@@ -108,4 +108,4 @@ Plans:
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after Phase 1 planning (3 plans + Walking Skeleton)*
+*Last updated: 2026-05-18 after completing Phase 1 (all 3 plans executed; FOUND-01..07, UI-01..03, QUAL-04 satisfied)*

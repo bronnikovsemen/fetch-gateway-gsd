@@ -3,19 +3,19 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-18T15:07:59.008Z"
+last_updated: "2026-05-18T15:16:40.517Z"
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
-  percent: 17
+  completed_plans: 3
+  percent: 25
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 01-02 (provider catalog + shared chrome components)
+**Last updated:** 2026-05-18 after completing Plan 01-03 (six route stubs — Phase 1 complete)
 
 ## Project Reference
 
@@ -27,25 +27,25 @@ progress:
 
 ## Current Position
 
-Phase: 01 (foundation-shared-chrome) — EXECUTING
-Plan: 3 of 3
+Phase: 01 (foundation-shared-chrome) — COMPLETE
+Plan: 3 of 3 (all plans complete)
 
 - **Milestone:** v1 release
-- **Phase:** 1 — Foundation & Shared Chrome (in progress, 2/3 plans complete)
-- **Plan:** 01-02 complete; next is 01-03 (six route stubs wired to shared chrome)
-- **Status:** Executing Phase 01
-- **Progress:** [██████░░░░] 67%
+- **Phase:** 1 — Foundation & Shared Chrome (complete, 3/3 plans complete)
+- **Plan:** 01-03 complete; next is to transition into Phase 02 (Pre-Provider Flow)
+- **Status:** Phase 01 complete — awaiting `/gsd:transition` into Phase 02
+- **Progress:** [██████████] 100% (Phase 01) / [██░░░░░░░░] 25% (overall)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Phases planned | 4 |
-| Phases complete | 0 |
-| Plans complete | 2 |
+| Phases complete | 1 |
+| Plans complete | 3 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 10 (FOUND-01..05, FOUND-07, UI-01..03, QUAL-04) |
+| Requirements validated | 11 (FOUND-01..07, UI-01..03, QUAL-04) |
 
 ### Plan Execution Log
 
@@ -53,6 +53,7 @@ Plan: 3 of 3
 |------------|----------|-------|-------|---------|
 | 01-01      | 387s (6m 27s) | 3 | 11 | 3 |
 | 01-02      | 143s (2m 23s) | 2 | 4  | 2 |
+| 01-03      | 273s (4m 33s) | 2 | 6  | 1 |
 
 ## Accumulated Context
 
@@ -79,6 +80,13 @@ Plan: 3 of 3
 - **`FlowLayout` consumes MUI theme tokens** (`bgcolor: 'background.default'` for the page, `backgroundColor: 'background.paper'` for the Paper) rather than hardcoding hex. The only hardcoded literals are the brand-spec contract values (`'12px'` borderRadius, `'0 2px 8px rgba(0,0,0,0.08)'` shadow).
 - **`PermissionItem` applies `alignItems` via `sx`** (workaround for MUI v9.0.1 `Stack` typing regression — neither Stack overload exposes `alignItems` as a direct prop). Runtime behavior is identical to the top-level-prop form.
 
+### Decisions (Plan 01-03)
+
+- **All six route stubs share one Server-Component template** (FlowLayout + Stack + FetchLogo + h5 heading + body2 muted hint). Uniform shape makes the Walking Skeleton readable at a glance and keeps each stub atomic — Phase 2-4 can replace them one at a time without cross-stub coupling.
+- **Two stubs carry one extra render each as in-situ smoke tests.** `/permissions` mounts one `<PermissionItem>` (UI-03 smoke test); `/select-provider` maps the four provider names (FOUND-07 smoke test). The convention is that these are proofs the imports work, not previews of the real screens.
+- **Stack `alignItems` workaround was applied uniformly across the route layer.** Same Rule 1 fix already canonicalized by Plan 01-02 in PermissionItem — `alignItems` moves into `sx`. Now the codebase-wide convention.
+- **Per-route `maxWidth` is supplied at the call site** (440/440/768/498/440/440) rather than configured in FlowLayout. The spec's per-screen sizing belongs to the route, not the shared chrome.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -102,17 +110,17 @@ Plan: 3 of 3
 
 ### Last Action
 
-Completed Plan 01-02: added the provider catalog (`src/lib/providers.ts`) and the three shared chrome components (`FlowLayout`, `FetchLogo`, `PermissionItem`) consumed by every subsequent Phase 1-4 screen. `tsc --noEmit` exits 0, zero `any`, zero `console.log`.
+Completed Plan 01-03: stood up the six demo route stubs (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) as Server-Component pages wrapped in `FlowLayout` + `FetchLogo`. `/permissions` smoke-tests `PermissionItem` in situ; `/select-provider` smoke-tests the provider catalog in situ (Gusto / ADP / Paycom / Rippling). `tsc --noEmit` exits 0, zero `any`, zero `console.log`. Live HTTP smoke test against `npm run dev` confirmed every route returns 200 with FetchLogo + `--font-inter` + MUI baseline CSS in the SSR markup. Phase 1 (foundation-shared-chrome) is end-to-end demonstrable and closed out.
 
 ### Next Action
 
-Run `/gsd:execute-plan 01-03` to wire the six route stubs (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) on top of `FlowLayout` + `FetchLogo`, satisfying FOUND-06 and closing out Phase 1.
+Run `/gsd:transition` to advance from Phase 01 → Phase 02 (Pre-Provider Flow), then `/gsd:plan-phase 2` to design the FLOW-01/02/03 plans that swap the `/`, `/welcome`, `/permissions` stubs for real screens.
 
 ### Recent Files Touched
 
-- `src/lib/providers.ts` (Plan 01-02 Task 1)
-- `src/components/FlowLayout.tsx`, `src/components/FetchLogo.tsx`, `src/components/PermissionItem.tsx` (Plan 01-02 Task 2)
-- `.planning/phases/01-foundation-shared-chrome/01-02-SUMMARY.md` (Plan 01-02 output)
+- `src/app/page.tsx` (Plan 01-03 Task 1 — overwrote Plan 01-01 proof-of-life with `/` Splash stub)
+- `src/app/welcome/page.tsx`, `src/app/permissions/page.tsx`, `src/app/select-provider/page.tsx`, `src/app/connecting/page.tsx`, `src/app/success/page.tsx` (Plan 01-03 Task 1)
+- `.planning/phases/01-foundation-shared-chrome/01-03-SUMMARY.md` (Plan 01-03 output)
 
 ---
 *State managed by GSD workflow — updated at phase/plan transitions.*

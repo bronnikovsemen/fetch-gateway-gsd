@@ -14,7 +14,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **FOUND-03**: MUI theme in `src/theme/theme.ts` encodes brand tokens (primary `#2463EC`, page bg `#EBF5FF`, panel `#FFFFFF`, text `#101827`/`#6B7280`, border `#E5E7EB`, success `#10B981`, warning `#F59E0B`, danger `#EF4444`)
 - [x] **FOUND-04**: Root `app/layout.tsx` wires `ThemeProvider` + `AppRouterCacheProvider` (`@mui/material-nextjs/v15-appRouter`) + `CssBaseline`
 - [x] **FOUND-05**: Inter font loaded via `next/font/google` as `--font-inter` CSS variable, applied to body
-- [ ] **FOUND-06**: Route stubs exist for all 6 routes: `/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`
+- [x] **FOUND-06**: Route stubs exist for all 6 routes: `/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`
 - [x] **FOUND-07**: Provider catalog in `src/lib/providers.ts` (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) — single source of truth for provider data
 
 ### Shared UI
@@ -73,7 +73,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-03 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-04 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-05 | Phase 1: Foundation & Shared Chrome | Complete |
-| FOUND-06 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-06 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-07 | Phase 1: Foundation & Shared Chrome | Complete |
 | UI-01 | Phase 1: Foundation & Shared Chrome | Complete |
 | UI-02 | Phase 1: Foundation & Shared Chrome | Complete |
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-05-18*
-*Last updated: 2026-05-18 after completing Plan 01-02 (FOUND-07, UI-01, UI-02, UI-03 satisfied)*
+*Last updated: 2026-05-18 after completing Plan 01-03 (FOUND-06 satisfied — Phase 1 closed out; FOUND-01..07, UI-01..03, QUAL-04 all complete)*
