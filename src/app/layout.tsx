@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from '@/theme/theme';
+import ThemeRegistry from '@/theme/ThemeRegistry';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,6 +13,12 @@ export const metadata: Metadata = {
   description: 'Connect your payroll provider to Plantegrity.',
 };
 
+// Server Component root layout.
+//
+// MUI's provider tree (AppRouterCacheProvider + ThemeProvider + CssBaseline)
+// lives inside <ThemeRegistry>, which is a Client Component — see
+// src/theme/ThemeRegistry.tsx for rationale. Inter font CSS variable is
+// applied here so SSR ships --font-inter on the <html> element.
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,12 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>
   );
