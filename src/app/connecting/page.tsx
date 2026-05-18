@@ -10,9 +10,9 @@ import FetchLogo from '@/components/FetchLogo';
 import providers, { type Provider } from '@/lib/providers';
 
 // `/connecting` — transient bridge route between the user's decision
-// (/select-provider) and the success moment (/success). Closes FLOW-06
-// (spinner + provider-name body copy) and FLOW-07 (?provider= query-param
-// guard — invalid/missing redirects back to the selection screen).
+// (/select-provider) and the splash route (/). Closes FLOW-06 (spinner +
+// provider-name body copy) and FLOW-07 (?provider= query-param guard —
+// invalid/missing redirects back to the selection screen).
 //
 // Behavior summary:
 //   1. Read ?provider= from the URL (useSearchParams).
@@ -25,18 +25,14 @@ import providers, { type Provider } from '@/lib/providers';
 //      of browser history so back-button does not land on a redirecting page.
 //   4. Valid slug → render the centered white panel (FetchLogo +
 //      CircularProgress + heading + provider-name body copy) and schedule a
-//      2500ms setTimeout that replace-navigates to /success on completion.
-//      The cleanup clears the pending timer on unmount (T-03-02-01).
+//      2500ms setTimeout that replace-navigates to / (the splash) on
+//      completion. The splash then auto-advances to /welcome, looping the
+//      demo. The cleanup clears the pending timer on unmount (T-03-02-01).
 //
 // Both navigations on this page use replace-style routing, not push:
 // /connecting is THE canonical transient bridge route in the demo flow and
 // must not sit in browser history (T-03-02-03 mitigation; locally acts on
 // Phase 2 REVIEW WR-01's advisory which the splash deferred).
-//
-// The body copy template is kept VERBATIM per the FLOW-06 spec even though
-// the actual nav target is /success (the provider-sign-in route was
-// explicitly cut from v1 scope per PROJECT.md). User-facing copy unchanged;
-// only the routing target moves.
 //
 // useSearchParams requires either a <Suspense> boundary or a dynamic-rendering
 // opt-out. /connecting is meaningless without query params (the route only
@@ -62,7 +58,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!provider) return;
-    timerRef.current = setTimeout(() => { router.replace('/success'); }, 2500);
+    timerRef.current = setTimeout(() => { router.replace('/'); }, 2500);
     return () => {
       if (timerRef.current !== null) {
         clearTimeout(timerRef.current);

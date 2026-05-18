@@ -210,7 +210,7 @@ export default function Page() {
                 '&.Mui-disabled': { bgcolor: '#005EFF', color: '#FFFFFF', opacity: 0.3 },
               }}
             >
-              {submitting ? 'Connecting…' : 'Get Started'}
+              {submitting ? 'Redirecting…' : 'Get Started'}
             </Button>
           </Stack>
         </Stack>
