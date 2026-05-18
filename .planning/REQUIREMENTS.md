@@ -15,13 +15,13 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **FOUND-04**: Root `app/layout.tsx` wires `ThemeProvider` + `AppRouterCacheProvider` (`@mui/material-nextjs/v15-appRouter`) + `CssBaseline`
 - [x] **FOUND-05**: Inter font loaded via `next/font/google` as `--font-inter` CSS variable, applied to body
 - [ ] **FOUND-06**: Route stubs exist for all 6 routes: `/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`
-- [ ] **FOUND-07**: Provider catalog in `src/lib/providers.ts` (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) — single source of truth for provider data
+- [x] **FOUND-07**: Provider catalog in `src/lib/providers.ts` (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) — single source of truth for provider data
 
 ### Shared UI
 
-- [ ] **UI-01**: `FlowLayout` component centers content on `#EBF5FF` background, hosts a white Paper/Card with `borderRadius: 12px` and soft shadow (`0 2px 8px rgba(0,0,0,0.08)`), `min-height: 100vh`
-- [ ] **UI-02**: `FetchLogo` component renders the Fetch logo as `<img>` or inline SVG (not via icon library), sized via prop (default 100px)
-- [ ] **UI-03**: `PermissionItem` component renders a blue checkmark icon, bold label, and muted description in one row
+- [x] **UI-01**: `FlowLayout` component centers content on `#EBF5FF` background, hosts a white Paper/Card with `borderRadius: 12px` and soft shadow (`0 2px 8px rgba(0,0,0,0.08)`), `min-height: 100vh`
+- [x] **UI-02**: `FetchLogo` component renders the Fetch logo as `<img>` or inline SVG (not via icon library), sized via prop (default 100px)
+- [x] **UI-03**: `PermissionItem` component renders a blue checkmark icon, bold label, and muted description in one row
 
 ### Flow Screens
 
@@ -74,10 +74,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-04 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-05 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-06 | Phase 1: Foundation & Shared Chrome | Pending |
-| FOUND-07 | Phase 1: Foundation & Shared Chrome | Pending |
-| UI-01 | Phase 1: Foundation & Shared Chrome | Pending |
-| UI-02 | Phase 1: Foundation & Shared Chrome | Pending |
-| UI-03 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-07 | Phase 1: Foundation & Shared Chrome | Complete |
+| UI-01 | Phase 1: Foundation & Shared Chrome | Complete |
+| UI-02 | Phase 1: Foundation & Shared Chrome | Complete |
+| UI-03 | Phase 1: Foundation & Shared Chrome | Complete |
 | FLOW-01 | Phase 2: Pre-Provider Flow | Pending |
 | FLOW-02 | Phase 2: Pre-Provider Flow | Pending |
 | FLOW-03 | Phase 2: Pre-Provider Flow | Pending |
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-05-18*
-*Last updated: 2026-05-18 after roadmap traceability mapping*
+*Last updated: 2026-05-18 after completing Plan 01-02 (FOUND-07, UI-01, UI-02, UI-03 satisfied)*

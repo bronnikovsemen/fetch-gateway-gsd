@@ -3,19 +3,19 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-18T15:01:34.974Z"
+last_updated: "2026-05-18T15:07:59.008Z"
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 0
+  completed_plans: 2
+  percent: 17
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 01-01 (foundation scaffold)
+**Last updated:** 2026-05-18 after completing Plan 01-02 (provider catalog + shared chrome components)
 
 ## Project Reference
 
@@ -28,13 +28,13 @@ progress:
 ## Current Position
 
 Phase: 01 (foundation-shared-chrome) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 - **Milestone:** v1 release
-- **Phase:** 1 — Foundation & Shared Chrome (in progress, 1/3 plans complete)
-- **Plan:** 01-01 complete; next is 01-02 (provider catalog + shared chrome components)
+- **Phase:** 1 — Foundation & Shared Chrome (in progress, 2/3 plans complete)
+- **Plan:** 01-02 complete; next is 01-03 (six route stubs wired to shared chrome)
 - **Status:** Executing Phase 01
-- **Progress:** [███░░░░░░░] 33%
+- **Progress:** [██████░░░░] 67%
 
 ## Performance Metrics
 
@@ -42,16 +42,17 @@ Plan: 2 of 3
 |--------|-------|
 | Phases planned | 4 |
 | Phases complete | 0 |
-| Plans complete | 1 |
+| Plans complete | 2 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 6 (FOUND-01..05, QUAL-04) |
+| Requirements validated | 10 (FOUND-01..05, FOUND-07, UI-01..03, QUAL-04) |
 
 ### Plan Execution Log
 
 | Phase-Plan | Duration | Tasks | Files | Commits |
 |------------|----------|-------|-------|---------|
 | 01-01      | 387s (6m 27s) | 3 | 11 | 3 |
+| 01-02      | 143s (2m 23s) | 2 | 4  | 2 |
 
 ## Accumulated Context
 
@@ -70,6 +71,13 @@ Plan: 2 of 3
 - **Package manager is npm, not pnpm.** `pnpm` is not on the executor's PATH. The lockfile is `package-lock.json`. Downstream plans should use npm.
 - **Next.js pinned to 15.5.18** (latest patched 15.x) to clear CVE-2025-66478 at scaffold time.
 - **`shape.borderRadius: 12` centralized in the theme** to feed UI-01's panel-radius requirement from a single source.
+
+### Decisions (Plan 01-02)
+
+- **`Provider` type uses a string-literal slug union** (`'gusto' | 'adp' | 'paycom' | 'rippling'`) — not a generic `string`. With `as const satisfies readonly Provider[]` on the array, call sites see literal slug types, so Phase 3's `/connecting` query-param guard can narrow without a runtime cast.
+- **`FetchLogo` is an inline SVG placeholder** (rounded blue square + white "F"). The JSDoc directly above the component flags it as intended-to-be-swapped for real artwork. The public API (`size`, `color`, `title`) and named export are guaranteed stable across the future swap.
+- **`FlowLayout` consumes MUI theme tokens** (`bgcolor: 'background.default'` for the page, `backgroundColor: 'background.paper'` for the Paper) rather than hardcoding hex. The only hardcoded literals are the brand-spec contract values (`'12px'` borderRadius, `'0 2px 8px rgba(0,0,0,0.08)'` shadow).
+- **`PermissionItem` applies `alignItems` via `sx`** (workaround for MUI v9.0.1 `Stack` typing regression — neither Stack overload exposes `alignItems` as a direct prop). Runtime behavior is identical to the top-level-prop form.
 
 ### Roadmap Decisions
 
@@ -94,19 +102,17 @@ Plan: 2 of 3
 
 ### Last Action
 
-Completed Plan 01-01: scaffolded Next.js 15 App Router + MUI v9 peer chain on port 3001, brand-token theme, Inter font wiring, and client-side ThemeRegistry. Live HTTP smoke test passed.
+Completed Plan 01-02: added the provider catalog (`src/lib/providers.ts`) and the three shared chrome components (`FlowLayout`, `FetchLogo`, `PermissionItem`) consumed by every subsequent Phase 1-4 screen. `tsc --noEmit` exits 0, zero `any`, zero `console.log`.
 
 ### Next Action
 
-Run `/gsd:execute-plan 01-02` to build the provider catalog + shared chrome components (FlowLayout, FetchLogo, PermissionItem).
+Run `/gsd:execute-plan 01-03` to wire the six route stubs (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) on top of `FlowLayout` + `FetchLogo`, satisfying FOUND-06 and closing out Phase 1.
 
 ### Recent Files Touched
 
-- `package.json`, `package-lock.json`, `tsconfig.json`, `next.config.ts`, `.gitignore`, `eslint.config.mjs` (Plan 01-01 Task 1)
-- `src/theme/theme.ts` (Plan 01-01 Task 2)
-- `src/theme/ThemeRegistry.tsx`, `src/app/layout.tsx`, `src/app/page.tsx` (Plan 01-01 Task 2 + Task 3 fix)
-- `.planning/phases/01-foundation-shared-chrome/01-01-SUMMARY.md` (Plan 01-01 output)
-- `.planning/phases/01-foundation-shared-chrome/deferred-items.md` (Plan 01-01 audit findings)
+- `src/lib/providers.ts` (Plan 01-02 Task 1)
+- `src/components/FlowLayout.tsx`, `src/components/FetchLogo.tsx`, `src/components/PermissionItem.tsx` (Plan 01-02 Task 2)
+- `.planning/phases/01-foundation-shared-chrome/01-02-SUMMARY.md` (Plan 01-02 output)
 
 ---
 *State managed by GSD workflow — updated at phase/plan transitions.*
