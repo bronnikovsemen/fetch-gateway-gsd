@@ -36,9 +36,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Quality
 
-- [ ] **QUAL-01**: Zero `any` types across the TypeScript codebase
-- [ ] **QUAL-02**: No `console.log` statements in committed code
-- [ ] **QUAL-03**: All navigation buttons land on a real route — no dead buttons
+- [x] **QUAL-01**: Zero `any` types across the TypeScript codebase
+- [x] **QUAL-02**: No `console.log` statements in committed code
+- [x] **QUAL-03**: All navigation buttons land on a real route — no dead buttons
 - [x] **QUAL-04**: No Tailwind, shadcn, lucide-react, or class-variance-authority dependencies installed
 
 ## v2 Requirements
@@ -86,16 +86,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-07 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-08 | Phase 4: Success & Quality Hardening | Complete |
-| QUAL-01 | Phase 4: Success & Quality Hardening | Pending |
-| QUAL-02 | Phase 4: Success & Quality Hardening | Pending |
-| QUAL-03 | Phase 4: Success & Quality Hardening | Pending |
+| QUAL-01 | Phase 4: Success & Quality Hardening | Complete |
+| QUAL-02 | Phase 4: Success & Quality Hardening | Complete |
+| QUAL-03 | Phase 4: Success & Quality Hardening | Complete |
 | QUAL-04 | Phase 1: Foundation & Shared Chrome | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total
 - Mapped to phases: 22 ✓
 - Unmapped: 0
+- Complete: 22 ✓ (v1 milestone shippable)
 
 ---
 *Requirements defined: 2026-05-18*
-*Last updated: 2026-05-18 after Plan 03-01 verification — FLOW-04 + FLOW-05 satisfied; 16/22 v1 requirements complete (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01..05)*
+*Last updated: 2026-05-18 after Plan 04-02 codebase-wide quality-gate audit — QUAL-01..03 satisfied (zero `: any` in src/, zero `console.log()` call sites in code-file extensions, no dead navigation buttons, full edge graph validated against /); all 22/22 v1 requirements complete; v1 milestone shippable.*
