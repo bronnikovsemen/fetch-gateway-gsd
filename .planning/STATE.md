@@ -64,6 +64,12 @@ Plan: 2 of 2 complete
 | 04-01      | 480s (~8m)    | 1 | 1  | 1 |
 | 04-02      | 247s (~4m)    | 1 | 1  | 1 |
 
+### Quick Tasks Completed
+
+| Quick ID   | Slug                                       | Date       | Verdict                 | Notes |
+|------------|--------------------------------------------|------------|-------------------------|-------|
+| 260518-wwp | full-code-review-and-health-check-no-bro   | 2026-05-18 | MINOR ISSUES (non-blocking) | 4 gates PASS; review 0 crit / 4 warn / 6 info. WR-01: `/select-provider` button label "Get Started" ≠ FLOW-04 spec "Connect" — real copy defect, Phase 4 verifier missed it. |
+
 ## Accumulated Context
 
 ### Decisions (carried from PROJECT.md)
