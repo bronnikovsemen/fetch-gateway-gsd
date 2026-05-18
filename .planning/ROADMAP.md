@@ -66,7 +66,10 @@ Plans:
   3. Clicking "Connect" swaps the button into a ~1.2s loading state (spinner + "Connecting…"), then navigates to `/connecting?provider={slug}` with the selected provider's slug
   4. `/connecting?provider={validSlug}` shows a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", body "Connecting to {providerName}. You'll be redirected to sign in.", and auto-advances to `/success` after ~2500ms
   5. Visiting `/connecting` with no `?provider=` or an unknown slug redirects immediately to `/select-provider`
-**Plans:** TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 03-01-PLAN.md — `/select-provider` 498px panel with FetchLogo + heading + body + MUI Select (sourced from providers catalog) + Back (outlined, fixed ~100px → /permissions) + Connect (primary, flex-1, disabled until selection, ~1.2s loading state) → /connecting?provider={slug} (FLOW-04, FLOW-05)
+- [ ] 03-02-PLAN.md — `/connecting` panel with FetchLogo + CircularProgress + 'Establishing connection…' heading + interpolated provider-name body; query-param guard (missing/invalid → router.replace('/select-provider')); 2500ms auto-advance via router.replace('/success') (FLOW-06, FLOW-07)
 **UI hint:** yes
 
 ### Phase 4: Success & Quality Hardening
@@ -88,7 +91,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
 | 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
-| 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
+| 3. Provider Selection & Connecting Bridge | 0/2 | Planned | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
 
 ## Coverage Validation
