@@ -8,14 +8,14 @@ progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_plans: 7
+  percent: 100
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 02-03 (`/welcome` real screen — FLOW-02 closed)
+**Last updated:** 2026-05-18 after completing Plan 02-04 (`/permissions` real screen — FLOW-03 closed; Phase 2 complete)
 
 ## Project Reference
 
@@ -27,26 +27,26 @@ progress:
 
 ## Current Position
 
-Phase: 02 (pre-provider-flow) — EXECUTING
-Plan: 4 of 4 (Plans 02-01, 02-02, and 02-03 complete; only Plan 02-04 `/permissions` remains)
+Phase: 02 (pre-provider-flow) — COMPLETE
+Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully delivered)
 
 - **Milestone:** v1 release
-- **Phase:** 2
-- **Plan:** 02-03 complete; next up is Plan 02-04 (`/permissions` 2×3 grid + Back/Continue buttons)
-- **Status:** Executing Phase 02
-- **Progress:** [████████░░] 86%
+- **Phase:** 2 → ready to transition to Phase 3
+- **Plan:** 02-04 complete; Phase 2 is closed; next up is `/gsd-transition` (or Phase 3 planning)
+- **Status:** Phase 02 complete — pre-provider flow `/` → `/welcome` → `/permissions` → `/select-provider` is navigable end-to-end with no placeholder content on Phase 2 routes
+- **Progress:** [██████████] 100% (Phase 2 plans); 50% milestone (2/4 phases done)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Phases planned | 4 |
-| Phases complete | 1 |
-| Plans complete | 6 |
+| Phases complete | 2 |
+| Plans complete | 7 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 13 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01, FLOW-02) |
-| Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01) |
+| Requirements validated | 14 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01, FLOW-02, FLOW-03) |
+| Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01; SPLIT-shape consumer live in Plan 02-04) |
 
 ### Plan Execution Log
 
@@ -58,6 +58,7 @@ Plan: 4 of 4 (Plans 02-01, 02-02, and 02-03 complete; only Plan 02-04 `/permissi
 | 02-01      | 65s (1m 5s)   | 1 | 1  | 1 |
 | 02-02      | 124s (2m 4s)  | 1 | 1  | 1 |
 | 02-03      | ~ (sequential) | 1 | 1  | 1 |
+| 02-04      | 114s (1m 54s) | 1 | 1  | 1 |
 
 ## Accumulated Context
 
@@ -110,6 +111,14 @@ Plan: 4 of 4 (Plans 02-01, 02-02, and 02-03 complete; only Plan 02-04 `/permissi
 - **First real consumer of Plan 02-01's `px`/`py` API.** `/welcome` passes `px={6} py={6}` explicitly (= 48px uniform). Plan 02-04 (`/permissions`) will be the second consumer with the split shape `px={4.5} py={6}` (= 36px horizontal / 48px vertical). All other route stubs still use the API by defaulting.
 - **`alignSelf: 'stretch'` on the Button.** The inner Stack has `alignItems: 'center'`, which would otherwise shrink the Button to fit its content. Stretching the Button to the Stack's full inner width makes the CTA the strongest visual anchor in the panel — matches the spec's `### /welcome — Welcome` screenshot.
 
+### Decisions (Plan 02-04)
+
+- **Column-major 2-column grid via CSS Grid (`gridAutoFlow: 'column'` + `repeat(3, auto)`) — not flexbox or two-Stack split.** Source code iterates the PERMISSIONS array in natural spec order (Org → Team → Employment → Payroll → Pay Statement → SSN); the CSS engine handles the visual column-major fill (left col items 1-3, right col items 4-6). Decouples source order from visual layout — adding a 7th scope later only requires bumping `repeat(3, auto)` to `repeat(4, auto)`, not rewriting source order or splitting the array manually.
+- **`PERMISSIONS` is module-scope with `as const satisfies readonly { label: string; description: string }[]`.** Mirrors the Phase 1 `src/lib/providers.ts` pattern. Module scope avoids recreating the array on every render; `satisfies` gives the compiler the type contract without widening literal types. `key={perm.label}` is safe because every label is unique.
+- **First SPLIT-shape consumer of Plan 02-01's `px`/`py` API.** `<FlowLayout maxWidth={768} px={4.5} py={6}>` = 36px horizontal / 48px vertical. First codebase caller to use a non-integer theme-spacing value. MUI's `theme.spacing(N)` accepts fractional N cleanly. This is the EXACT shape that motivated Phase 1 REVIEW WR-02 — the SPLIT consumer now exists and works without `sx` overrides.
+- **Outer Stack uses `alignItems: 'stretch'`, not `'center'`.** Stretch is required so the grid child fills the panel's inner width inside the 768px panel. Center alignment would collapse the grid to its content width. This is the first codebase Stack that needs stretch rather than center because the grid is the first non-text-block content inside FlowLayout.
+- **Both buttons use imperative `router.push` (Plan 02-03 pattern), right-aligned via `justifyContent: 'flex-end'`.** Back → `/welcome`, Continue → `/select-provider`. `minWidth: 120` on Back / `minWidth: 160` on Continue keeps the touchable footprint without forcing the buttons to span the row. `textTransform: 'none'` canonicalized by Plan 02-03 is preserved.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -133,14 +142,16 @@ Plan: 4 of 4 (Plans 02-01, 02-02, and 02-03 complete; only Plan 02-04 `/permissi
 
 ### Last Action
 
-Completed Plan 02-03: rewrote `src/app/welcome/page.tsx` from the Phase 1 placeholder into the real `/welcome` screen — a Client Component (`'use client'`) wrapped in `<FlowLayout maxWidth={440} px={6} py={6}>` (440px white panel with 48px uniform padding via Plan 02-01's new `px`/`py` API — first real consumer of that API). Interior is a single `<Stack spacing={3} sx={{ alignItems: 'center' }}>` containing `<FetchLogo size={100} />`, an `<Typography variant="h5" component="h1">` "Connect your payroll provider" heading (`fontWeight: 700`, `text.primary`, centered), a `<Typography variant="body1">` with the exact spec body copy ("Plantegrity has requested a secure read-only connection to your payroll data for plan validation and reconciliation. No data will be modified.") in `text.secondary`, centered, and a `<Button variant="contained" color="primary" size="large" onClick={() => router.push('/permissions')}>` with `mt: 2`, `alignSelf: 'stretch'`, `textTransform: 'none'` (sentence-case spec label), `fontWeight: 600`, label "Get Started". All 14 acceptance-criteria greps pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with the heading, body copy, and `Get Started` button label present in SSR markup. FLOW-02 closed. ROADMAP Phase 2 Success Criterion 2 satisfied end-to-end.
+Completed Plan 02-04: rewrote `src/app/permissions/page.tsx` from the Phase 1 stub (one-off smoke-test single `PermissionItem` with trailing-period description) into the real `/permissions` disclosure screen — a Client Component (`'use client'`) wrapped in `<FlowLayout maxWidth={768} px={4.5} py={6}>` (768px white panel with 36px horizontal / 48px vertical SPLIT padding via Plan 02-01's `px`/`py` API — SECOND real consumer of that API and FIRST to use the asymmetric SPLIT shape, retiring Phase 1 REVIEW WR-02's motivation). Interior is an outer `<Stack spacing={4} sx={{ alignItems: 'stretch' }}>` (stretch, not center, so the grid child fills the panel) containing: a nested centered header `<Stack spacing={3} sx={{ alignItems: 'center' }}>` with `<FetchLogo size={100} />` and an `<Typography variant="h5" component="h1">` heading "To connect your payroll, Fetch will need access to:"; a 2-column CSS Grid `<Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'repeat(3, auto)', gridAutoFlow: 'column', columnGap: 4, rowGap: 3 }}>` mapping a module-scope `PERMISSIONS` array (typed `as const satisfies readonly { label: string; description: string }[]`, six entries in spec order: Organization, Team, Employment, Payroll, Pay Statement, SSN) into six `<PermissionItem>` renders — `gridAutoFlow: 'column'` produces the spec's column-major fill (left col items 1-3, right col items 4-6); and a right-aligned button-row `<Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end', mt: 2 }}>` with Back (`variant="outlined"`, `minWidth: 120`, `onClick={() => router.push('/welcome')}`) and Continue (`variant="contained"`, `minWidth: 160`, `onClick={() => router.push('/select-provider')}`) buttons, both with `textTransform: 'none'` and `fontWeight: 600`. All 35+ acceptance-criteria grep gates pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with the heading, all six labels, all six descriptions, and both button labels present in SSR markup (7 `<svg>` tags: 1 FetchLogo + 6 CheckCircleIcons confirming six PermissionItem runtime renders). FLOW-03 closed. ROADMAP Phase 2 Success Criteria 3 and 4 satisfied end-to-end. Phase 2 (pre-provider flow) is now complete — all four plans done.
 
 ### Next Action
 
-Execute the last remaining plan of Phase 02 — Plan 02-04 (`/permissions` 768px panel with 2×3 PermissionItem grid + Back/Continue buttons → FLOW-03). This is the second consumer of FlowLayout's new `px`/`py` API and will use the split shape `px={4.5} py={6}` (= 36px horizontal / 48px vertical) per the spec's `### /permissions — Permissions` section.
+Phase 2 is complete. Run `/gsd-transition` to close Phase 2 and move to Phase 3 (Provider Selection & Connecting Bridge — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance; covers FLOW-04..07). The Continue button on `/permissions` already lands on the Phase 1 `/select-provider` stub today; Phase 3 will replace that stub with the real screen.
 
 ### Recent Files Touched
 
+- `src/app/permissions/page.tsx` (Plan 02-04 Task 1 — full rewrite into the real permissions Client Component with FetchLogo + heading + 2x3 PermissionItem grid + Back/Continue navigation)
+- `.planning/phases/02-pre-provider-flow/02-04-SUMMARY.md` (Plan 02-04 output)
 - `src/app/welcome/page.tsx` (Plan 02-03 Task 1 — full rewrite into the real welcome Client Component with FetchLogo + heading + body copy + Get Started → /permissions)
 - `.planning/phases/02-pre-provider-flow/02-03-SUMMARY.md` (Plan 02-03 output)
 - `src/app/page.tsx` (Plan 02-02 Task 1 — full rewrite into the real splash Client Component with scale-in + breathing keyframes and auto-redirect to /welcome at 2500ms)

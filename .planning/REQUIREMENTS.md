@@ -27,7 +27,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **FLOW-01**: `/` splash auto-redirects to `/welcome` after 2500ms; shows Fetch logo centered on `#EBF5FF` with tagline "Retirement runs on Fetch"; logo scales in over 500ms then breathes (2s cycle) until redirect
 - [x] **FLOW-02**: `/welcome` displays a centered white panel (max-width 440px, 48px padding) with Fetch logo (100px), heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button routing to `/permissions`
-- [ ] **FLOW-03**: `/permissions` displays a centered white panel (max-width 768px, 48px horizontal padding) with Fetch logo, heading "To connect your payroll, Fetch will need access to:", a 2-column grid of 6 `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN), and "Back" (outlined → `/welcome`) and "Continue" (primary → `/select-provider`) buttons side by side
+- [x] **FLOW-03**: `/permissions` displays a centered white panel (max-width 768px, 48px horizontal padding) with Fetch logo, heading "To connect your payroll, Fetch will need access to:", a 2-column grid of 6 `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN), and "Back" (outlined → `/welcome`) and "Continue" (primary → `/select-provider`) buttons side by side
 - [ ] **FLOW-04**: `/select-provider` displays a centered white panel (max-width 498px) with Fetch logo, heading "Select your payroll provider", body copy, an MUI `Select` labeled "Select Payroll Provider" sourced from the provider catalog, plus "Back" (outlined, fixed ~100px) and "Connect" (primary, flex-1, disabled until a provider is selected) buttons
 - [ ] **FLOW-05**: On `/select-provider` "Connect" click, button shows ~1.2s loading state (spinner + "Connecting…") then navigates to `/connecting?provider={slug}`
 - [ ] **FLOW-06**: `/connecting` reads `?provider=` from query params, displays a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", and body copy "Connecting to {providerName}. You'll be redirected to sign in."; auto-advances to `/success` after ~2500ms
@@ -80,7 +80,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UI-03 | Phase 1: Foundation & Shared Chrome | Complete |
 | FLOW-01 | Phase 2: Pre-Provider Flow | Pending |
 | FLOW-02 | Phase 2: Pre-Provider Flow | Complete |
-| FLOW-03 | Phase 2: Pre-Provider Flow | Pending |
+| FLOW-03 | Phase 2: Pre-Provider Flow | Complete |
 | FLOW-04 | Phase 3: Provider Selection & Connecting Bridge | Pending |
 | FLOW-05 | Phase 3: Provider Selection & Connecting Bridge | Pending |
 | FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Pending |
@@ -98,4 +98,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-05-18*
-*Last updated: 2026-05-18 after completing Plan 01-03 (FOUND-06 satisfied — Phase 1 closed out; FOUND-01..07, UI-01..03, QUAL-04 all complete)*
+*Last updated: 2026-05-18 after completing Plan 02-04 (FLOW-03 satisfied — `/permissions` 768px panel with 2x3 PermissionItem grid + Back/Continue buttons; Phase 2 closed end-to-end; FLOW-02 and FLOW-03 both complete this phase)*

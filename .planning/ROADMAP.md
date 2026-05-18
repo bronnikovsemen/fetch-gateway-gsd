@@ -13,7 +13,7 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 ## Phases
 
 - [x] **Phase 1: Foundation & Shared Chrome** — Next.js 15 + MUI scaffolding, theme, Inter font, provider catalog, shared `FlowLayout`/`FetchLogo`/`PermissionItem` components, and navigable route stubs for all six routes
-- [ ] **Phase 2: Pre-Provider Flow** — Splash auto-redirect, welcome screen, and permissions disclosure grid wire `/`, `/welcome`, `/permissions` into a coherent on-brand intro
+- [x] **Phase 2: Pre-Provider Flow** — Splash auto-redirect, welcome screen, and permissions disclosure grid wire `/`, `/welcome`, `/permissions` into a coherent on-brand intro
 - [ ] **Phase 3: Provider Selection & Connecting Bridge** — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance
 - [ ] **Phase 4: Success & Quality Hardening** — `/success` confirmation panel closes the loop back to `/`, with codebase-wide TypeScript, hygiene, and dependency gates enforced
 
@@ -47,12 +47,12 @@ Plans:
   2. `/welcome` shows a centered 440px-wide white panel (48px padding) with Fetch logo, heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button that navigates to `/permissions`
   3. `/permissions` shows a centered 768px-wide white panel with Fetch logo, heading "To connect your payroll, Fetch will need access to:", and a 2-column grid of six `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN) with correct labels and descriptions
   4. On `/permissions`, the "Back" outlined button returns to `/welcome` and the "Continue" primary button advances to `/select-provider` — both are real navigations, no dead buttons
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans executed
 Plans:
 - [x] 02-01-PLAN.md — Widen FlowLayout padding API to px/py (theme-spacing units); resolves Phase 1 REVIEW WR-01/WR-02
 - [x] 02-02-PLAN.md — `/` splash with logo + tagline + 500ms scale-in + 2s breathing + auto-redirect to `/welcome` (FLOW-01)
 - [x] 02-03-PLAN.md — `/welcome` 440px panel with heading + body copy + primary 'Get Started' button → `/permissions` (FLOW-02)
-- [ ] 02-04-PLAN.md — `/permissions` 768px panel with 2x3 PermissionItem grid + Back (outlined) → `/welcome` + Continue (primary) → `/select-provider` (FLOW-03)
+- [x] 02-04-PLAN.md — `/permissions` 768px panel with 2x3 PermissionItem grid + Back (outlined) → `/welcome` + Continue (primary) → `/select-provider` (FLOW-03)
 **UI hint:** yes
 
 ### Phase 3: Provider Selection & Connecting Bridge
@@ -87,7 +87,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
-| 2. Pre-Provider Flow | 3/4 | In Progress|  |
+| 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
 | 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
 
@@ -113,4 +113,4 @@ Plans:
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after completing Plan 02-03 (FLOW-02 satisfied — `/welcome` 440px panel with FetchLogo, "Connect your payroll provider" heading, spec body copy, and primary "Get Started" button routing to `/permissions`)*
+*Last updated: 2026-05-18 after completing Plan 02-04 (FLOW-03 satisfied — `/permissions` 768px panel with FetchLogo, "To connect your payroll, Fetch will need access to:" heading, 2-column CSS-grid layout of all six permission scopes in column-major spec order, and right-aligned Back (outlined → /welcome) + Continue (primary → /select-provider) buttons; Phase 2 closed end-to-end)*
