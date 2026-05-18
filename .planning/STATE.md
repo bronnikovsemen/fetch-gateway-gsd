@@ -2,21 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_to_plan
-last_updated: 2026-05-18T15:33:49.767Z
+status: executing
+last_updated: "2026-05-18T15:59:13.166Z"
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 25
-stopped_at: Phase 01 complete (3/3) — ready to discuss Phase 2
+  total_plans: 7
+  completed_plans: 4
+  percent: 57
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 01-03 (six route stubs — Phase 1 complete)
+**Last updated:** 2026-05-18 after completing Plan 02-01 (FlowLayout padding API widening — WR-01/WR-02 closed)
 
 ## Project Reference
 
@@ -24,18 +23,18 @@ stopped_at: Phase 01 complete (3/3) — ready to discuss Phase 2
 - **Core value:** A polished, on-brand five-step demo flow from splash → success, fully mocked, production-quality at 1440px desktop
 - **Mode:** MVP (each phase ships a navigable vertical slice)
 - **Granularity:** coarse (4 phases)
-- **Current focus:** Phase 2 — pre provider flow
+- **Current focus:** Phase 02 — pre-provider-flow
 
 ## Current Position
 
-Phase: 01 (foundation-shared-chrome) — COMPLETE
-Plan: 3 of 3 (all plans complete)
+Phase: 02 (pre-provider-flow) — EXECUTING
+Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 02-04 ready to run in parallel)
 
 - **Milestone:** v1 release
 - **Phase:** 2
-- **Plan:** Not started
-- **Status:** Ready to plan
-- **Progress:** [██████████] 100% (Phase 01) / [██░░░░░░░░] 25% (overall)
+- **Plan:** 02-01 complete; next up is Wave 2 (02-02, 02-03, 02-04)
+- **Status:** Executing Phase 02
+- **Progress:** [██████░░░░] 57%
 
 ## Performance Metrics
 
@@ -43,10 +42,11 @@ Plan: 3 of 3 (all plans complete)
 |--------|-------|
 | Phases planned | 4 |
 | Phases complete | 1 |
-| Plans complete | 3 |
+| Plans complete | 4 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
 | Requirements validated | 11 (FOUND-01..07, UI-01..03, QUAL-04) |
+| Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01) |
 
 ### Plan Execution Log
 
@@ -55,6 +55,7 @@ Plan: 3 of 3 (all plans complete)
 | 01-01      | 387s (6m 27s) | 3 | 11 | 3 |
 | 01-02      | 143s (2m 23s) | 2 | 4  | 2 |
 | 01-03      | 273s (4m 33s) | 2 | 6  | 1 |
+| 02-01      | 65s (1m 5s)   | 1 | 1  | 1 |
 
 ## Accumulated Context
 
@@ -88,6 +89,11 @@ Plan: 3 of 3 (all plans complete)
 - **Stack `alignItems` workaround was applied uniformly across the route layer.** Same Rule 1 fix already canonicalized by Plan 01-02 in PermissionItem — `alignItems` moves into `sx`. Now the codebase-wide convention.
 - **Per-route `maxWidth` is supplied at the call site** (440/440/768/498/440/440) rather than configured in FlowLayout. The spec's per-screen sizing belongs to the route, not the shared chrome.
 
+### Decisions (Plan 02-01)
+
+- **FlowLayout's padding API is `px?: number` + `py?: number` (theme-spacing units), defaults 6/6 = 48px uniform.** Replaces the broken `padding: number` scalar (which interpolated to raw px and bypassed MUI theme spacing). Closes Phase 1 REVIEW WR-01 (px-string interpolation) and WR-02 (single scalar can't express /permissions' 36/48 split).
+- **Dropped the old `padding` prop outright rather than keeping it for back-compat.** Phase 1 REVIEW confirmed no caller passed it (six route stubs all relied on the default). Defaults preserve Phase 1's exact visual baseline; Wave-2 plans can now express `/welcome` (48/48 uniform) and `/permissions` (36/48 split) via the new API without sx overrides.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -111,17 +117,16 @@ Plan: 3 of 3 (all plans complete)
 
 ### Last Action
 
-Completed Plan 01-03: stood up the six demo route stubs (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) as Server-Component pages wrapped in `FlowLayout` + `FetchLogo`. `/permissions` smoke-tests `PermissionItem` in situ; `/select-provider` smoke-tests the provider catalog in situ (Gusto / ADP / Paycom / Rippling). `tsc --noEmit` exits 0, zero `any`, zero `console.log`. Live HTTP smoke test against `npm run dev` confirmed every route returns 200 with FetchLogo + `--font-inter` + MUI baseline CSS in the SSR markup. Phase 1 (foundation-shared-chrome) is end-to-end demonstrable and closed out.
+Completed Plan 02-01: widened FlowLayout's padding API from a broken `padding: number` scalar (which interpolated to raw px and bypassed MUI theme spacing) to a `px?: number` + `py?: number` pair that consumes theme-spacing units natively. Defaults `px=6 py=6` resolve to 48px uniform padding, preserving Phase 1's exact visual baseline for every existing route stub (none of which pass the prop). Closes Phase 1 REVIEW warnings WR-01 (px-string interpolation defeats theme.spacing) and WR-02 (single scalar can't express /permissions' 36/48 split). `npx tsc --noEmit` exits 0; zero `any`; zero `console.log`. Wave 2 plans (02-02, 02-03, 02-04) are now unblocked and can run fully in parallel — none needs to touch FlowLayout.
 
 ### Next Action
 
-Run `/gsd:transition` to advance from Phase 01 → Phase 02 (Pre-Provider Flow), then `/gsd:plan-phase 2` to design the FLOW-01/02/03 plans that swap the `/`, `/welcome`, `/permissions` stubs for real screens.
+Spawn Wave 2 of Phase 02: Plans 02-02 (splash `/`), 02-03 (`/welcome`), and 02-04 (`/permissions`) in parallel. Each owns exactly one route file and consumes FlowLayout via the new `px`/`py` API.
 
 ### Recent Files Touched
 
-- `src/app/page.tsx` (Plan 01-03 Task 1 — overwrote Plan 01-01 proof-of-life with `/` Splash stub)
-- `src/app/welcome/page.tsx`, `src/app/permissions/page.tsx`, `src/app/select-provider/page.tsx`, `src/app/connecting/page.tsx`, `src/app/success/page.tsx` (Plan 01-03 Task 1)
-- `.planning/phases/01-foundation-shared-chrome/01-03-SUMMARY.md` (Plan 01-03 output)
+- `src/components/FlowLayout.tsx` (Plan 02-01 Task 1 — padding API widened to `px` + `py` theme-spacing units)
+- `.planning/phases/02-pre-provider-flow/02-01-SUMMARY.md` (Plan 02-01 output)
 
 ---
 *State managed by GSD workflow — updated at phase/plan transitions.*
