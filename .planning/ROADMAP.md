@@ -82,7 +82,10 @@ Plans:
   2. End-to-end demo run from `/` → `/welcome` → `/permissions` → `/select-provider` → `/connecting?provider=gusto` → `/success` → `/` completes without dead buttons, errors, or placeholder content
   3. `tsc --noEmit` (or equivalent strict TypeScript check) passes with zero `any` types across `src/`
   4. Repo-wide grep for `console.log` returns zero hits in committed code, and `package.json` confirms Tailwind / shadcn / lucide-react / CVA remain absent
-**Plans:** TBD
+**Plans:** 2/2 plans planned
+Plans:
+- [ ] 04-01-PLAN.md — Replace /success Phase 1 stub with the real FLOW-08 confirmation screen (FetchLogo + green CheckCircleRoundedIcon via success.main token + 'Connected successfully' heading + body copy + 'Done' button → /) (FLOW-08)
+- [ ] 04-02-PLAN.md — Codebase-wide quality-gate audit: zero `: any` (QUAL-01), zero `console.log` (QUAL-02), no dead navigation buttons (QUAL-03), plus QUAL-04 reconfirmation; produces 04-02-AUDIT.md (QUAL-01, QUAL-02, QUAL-03)
 **UI hint:** yes
 
 ## Progress
@@ -92,7 +95,7 @@ Plans:
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
 | 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
 | 3. Provider Selection & Connecting Bridge | 2/2 | Complete   | 2026-05-18 |
-| 4. Success & Quality Hardening | 0/0 | Not started | - |
+| 4. Success & Quality Hardening | 0/2 | Planned | - |
 
 ## Coverage Validation
 
