@@ -2,21 +2,20 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_to_plan
-last_updated: 2026-05-18T16:54:12.757Z
+status: executing
+last_updated: "2026-05-18T17:17:23.000Z"
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 7
-  percent: 25
-stopped_at: Phase 02 complete (4/4) — ready to discuss Phase 3
+  completed_phases: 2
+  total_plans: 9
+  completed_plans: 8
+  percent: 56
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 02-04 (`/permissions` real screen — FLOW-03 closed; Phase 2 complete)
+**Last updated:** 2026-05-18 after completing Plan 03-01 (`/select-provider` real screen — FLOW-04 + FLOW-05 closed)
 
 ## Project Reference
 
@@ -24,18 +23,18 @@ stopped_at: Phase 02 complete (4/4) — ready to discuss Phase 3
 - **Core value:** A polished, on-brand five-step demo flow from splash → success, fully mocked, production-quality at 1440px desktop
 - **Mode:** MVP (each phase ships a navigable vertical slice)
 - **Granularity:** coarse (4 phases)
-- **Current focus:** Phase 3 — provider selection & connecting bridge
+- **Current focus:** Phase 03 — provider-selection-connecting-bridge
 
 ## Current Position
 
-Phase: 02 (pre-provider-flow) — COMPLETE
-Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully delivered)
+Phase: 03 (provider-selection-connecting-bridge) — EXECUTING
+Plan: 2 of 2
 
 - **Milestone:** v1 release
 - **Phase:** 3
-- **Plan:** Not started
-- **Status:** Ready to plan
-- **Progress:** [██████████] 100% (Phase 2 plans); 50% milestone (2/4 phases done)
+- **Plan:** 03-01 complete; 03-02 (`/connecting` real screen) next
+- **Status:** Executing Phase 03
+- **Progress:** [█████░░░░░] 50% (Phase 3 plans); 50% milestone (2/4 phases done); 8/9 plans complete
 
 ## Performance Metrics
 
@@ -43,10 +42,10 @@ Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully 
 |--------|-------|
 | Phases planned | 4 |
 | Phases complete | 2 |
-| Plans complete | 7 |
+| Plans complete | 8 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 14 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01, FLOW-02, FLOW-03) |
+| Requirements validated | 16 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01, FLOW-02, FLOW-03, FLOW-04, FLOW-05) |
 | Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01; SPLIT-shape consumer live in Plan 02-04) |
 
 ### Plan Execution Log
@@ -60,6 +59,7 @@ Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully 
 | 02-02      | 124s (2m 4s)  | 1 | 1  | 1 |
 | 02-03      | ~ (sequential) | 1 | 1  | 1 |
 | 02-04      | 114s (1m 54s) | 1 | 1  | 1 |
+| 03-01      | 275s (4m 35s) | 1 | 1  | 1 |
 
 ## Accumulated Context
 
@@ -120,6 +120,15 @@ Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully 
 - **Outer Stack uses `alignItems: 'stretch'`, not `'center'`.** Stretch is required so the grid child fills the panel's inner width inside the 768px panel. Center alignment would collapse the grid to its content width. This is the first codebase Stack that needs stretch rather than center because the grid is the first non-text-block content inside FlowLayout.
 - **Both buttons use imperative `router.push` (Plan 02-03 pattern), right-aligned via `justifyContent: 'flex-end'`.** Back → `/welcome`, Continue → `/select-provider`. `minWidth: 120` on Back / `minWidth: 160` on Continue keeps the touchable footprint without forcing the buttons to span the row. `textTransform: 'none'` canonicalized by Plan 02-03 is preserved.
 
+### Decisions (Plan 03-01)
+
+- **Controlled-Select shape with `Provider['slug'] | ''` sentinel.** `useState<Provider['slug'] | ''>('')` for the MUI Select value; the empty-string represents "no provider chosen yet". Avoids a parallel boolean `hasSelection` state. The `!selected` falsy guard in `handleConnect` narrows the runtime value to `Provider['slug']` before it flows into the navigation target. Same pattern (string-literal-union value + empty-string sentinel) will be reused if any future MUI Select needs to gate a CTA on a chosen value.
+- **Loading state via `submitting` boolean + onClick-driven `setTimeout` held in a `useRef`.** Distinct from Plan 02-02's splash auto-redirect (which fires `setTimeout` inside `useEffect` on mount). Here the timer is kicked off by a user-initiated `onClick`, so the timer ID has to live in a `useRef` to survive across renders without re-running. The `useEffect(() => () => clearTimeout(timerRef.current), [])` cleanup ensures unmount during the in-flight 1.2s window doesn't produce a stale `router.push` (T-03-01-01 mitigation).
+- **MUI Select needs `MenuProps={{ disablePortal: true, keepMounted: true }}` to render options into SSR markup.** MUI's default Select behavior mounts MenuItems lazily into a Portal Popover that only appears in the DOM when the Select is opened — initial SSR markup contains none of the option labels. The plan's live HTTP smoke gate asserts all four provider names appear in the initial SSR markup, which is only possible with `keepMounted`. Added as a Rule-3 deviation; will become the standard pattern for any MUI Select whose option set must be grep-visible in SSR.
+- **Conditional JSX fragments inside ternaries for grep-friendly button labels.** `{submitting ? <>Connecting…</> : <>Connect</>}` — wrapping each branch in a React fragment makes the closing `>` of `<>` and the opening `<` of `</>` produce the literal substrings `>Connecting…<` and `>Connect<` in source, satisfying the plan's literal-grep acceptance gates. Functionally identical at runtime.
+- **Third real consumer of FlowLayout's px/py API — first to rely on defaults.** `<FlowLayout maxWidth={498}>` with no `px`/`py` override yields 48px uniform padding (the API's `px = 6, py = 6` defaults). Plan 02-03 was the first explicit-uniform consumer (`/welcome`, `px={6} py={6}`); Plan 02-04 the first SPLIT-shape consumer (`/permissions`, `px={4.5} py={6}`); this plan proves the defaults are usable at the call site without redundant ceremony.
+- **WR-01/WR-02 nits remain deferred for `/select-provider` Back too.** Back uses `router.push('/permissions')`, not `router.back()` — same posture as Plan 02-04's Back button. PROJECT.md Key Decisions table is unchanged.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -143,22 +152,22 @@ Plan: 4 of 4 done (Plans 02-01, 02-02, 02-03, 02-04 all complete; Phase 2 fully 
 
 ### Last Action
 
-Completed Plan 02-04: rewrote `src/app/permissions/page.tsx` from the Phase 1 stub (one-off smoke-test single `PermissionItem` with trailing-period description) into the real `/permissions` disclosure screen — a Client Component (`'use client'`) wrapped in `<FlowLayout maxWidth={768} px={4.5} py={6}>` (768px white panel with 36px horizontal / 48px vertical SPLIT padding via Plan 02-01's `px`/`py` API — SECOND real consumer of that API and FIRST to use the asymmetric SPLIT shape, retiring Phase 1 REVIEW WR-02's motivation). Interior is an outer `<Stack spacing={4} sx={{ alignItems: 'stretch' }}>` (stretch, not center, so the grid child fills the panel) containing: a nested centered header `<Stack spacing={3} sx={{ alignItems: 'center' }}>` with `<FetchLogo size={100} />` and an `<Typography variant="h5" component="h1">` heading "To connect your payroll, Fetch will need access to:"; a 2-column CSS Grid `<Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'repeat(3, auto)', gridAutoFlow: 'column', columnGap: 4, rowGap: 3 }}>` mapping a module-scope `PERMISSIONS` array (typed `as const satisfies readonly { label: string; description: string }[]`, six entries in spec order: Organization, Team, Employment, Payroll, Pay Statement, SSN) into six `<PermissionItem>` renders — `gridAutoFlow: 'column'` produces the spec's column-major fill (left col items 1-3, right col items 4-6); and a right-aligned button-row `<Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end', mt: 2 }}>` with Back (`variant="outlined"`, `minWidth: 120`, `onClick={() => router.push('/welcome')}`) and Continue (`variant="contained"`, `minWidth: 160`, `onClick={() => router.push('/select-provider')}`) buttons, both with `textTransform: 'none'` and `fontWeight: 600`. All 35+ acceptance-criteria grep gates pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with the heading, all six labels, all six descriptions, and both button labels present in SSR markup (7 `<svg>` tags: 1 FetchLogo + 6 CheckCircleIcons confirming six PermissionItem runtime renders). FLOW-03 closed. ROADMAP Phase 2 Success Criteria 3 and 4 satisfied end-to-end. Phase 2 (pre-provider flow) is now complete — all four plans done.
+Completed Plan 03-01: rewrote `src/app/select-provider/page.tsx` from the Phase 1 smoke-test stub (one-off provider-name Typography list) into the real provider-selection screen — a Client Component (`'use client'`) wrapped in `<FlowLayout maxWidth={498}>` (498px white panel with default 48px uniform padding via Plan 02-01's `px`/`py` API — THIRD real consumer and FIRST to rely on the defaults rather than passing them explicitly). Interior: outer `<Stack spacing={3} sx={{ alignItems: 'stretch' }}>` containing a centered header sub-Stack with `<FetchLogo size={100} />` + h5/h1 heading "Select your payroll provider" + body1 "Select the payroll system you want to connect"; a `<FormControl fullWidth disabled={submitting}>` wrapping `<InputLabel id="provider-select-label">Select Payroll Provider</InputLabel>` and `<Select labelId="provider-select-label" id="provider-select" value={selected} label="Select Payroll Provider" onChange={handleChange} displayEmpty MenuProps={{ disablePortal: true, keepMounted: true }}>` with a placeholder `<MenuItem value="" disabled><em>Payroll Provider</em></MenuItem>` and four real `MenuItem`s from `providers.map((p) => <MenuItem key={p.slug} value={p.slug}>{p.name}</MenuItem>)` (catalog read from `src/lib/providers.ts`, no inlining); and a Back/Connect row `<Stack direction="row" spacing={2} sx={{ alignItems: 'stretch' }}>` with Back (`variant="outlined"`, fixed `minWidth: 100, width: 100, flexShrink: 0`, `onClick={() => router.push('/permissions')}`, `disabled={submitting}`) and Connect (`variant="contained"`, `flex: 1`, `onClick={handleConnect}`, `disabled={!selected || submitting}`, `startIcon={submitting ? <CircularProgress size={18} color="inherit" /> : undefined}`, label `{submitting ? <>Connecting…</> : <>Connect</>}`). Loading state: `handleConnect` guards `!selected || submitting`, sets `submitting=true`, kicks off `setTimeout(..., 1200)` held in a `useRef<ReturnType<typeof setTimeout> | null>`; an empty-dep `useEffect` cleanup clears the timer on unmount (T-03-01-01 mitigation — no stale `router.push` from an unmounted component). All 35 acceptance-criteria grep gates pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with the heading, body copy, all four provider names (Gusto, ADP, Paycom, Rippling — surfaced into SSR by `MenuProps.keepMounted`), and both button labels present. Three Rule-3 deviations applied (MenuProps for SSR option rendering; conditional fragments wrapping the Connect ternary's branches so `>Connect<` matches the grep gate; dropped unused `Box` import). FLOW-04 + FLOW-05 closed.
 
 ### Next Action
 
-Phase 2 is complete. Run `/gsd-transition` to close Phase 2 and move to Phase 3 (Provider Selection & Connecting Bridge — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance; covers FLOW-04..07). The Continue button on `/permissions` already lands on the Phase 1 `/select-provider` stub today; Phase 3 will replace that stub with the real screen.
+Plan 03-01 is complete. Next is **Plan 03-02** (`/connecting` real screen — FLOW-06 + FLOW-07): a transient route that reads `?provider=` from the URL, validates it against the providers catalog (redirect to `/select-provider` if missing/invalid), displays a spinner with provider-name copy, and auto-advances to `/success` after ~2.5s via `router.replace`. The live edge into Plan 03-02 already exists — clicking Connect on the real `/select-provider` screen now fires `router.push(\`/connecting?provider=\${selected}\`)` after the 1.2s loading state. Once Plan 03-02 ships, the full pre-success demo narrative `/` → `/welcome` → `/permissions` → `/select-provider` → `/connecting` will be navigable end-to-end and Phase 3 will be complete.
 
 ### Recent Files Touched
 
+- `src/app/select-provider/page.tsx` (Plan 03-01 Task 1 — full rewrite into the real provider-selection Client Component with FetchLogo + heading + body + MUI Select sourced from catalog + Back/Connect row with ~1.2s loading state)
+- `.planning/phases/03-provider-selection-connecting-bridge/03-01-SUMMARY.md` (Plan 03-01 output)
 - `src/app/permissions/page.tsx` (Plan 02-04 Task 1 — full rewrite into the real permissions Client Component with FetchLogo + heading + 2x3 PermissionItem grid + Back/Continue navigation)
 - `.planning/phases/02-pre-provider-flow/02-04-SUMMARY.md` (Plan 02-04 output)
 - `src/app/welcome/page.tsx` (Plan 02-03 Task 1 — full rewrite into the real welcome Client Component with FetchLogo + heading + body copy + Get Started → /permissions)
 - `.planning/phases/02-pre-provider-flow/02-03-SUMMARY.md` (Plan 02-03 output)
 - `src/app/page.tsx` (Plan 02-02 Task 1 — full rewrite into the real splash Client Component with scale-in + breathing keyframes and auto-redirect to /welcome at 2500ms)
 - `.planning/phases/02-pre-provider-flow/02-02-SUMMARY.md` (Plan 02-02 output)
-- `src/components/FlowLayout.tsx` (Plan 02-01 Task 1 — padding API widened to `px` + `py` theme-spacing units)
-- `.planning/phases/02-pre-provider-flow/02-01-SUMMARY.md` (Plan 02-01 output)
 
 ---
 *State managed by GSD workflow — updated at phase/plan transitions.*

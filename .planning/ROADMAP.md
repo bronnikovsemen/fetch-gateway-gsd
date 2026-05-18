@@ -68,7 +68,7 @@ Plans:
   5. Visiting `/connecting` with no `?provider=` or an unknown slug redirects immediately to `/select-provider`
 **Plans:** 2 plans
 Plans:
-- [ ] 03-01-PLAN.md — `/select-provider` 498px panel with FetchLogo + heading + body + MUI Select (sourced from providers catalog) + Back (outlined, fixed ~100px → /permissions) + Connect (primary, flex-1, disabled until selection, ~1.2s loading state) → /connecting?provider={slug} (FLOW-04, FLOW-05)
+- [x] 03-01-PLAN.md — `/select-provider` 498px panel with FetchLogo + heading + body + MUI Select (sourced from providers catalog) + Back (outlined, fixed ~100px → /permissions) + Connect (primary, flex-1, disabled until selection, ~1.2s loading state) → /connecting?provider={slug} (FLOW-04, FLOW-05)
 - [ ] 03-02-PLAN.md — `/connecting` panel with FetchLogo + CircularProgress + 'Establishing connection…' heading + interpolated provider-name body; query-param guard (missing/invalid → router.replace('/select-provider')); 2500ms auto-advance via router.replace('/success') (FLOW-06, FLOW-07)
 **UI hint:** yes
 
@@ -91,7 +91,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
 | 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
-| 3. Provider Selection & Connecting Bridge | 0/2 | Planned | - |
+| 3. Provider Selection & Connecting Bridge | 1/2 | Executing | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
 
 ## Coverage Validation
@@ -116,4 +116,4 @@ Plans:
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after completing Plan 02-04 (FLOW-03 satisfied — `/permissions` 768px panel with FetchLogo, "To connect your payroll, Fetch will need access to:" heading, 2-column CSS-grid layout of all six permission scopes in column-major spec order, and right-aligned Back (outlined → /welcome) + Continue (primary → /select-provider) buttons; Phase 2 closed end-to-end)*
+*Last updated: 2026-05-18 after completing Plan 03-01 (FLOW-04 + FLOW-05 satisfied — `/select-provider` 498px panel with FetchLogo, "Select your payroll provider" heading, body copy, MUI Select sourced from providers catalog (Gusto/ADP/Paycom/Rippling) with `MenuProps.keepMounted` for SSR option rendering, Back (outlined, fixed 100px → `/permissions`) + Connect (contained, flex-1, disabled until selection, ~1.2s `setTimeout` loading state with `CircularProgress` + "Connecting…" → `/connecting?provider={slug}`). Phase 3 now 1/2 plans complete; 03-02 (`/connecting` real screen — FLOW-06 + FLOW-07) next.)*
