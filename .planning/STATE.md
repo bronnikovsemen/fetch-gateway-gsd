@@ -3,19 +3,19 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-18T15:59:13.166Z"
+last_updated: "2026-05-18T16:09:55Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
-  percent: 57
+  completed_plans: 5
+  percent: 71
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 02-01 (FlowLayout padding API widening — WR-01/WR-02 closed)
+**Last updated:** 2026-05-18 after completing Plan 02-02 (`/` splash screen — FLOW-01 closed)
 
 ## Project Reference
 
@@ -28,13 +28,13 @@ progress:
 ## Current Position
 
 Phase: 02 (pre-provider-flow) — EXECUTING
-Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 02-04 ready to run in parallel)
+Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
 
 - **Milestone:** v1 release
 - **Phase:** 2
-- **Plan:** 02-01 complete; next up is Wave 2 (02-02, 02-03, 02-04)
+- **Plan:** 02-02 complete; next up is the rest of Wave 2 (02-03 `/welcome`, 02-04 `/permissions`)
 - **Status:** Executing Phase 02
-- **Progress:** [██████░░░░] 57%
+- **Progress:** [███████░░░] 71%
 
 ## Performance Metrics
 
@@ -42,10 +42,10 @@ Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 
 |--------|-------|
 | Phases planned | 4 |
 | Phases complete | 1 |
-| Plans complete | 4 |
+| Plans complete | 5 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 11 (FOUND-01..07, UI-01..03, QUAL-04) |
+| Requirements validated | 12 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01) |
 | Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01) |
 
 ### Plan Execution Log
@@ -56,6 +56,7 @@ Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 
 | 01-02      | 143s (2m 23s) | 2 | 4  | 2 |
 | 01-03      | 273s (4m 33s) | 2 | 6  | 1 |
 | 02-01      | 65s (1m 5s)   | 1 | 1  | 1 |
+| 02-02      | 124s (2m 4s)  | 1 | 1  | 1 |
 
 ## Accumulated Context
 
@@ -94,6 +95,13 @@ Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 
 - **FlowLayout's padding API is `px?: number` + `py?: number` (theme-spacing units), defaults 6/6 = 48px uniform.** Replaces the broken `padding: number` scalar (which interpolated to raw px and bypassed MUI theme spacing). Closes Phase 1 REVIEW WR-01 (px-string interpolation) and WR-02 (single scalar can't express /permissions' 36/48 split).
 - **Dropped the old `padding` prop outright rather than keeping it for back-compat.** Phase 1 REVIEW confirmed no caller passed it (six route stubs all relied on the default). Defaults preserve Phase 1's exact visual baseline; Wave-2 plans can now express `/welcome` (48/48 uniform) and `/permissions` (36/48 split) via the new API without sx overrides.
 
+### Decisions (Plan 02-02)
+
+- **The `/` splash sits on a bare flex `Box`, NOT inside `FlowLayout`.** Spec's `### / — Splash` section is explicit: splash has no white panel chrome. Every other Fetch-branded route uses FlowLayout. Phase 1's stub used FlowLayout only as a smoke convenience; the real screen drops it.
+- **Emotion `keyframes` declared at module scope, not in-component.** Prevents React from re-creating the keyframes object on each render. Pattern reused for Phase 3's `/connecting` spinner-side animations (if any).
+- **Canonical Client Component pattern: `'use client'` + `useRouter` + `useEffect` with `setTimeout` + return `clearTimeout` cleanup.** This is the shape Phase 3's `/connecting` auto-advance will mirror — `useEffect` dependency array includes `router` to satisfy React lint; the cleanup is the T-02-02-01 mitigation (no stale push on unmount).
+- **Comment block in `src/app/page.tsx` deliberately avoids the literals `#EBF5FF` and `FlowLayout`.** Acceptance-criteria greps are literal — they don't distinguish code from prose comments. Architectural rationale lives in the SUMMARY instead.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -117,14 +125,16 @@ Plan: 2 of 4 (Plan 02-01 complete — Wave 1 done; Wave 2 plans 02-02 / 02-03 / 
 
 ### Last Action
 
-Completed Plan 02-01: widened FlowLayout's padding API from a broken `padding: number` scalar (which interpolated to raw px and bypassed MUI theme spacing) to a `px?: number` + `py?: number` pair that consumes theme-spacing units natively. Defaults `px=6 py=6` resolve to 48px uniform padding, preserving Phase 1's exact visual baseline for every existing route stub (none of which pass the prop). Closes Phase 1 REVIEW warnings WR-01 (px-string interpolation defeats theme.spacing) and WR-02 (single scalar can't express /permissions' 36/48 split). `npx tsc --noEmit` exits 0; zero `any`; zero `console.log`. Wave 2 plans (02-02, 02-03, 02-04) are now unblocked and can run fully in parallel — none needs to touch FlowLayout.
+Completed Plan 02-02: rewrote `src/app/page.tsx` from the Phase 1 FlowLayout-wrapped placeholder into the real `/` splash — a Client Component (`'use client'`) sitting on a bare flex `Box` (theme bg `background.default`, NOT FlowLayout per spec's `### / — Splash` section) that renders `<FetchLogo size={100} />` plus the "Retirement runs on Fetch" tagline (`Typography variant="h6"`, `text.primary`, weight 500). Two module-scope Emotion keyframes (`scaleIn` 500ms ease-out from `scale(0.6)`/opacity 0 → `scale(1)`/opacity 1, and `breathe` 2s ease-in-out infinite with a 4% pulse) are chained on a wrapper Box via `sx.animation`, with the breathe pulse delayed 500ms so it starts exactly when scale-in finishes. A `useEffect` runs `setTimeout(() => router.push('/welcome'), 2500)` and returns `clearTimeout(timer)` cleanup (T-02-02-01 mitigation). All 16 acceptance-criteria greps pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with both the tagline and the FetchLogo `<title>Fetch</title>` SVG marker present in SSR markup. FLOW-01 closed. ROADMAP Phase 2 Success Criterion 1 satisfied.
 
 ### Next Action
 
-Spawn Wave 2 of Phase 02: Plans 02-02 (splash `/`), 02-03 (`/welcome`), and 02-04 (`/permissions`) in parallel. Each owns exactly one route file and consumes FlowLayout via the new `px`/`py` API.
+Continue Wave 2 of Phase 02: Plans 02-03 (`/welcome`) and 02-04 (`/permissions`). Both can run in parallel — neither needs to touch FlowLayout or the splash page; each owns exactly one route file and consumes FlowLayout via the new `px`/`py` API.
 
 ### Recent Files Touched
 
+- `src/app/page.tsx` (Plan 02-02 Task 1 — full rewrite into the real splash Client Component with scale-in + breathing keyframes and auto-redirect to /welcome at 2500ms)
+- `.planning/phases/02-pre-provider-flow/02-02-SUMMARY.md` (Plan 02-02 output)
 - `src/components/FlowLayout.tsx` (Plan 02-01 Task 1 — padding API widened to `px` + `py` theme-spacing units)
 - `.planning/phases/02-pre-provider-flow/02-01-SUMMARY.md` (Plan 02-01 output)
 

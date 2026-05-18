@@ -47,10 +47,10 @@ Plans:
   2. `/welcome` shows a centered 440px-wide white panel (48px padding) with Fetch logo, heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button that navigates to `/permissions`
   3. `/permissions` shows a centered 768px-wide white panel with Fetch logo, heading "To connect your payroll, Fetch will need access to:", and a 2-column grid of six `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN) with correct labels and descriptions
   4. On `/permissions`, the "Back" outlined button returns to `/welcome` and the "Continue" primary button advances to `/select-provider` — both are real navigations, no dead buttons
-**Plans:** 1/4 plans executed
+**Plans:** 2/4 plans executed
 Plans:
 - [x] 02-01-PLAN.md — Widen FlowLayout padding API to px/py (theme-spacing units); resolves Phase 1 REVIEW WR-01/WR-02
-- [ ] 02-02-PLAN.md — `/` splash with logo + tagline + 500ms scale-in + 2s breathing + auto-redirect to `/welcome` (FLOW-01)
+- [x] 02-02-PLAN.md — `/` splash with logo + tagline + 500ms scale-in + 2s breathing + auto-redirect to `/welcome` (FLOW-01)
 - [ ] 02-03-PLAN.md — `/welcome` 440px panel with heading + body copy + primary 'Get Started' button → `/permissions` (FLOW-02)
 - [ ] 02-04-PLAN.md — `/permissions` 768px panel with 2x3 PermissionItem grid + Back (outlined) → `/welcome` + Continue (primary) → `/select-provider` (FLOW-03)
 **UI hint:** yes
@@ -87,7 +87,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
-| 2. Pre-Provider Flow | 1/4 | In Progress|  |
+| 2. Pre-Provider Flow | 2/4 | In Progress|  |
 | 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
 
@@ -113,4 +113,4 @@ Plans:
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after completing Phase 1 (all 3 plans executed; FOUND-01..07, UI-01..03, QUAL-04 satisfied)*
+*Last updated: 2026-05-18 after completing Plan 02-02 (FLOW-01 satisfied — `/` splash with logo, tagline, scale-in + breathing animations, auto-redirect to /welcome at 2500ms)*
