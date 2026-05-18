@@ -18,19 +18,19 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 - [x] Inter font loaded via `next/font/google` as `--font-inter` and applied to body — *Validated in Phase 1*
 - [x] Dev server runs on port **3001** — *Validated in Phase 1*
 - [x] All six routes (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) reachable as placeholders wrapped in `FlowLayout` with `FetchLogo` visible — *Validated in Phase 1*
+- [x] Splash screen at `/` auto-redirects to `/welcome` after ~2.5s with logo scale-in + breathing animation — *Validated in Phase 2: Pre-Provider Flow*
+- [x] Welcome screen at `/welcome` explains the Plantegrity ↔ payroll connection and routes to `/permissions` — *Validated in Phase 2*
+- [x] Permissions screen at `/permissions` displays a 2×3 grid of the six permission scopes (Organization, Team, Employment, Payroll, Pay Statement, SSN) and routes to `/select-provider` — *Validated in Phase 2*
 
 ### Active
 
-- [ ] Splash screen at `/` auto-redirects to `/welcome` after ~2.5s with logo scale-in + breathing animation
-- [ ] Welcome screen at `/welcome` explains the Plantegrity ↔ payroll connection and routes to `/permissions`
-- [ ] Permissions screen at `/permissions` displays a 2×3 grid of the six permission scopes (Organization, Team, Employment, Payroll, Pay Statement, SSN) and routes to `/select-provider`
 - [ ] Select-provider screen at `/select-provider` offers an MUI Select with 4 providers (Gusto, ADP, Paycom, Rippling), shows a "Connecting…" loading state on submit, and routes to `/connecting?provider={slug}`
 - [ ] Connecting screen at `/connecting` shows a spinner and provider-name copy, auto-advancing to `/success` after ~2.5s (reads `?provider=`, redirects to `/select-provider` if missing/invalid)
 - [ ] Success screen at `/success` displays a Fetch-branded confirmation panel with a green checkmark, "Connected successfully" heading, and a "Done" button back to `/`
 
 ## Current State
 
-Phase 1 (Foundation & Shared Chrome) complete — walking-skeleton end state. All six routes reachable with Fetch-branded chrome, MUI theme, Inter font, and shared components in place. Phase 2 (Pre-Provider Flow) is next.
+Phase 2 (Pre-Provider Flow) complete — the trust narrative `/` → `/welcome` → `/permissions` → `/select-provider` is navigable end-to-end with no placeholder content on Phase 2 routes. FlowLayout's padding API was widened from a broken `padding: number` scalar to `px`/`py` theme-spacing units (resolved Phase 1 REVIEW WR-01/WR-02), enabling the 48px uniform `/welcome` panel and the 48px-vertical / 36px-horizontal `/permissions` panel. Phase 3 (Provider Selection & Connecting Bridge) is next.
 
 ### Out of Scope
 
@@ -72,6 +72,8 @@ Phase 1 (Foundation & Shared Chrome) complete — walking-skeleton end state. Al
 | Port 3001 for dev server | Avoid collision with sibling projects running on 3000 | ✓ Phase 1 |
 | Provider catalog centralized in `src/lib/providers.ts` | Prevent provider name/color drift across screens | ✓ Phase 1 |
 | MUI provider chain isolated in client `ThemeRegistry` rather than rendered inline in `app/layout.tsx` | MUI v9's `ThemeProvider` is a Client Component; passing the theme object (containing functions) across the RSC boundary fails. Canonical MUI v9 + Next 15 App Router pattern. | ✓ Phase 1 |
+| `FlowLayout` exposes `px?: number` + `py?: number` as MUI theme-spacing units (not raw px) | The Phase 1 single `padding: number` prop interpolated to raw px and couldn't express `/permissions`' 36/48 split. Theme-spacing units restore type/intent alignment with MUI. | ✓ Phase 2 |
+| `/` splash uses `router.push` (not `router.replace`) and `/permissions` Back uses `router.push('/welcome')` (not `router.back()`) | Documented as Warning-tier nits in `02-REVIEW.md` (WR-01/WR-02). Trust-narrative goal is unaffected; deferred polish. | ✓ Phase 2 (deferred) |
 
 ## Evolution
 
@@ -91,4 +93,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-18 after Phase 1 completion*
+*Last updated: 2026-05-18 after Phase 2 completion*
