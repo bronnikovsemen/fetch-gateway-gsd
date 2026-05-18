@@ -32,7 +32,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **FLOW-05**: On `/select-provider` "Connect" click, button shows ~1.2s loading state (spinner + "Connecting…") then navigates to `/connecting?provider={slug}`
 - [x] **FLOW-06**: `/connecting` reads `?provider=` from query params, displays a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", and body copy "Connecting to {providerName}. You'll be redirected to sign in."; auto-advances to `/success` after ~2500ms
 - [x] **FLOW-07**: `/connecting` redirects to `/select-provider` if `?provider=` is missing or does not match the provider catalog
-- [ ] **FLOW-08**: `/success` displays a Fetch-branded centered white panel with a green checkmark icon (using success token `#10B981`), heading "Connected successfully", short confirmation body copy, and a "Done" button routing back to `/`
+- [x] **FLOW-08**: `/success` displays a Fetch-branded centered white panel with a green checkmark icon (using success token `#10B981`), heading "Connected successfully", short confirmation body copy, and a "Done" button routing back to `/`
 
 ### Quality
 
@@ -85,7 +85,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FLOW-05 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-07 | Phase 3: Provider Selection & Connecting Bridge | Complete |
-| FLOW-08 | Phase 4: Success & Quality Hardening | Pending |
+| FLOW-08 | Phase 4: Success & Quality Hardening | Complete |
 | QUAL-01 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-02 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-03 | Phase 4: Success & Quality Hardening | Pending |
