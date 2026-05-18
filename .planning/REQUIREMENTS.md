@@ -30,8 +30,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **FLOW-03**: `/permissions` displays a centered white panel (max-width 768px, 48px horizontal padding) with Fetch logo, heading "To connect your payroll, Fetch will need access to:", a 2-column grid of 6 `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN), and "Back" (outlined → `/welcome`) and "Continue" (primary → `/select-provider`) buttons side by side
 - [x] **FLOW-04**: `/select-provider` displays a centered white panel (max-width 498px) with Fetch logo, heading "Select your payroll provider", body copy, an MUI `Select` labeled "Select Payroll Provider" sourced from the provider catalog, plus "Back" (outlined, fixed ~100px) and "Connect" (primary, flex-1, disabled until a provider is selected) buttons
 - [x] **FLOW-05**: On `/select-provider` "Connect" click, button shows ~1.2s loading state (spinner + "Connecting…") then navigates to `/connecting?provider={slug}`
-- [ ] **FLOW-06**: `/connecting` reads `?provider=` from query params, displays a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", and body copy "Connecting to {providerName}. You'll be redirected to sign in."; auto-advances to `/success` after ~2500ms
-- [ ] **FLOW-07**: `/connecting` redirects to `/select-provider` if `?provider=` is missing or does not match the provider catalog
+- [x] **FLOW-06**: `/connecting` reads `?provider=` from query params, displays a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", and body copy "Connecting to {providerName}. You'll be redirected to sign in."; auto-advances to `/success` after ~2500ms
+- [x] **FLOW-07**: `/connecting` redirects to `/select-provider` if `?provider=` is missing or does not match the provider catalog
 - [ ] **FLOW-08**: `/success` displays a Fetch-branded centered white panel with a green checkmark icon (using success token `#10B981`), heading "Connected successfully", short confirmation body copy, and a "Done" button routing back to `/`
 
 ### Quality
@@ -83,8 +83,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FLOW-03 | Phase 2: Pre-Provider Flow | Complete |
 | FLOW-04 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-05 | Phase 3: Provider Selection & Connecting Bridge | Complete |
-| FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Pending |
-| FLOW-07 | Phase 3: Provider Selection & Connecting Bridge | Pending |
+| FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Complete |
+| FLOW-07 | Phase 3: Provider Selection & Connecting Bridge | Complete |
 | FLOW-08 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-01 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-02 | Phase 4: Success & Quality Hardening | Pending |

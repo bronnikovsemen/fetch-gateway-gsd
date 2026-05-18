@@ -14,7 +14,7 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 
 - [x] **Phase 1: Foundation & Shared Chrome** — Next.js 15 + MUI scaffolding, theme, Inter font, provider catalog, shared `FlowLayout`/`FetchLogo`/`PermissionItem` components, and navigable route stubs for all six routes
 - [x] **Phase 2: Pre-Provider Flow** — Splash auto-redirect, welcome screen, and permissions disclosure grid wire `/`, `/welcome`, `/permissions` into a coherent on-brand intro
-- [ ] **Phase 3: Provider Selection & Connecting Bridge** — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance
+- [x] **Phase 3: Provider Selection & Connecting Bridge** — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance (completed 2026-05-18)
 - [ ] **Phase 4: Success & Quality Hardening** — `/success` confirmation panel closes the loop back to `/`, with codebase-wide TypeScript, hygiene, and dependency gates enforced
 
 ## Phase Details
@@ -66,10 +66,10 @@ Plans:
   3. Clicking "Connect" swaps the button into a ~1.2s loading state (spinner + "Connecting…"), then navigates to `/connecting?provider={slug}` with the selected provider's slug
   4. `/connecting?provider={validSlug}` shows a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", body "Connecting to {providerName}. You'll be redirected to sign in.", and auto-advances to `/success` after ~2500ms
   5. Visiting `/connecting` with no `?provider=` or an unknown slug redirects immediately to `/select-provider`
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 03-01-PLAN.md — `/select-provider` 498px panel with FetchLogo + heading + body + MUI Select (sourced from providers catalog) + Back (outlined, fixed ~100px → /permissions) + Connect (primary, flex-1, disabled until selection, ~1.2s loading state) → /connecting?provider={slug} (FLOW-04, FLOW-05)
-- [ ] 03-02-PLAN.md — `/connecting` panel with FetchLogo + CircularProgress + 'Establishing connection…' heading + interpolated provider-name body; query-param guard (missing/invalid → router.replace('/select-provider')); 2500ms auto-advance via router.replace('/success') (FLOW-06, FLOW-07)
+- [x] 03-02-PLAN.md — `/connecting` panel with FetchLogo + CircularProgress + 'Establishing connection…' heading + interpolated provider-name body; query-param guard (missing/invalid → router.replace('/select-provider')); 2500ms auto-advance via router.replace('/success') (FLOW-06, FLOW-07)
 **UI hint:** yes
 
 ### Phase 4: Success & Quality Hardening
@@ -91,7 +91,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
 | 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
-| 3. Provider Selection & Connecting Bridge | 1/2 | Executing | - |
+| 3. Provider Selection & Connecting Bridge | 2/2 | Complete   | 2026-05-18 |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
 
 ## Coverage Validation
@@ -116,4 +116,4 @@ Plans:
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after completing Plan 03-01 (FLOW-04 + FLOW-05 satisfied — `/select-provider` 498px panel with FetchLogo, "Select your payroll provider" heading, body copy, MUI Select sourced from providers catalog (Gusto/ADP/Paycom/Rippling) with `MenuProps.keepMounted` for SSR option rendering, Back (outlined, fixed 100px → `/permissions`) + Connect (contained, flex-1, disabled until selection, ~1.2s `setTimeout` loading state with `CircularProgress` + "Connecting…" → `/connecting?provider={slug}`). Phase 3 now 1/2 plans complete; 03-02 (`/connecting` real screen — FLOW-06 + FLOW-07) next.)*
+*Last updated: 2026-05-18 after completing Plan 03-02 (FLOW-06 + FLOW-07 satisfied — `/connecting` 440px panel with FetchLogo + `CircularProgress` + heading "Establishing connection…" + body "Connecting to {providerName}. You'll be redirected to sign in." with the catalog `name` interpolated; reads `?provider=` via `useSearchParams`; missing/invalid slugs render null and `router.replace('/select-provider')`; valid slugs auto-advance via `router.replace('/success')` after 2500ms with a `useEffect` cleanup that clears the pending timer on unmount; `export const dynamic = 'force-dynamic'` opts the route out of static prerendering; both navigations use `router.replace` because the transient bridge route must not sit in browser history). **Phase 3 now complete (2/2 plans);** the full demo flow `/` → `/welcome` → `/permissions` → `/select-provider` → `/connecting` → `/success` is navigable end-to-end with only `/success` remaining a Phase 1 stub. Phase 4 (FLOW-08 + QUAL-01..03) is next.*
