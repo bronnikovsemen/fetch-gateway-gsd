@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 // FetchLogo — Fetch wordmark (arrows + FETCH text) from the Phase 1 Figma file.
 //
 // Public API is preserved from the previous placeholder so consumers don't change:
@@ -18,12 +20,13 @@ export function FetchLogo({
 }: FetchLogoProps) {
   const width = Math.round(size * (66 / 64));
   return (
-    <img
+    <Image
       src="/images/fetch-logo.png"
       alt={title}
       width={width}
       height={size}
       style={{ width, height: size, display: 'block', objectFit: 'contain' }}
+      priority
     />
   );
 }

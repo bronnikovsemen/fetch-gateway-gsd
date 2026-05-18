@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -34,14 +34,12 @@ import providers, { type Provider } from '@/lib/providers';
 // must not sit in browser history (T-03-02-03 mitigation; locally acts on
 // Phase 2 REVIEW WR-01's advisory which the splash deferred).
 //
-// useSearchParams requires either a <Suspense> boundary or a dynamic-rendering
-// opt-out. /connecting is meaningless without query params (the route only
-// exists as a transient bridge driven by ?provider=), so force-dynamic is
-// the simpler choice over wrapping the page in Suspense.
+// useSearchParams reads from the request URL, which Next.js requires to be
+// inside a <Suspense> boundary so the rest of the route can pre-render at
+// build time while this subtree streams on the client. ConnectingContent
+// owns the useSearchParams call; the default export wraps it.
 
-export const dynamic = 'force-dynamic';
-
-export default function Page() {
+function ConnectingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const slugParam = searchParams.get('provider');
@@ -91,5 +89,13 @@ export default function Page() {
         </Typography>
       </Stack>
     </FlowLayout>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <ConnectingContent />
+    </Suspense>
   );
 }
