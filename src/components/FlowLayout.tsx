@@ -16,17 +16,27 @@ import Paper from '@mui/material/Paper';
 //
 // `maxWidth` defaults to 440px (welcome-screen sizing per the spec). Phase 2-3
 // consumers override: 768 for /permissions, 498 for /select-provider.
+//
+// Padding API: `px` and `py` accept MUI theme-spacing units (MUI default of
+// 8px/unit applies). Defaults are `px={6}` and `py={6}` = 48px uniform padding,
+// matching the spec's /welcome panel and preserving Phase 1's visual baseline.
+// `/permissions` passes `px={4.5} py={6}` for the spec-mandated 36px-horizontal
+// / 48px-vertical split without an `sx` override at the call site.
+// Switching to theme-spacing units (away from the previous raw-px string
+// interpolation) closes Phase 1 REVIEW findings WR-01 + WR-02.
 
 export type FlowLayoutProps = {
   children: ReactNode;
   maxWidth?: number;
-  padding?: number;
+  px?: number;
+  py?: number;
 };
 
 export function FlowLayout({
   children,
   maxWidth = 440,
-  padding = 48,
+  px = 6,
+  py = 6,
 }: FlowLayoutProps) {
   return (
     <Box
@@ -47,7 +57,8 @@ export function FlowLayout({
           backgroundColor: 'background.paper',
           width: '100%',
           maxWidth,
-          p: `${padding}px`,
+          px,
+          py,
         }}
       >
         {children}
