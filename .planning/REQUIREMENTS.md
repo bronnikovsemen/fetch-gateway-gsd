@@ -26,7 +26,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Flow Screens
 
 - [ ] **FLOW-01**: `/` splash auto-redirects to `/welcome` after 2500ms; shows Fetch logo centered on `#EBF5FF` with tagline "Retirement runs on Fetch"; logo scales in over 500ms then breathes (2s cycle) until redirect
-- [ ] **FLOW-02**: `/welcome` displays a centered white panel (max-width 440px, 48px padding) with Fetch logo (100px), heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button routing to `/permissions`
+- [x] **FLOW-02**: `/welcome` displays a centered white panel (max-width 440px, 48px padding) with Fetch logo (100px), heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button routing to `/permissions`
 - [ ] **FLOW-03**: `/permissions` displays a centered white panel (max-width 768px, 48px horizontal padding) with Fetch logo, heading "To connect your payroll, Fetch will need access to:", a 2-column grid of 6 `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN), and "Back" (outlined → `/welcome`) and "Continue" (primary → `/select-provider`) buttons side by side
 - [ ] **FLOW-04**: `/select-provider` displays a centered white panel (max-width 498px) with Fetch logo, heading "Select your payroll provider", body copy, an MUI `Select` labeled "Select Payroll Provider" sourced from the provider catalog, plus "Back" (outlined, fixed ~100px) and "Connect" (primary, flex-1, disabled until a provider is selected) buttons
 - [ ] **FLOW-05**: On `/select-provider` "Connect" click, button shows ~1.2s loading state (spinner + "Connecting…") then navigates to `/connecting?provider={slug}`
@@ -79,7 +79,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UI-02 | Phase 1: Foundation & Shared Chrome | Complete |
 | UI-03 | Phase 1: Foundation & Shared Chrome | Complete |
 | FLOW-01 | Phase 2: Pre-Provider Flow | Pending |
-| FLOW-02 | Phase 2: Pre-Provider Flow | Pending |
+| FLOW-02 | Phase 2: Pre-Provider Flow | Complete |
 | FLOW-03 | Phase 2: Pre-Provider Flow | Pending |
 | FLOW-04 | Phase 3: Provider Selection & Connecting Bridge | Pending |
 | FLOW-05 | Phase 3: Provider Selection & Connecting Bridge | Pending |

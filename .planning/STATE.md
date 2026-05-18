@@ -3,19 +3,19 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-last_updated: "2026-05-18T16:09:55Z"
+last_updated: "2026-05-18T16:30:00Z"
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
-  percent: 71
+  completed_plans: 6
+  percent: 86
 ---
 
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-18 after completing Plan 02-02 (`/` splash screen — FLOW-01 closed)
+**Last updated:** 2026-05-18 after completing Plan 02-03 (`/welcome` real screen — FLOW-02 closed)
 
 ## Project Reference
 
@@ -28,13 +28,13 @@ progress:
 ## Current Position
 
 Phase: 02 (pre-provider-flow) — EXECUTING
-Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
+Plan: 4 of 4 (Plans 02-01, 02-02, and 02-03 complete; only Plan 02-04 `/permissions` remains)
 
 - **Milestone:** v1 release
 - **Phase:** 2
-- **Plan:** 02-02 complete; next up is the rest of Wave 2 (02-03 `/welcome`, 02-04 `/permissions`)
+- **Plan:** 02-03 complete; next up is Plan 02-04 (`/permissions` 2×3 grid + Back/Continue buttons)
 - **Status:** Executing Phase 02
-- **Progress:** [███████░░░] 71%
+- **Progress:** [████████░░] 86%
 
 ## Performance Metrics
 
@@ -42,10 +42,10 @@ Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
 |--------|-------|
 | Phases planned | 4 |
 | Phases complete | 1 |
-| Plans complete | 5 |
+| Plans complete | 6 |
 | v1 requirements | 22 |
 | Requirements mapped | 22 |
-| Requirements validated | 12 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01) |
+| Requirements validated | 13 (FOUND-01..07, UI-01..03, QUAL-04, FLOW-01, FLOW-02) |
 | Phase 1 REVIEW warnings closed | 2 (WR-01, WR-02 via Plan 02-01) |
 
 ### Plan Execution Log
@@ -57,6 +57,7 @@ Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
 | 01-03      | 273s (4m 33s) | 2 | 6  | 1 |
 | 02-01      | 65s (1m 5s)   | 1 | 1  | 1 |
 | 02-02      | 124s (2m 4s)  | 1 | 1  | 1 |
+| 02-03      | ~ (sequential) | 1 | 1  | 1 |
 
 ## Accumulated Context
 
@@ -102,6 +103,13 @@ Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
 - **Canonical Client Component pattern: `'use client'` + `useRouter` + `useEffect` with `setTimeout` + return `clearTimeout` cleanup.** This is the shape Phase 3's `/connecting` auto-advance will mirror — `useEffect` dependency array includes `router` to satisfy React lint; the cleanup is the T-02-02-01 mitigation (no stale push on unmount).
 - **Comment block in `src/app/page.tsx` deliberately avoids the literals `#EBF5FF` and `FlowLayout`.** Acceptance-criteria greps are literal — they don't distinguish code from prose comments. Architectural rationale lives in the SUMMARY instead.
 
+### Decisions (Plan 02-03)
+
+- **Used `onClick` + `router.push` for the Get Started CTA, NOT `<Link>` from `next/link`.** Matches the splash auto-redirect's imperative-navigation style (Plan 02-02). Keeps a single navigation pattern across the flow — `/permissions` (Plan 02-04), `/select-provider`, `/connecting`, `/success` will all use the same imperative `onClick` → `router.push` pattern for primary CTAs. No two competing patterns.
+- **MUI Button needs `textTransform: 'none'` to honor sentence-case spec labels.** MUI's default Button typography uppercases labels (`GET STARTED`). The spec uses sentence case (`Get Started`, `Continue`, `Back`, `Connect`, `Done`). Every brand Button in this codebase will set `sx={{ textTransform: 'none' }}` — canonicalized here at the first real Button consumer.
+- **First real consumer of Plan 02-01's `px`/`py` API.** `/welcome` passes `px={6} py={6}` explicitly (= 48px uniform). Plan 02-04 (`/permissions`) will be the second consumer with the split shape `px={4.5} py={6}` (= 36px horizontal / 48px vertical). All other route stubs still use the API by defaulting.
+- **`alignSelf: 'stretch'` on the Button.** The inner Stack has `alignItems: 'center'`, which would otherwise shrink the Button to fit its content. Stretching the Button to the Stack's full inner width makes the CTA the strongest visual anchor in the panel — matches the spec's `### /welcome — Welcome` screenshot.
+
 ### Roadmap Decisions
 
 - Coarse 4-phase shape matches the spec's natural implementation order and ships a navigable demo at every phase boundary
@@ -125,14 +133,16 @@ Plan: 3 of 4 (Plans 02-01 and 02-02 complete; Wave 2 plans 02-03 / 02-04 remain)
 
 ### Last Action
 
-Completed Plan 02-02: rewrote `src/app/page.tsx` from the Phase 1 FlowLayout-wrapped placeholder into the real `/` splash — a Client Component (`'use client'`) sitting on a bare flex `Box` (theme bg `background.default`, NOT FlowLayout per spec's `### / — Splash` section) that renders `<FetchLogo size={100} />` plus the "Retirement runs on Fetch" tagline (`Typography variant="h6"`, `text.primary`, weight 500). Two module-scope Emotion keyframes (`scaleIn` 500ms ease-out from `scale(0.6)`/opacity 0 → `scale(1)`/opacity 1, and `breathe` 2s ease-in-out infinite with a 4% pulse) are chained on a wrapper Box via `sx.animation`, with the breathe pulse delayed 500ms so it starts exactly when scale-in finishes. A `useEffect` runs `setTimeout(() => router.push('/welcome'), 2500)` and returns `clearTimeout(timer)` cleanup (T-02-02-01 mitigation). All 16 acceptance-criteria greps pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with both the tagline and the FetchLogo `<title>Fetch</title>` SVG marker present in SSR markup. FLOW-01 closed. ROADMAP Phase 2 Success Criterion 1 satisfied.
+Completed Plan 02-03: rewrote `src/app/welcome/page.tsx` from the Phase 1 placeholder into the real `/welcome` screen — a Client Component (`'use client'`) wrapped in `<FlowLayout maxWidth={440} px={6} py={6}>` (440px white panel with 48px uniform padding via Plan 02-01's new `px`/`py` API — first real consumer of that API). Interior is a single `<Stack spacing={3} sx={{ alignItems: 'center' }}>` containing `<FetchLogo size={100} />`, an `<Typography variant="h5" component="h1">` "Connect your payroll provider" heading (`fontWeight: 700`, `text.primary`, centered), a `<Typography variant="body1">` with the exact spec body copy ("Plantegrity has requested a secure read-only connection to your payroll data for plan validation and reconciliation. No data will be modified.") in `text.secondary`, centered, and a `<Button variant="contained" color="primary" size="large" onClick={() => router.push('/permissions')}>` with `mt: 2`, `alignSelf: 'stretch'`, `textTransform: 'none'` (sentence-case spec label), `fontWeight: 600`, label "Get Started". All 14 acceptance-criteria greps pass; `tsc --noEmit` exits 0; live HTTP smoke against `npm run dev` on port 3001 returns 200 with the heading, body copy, and `Get Started` button label present in SSR markup. FLOW-02 closed. ROADMAP Phase 2 Success Criterion 2 satisfied end-to-end.
 
 ### Next Action
 
-Continue Wave 2 of Phase 02: Plans 02-03 (`/welcome`) and 02-04 (`/permissions`). Both can run in parallel — neither needs to touch FlowLayout or the splash page; each owns exactly one route file and consumes FlowLayout via the new `px`/`py` API.
+Execute the last remaining plan of Phase 02 — Plan 02-04 (`/permissions` 768px panel with 2×3 PermissionItem grid + Back/Continue buttons → FLOW-03). This is the second consumer of FlowLayout's new `px`/`py` API and will use the split shape `px={4.5} py={6}` (= 36px horizontal / 48px vertical) per the spec's `### /permissions — Permissions` section.
 
 ### Recent Files Touched
 
+- `src/app/welcome/page.tsx` (Plan 02-03 Task 1 — full rewrite into the real welcome Client Component with FetchLogo + heading + body copy + Get Started → /permissions)
+- `.planning/phases/02-pre-provider-flow/02-03-SUMMARY.md` (Plan 02-03 output)
 - `src/app/page.tsx` (Plan 02-02 Task 1 — full rewrite into the real splash Client Component with scale-in + breathing keyframes and auto-redirect to /welcome at 2500ms)
 - `.planning/phases/02-pre-provider-flow/02-02-SUMMARY.md` (Plan 02-02 output)
 - `src/components/FlowLayout.tsx` (Plan 02-01 Task 1 — padding API widened to `px` + `py` theme-spacing units)
