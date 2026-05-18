@@ -1,18 +1,13 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-// PermissionItem — one row of the /permissions grid: a blue checkmark plus a
-// bold label plus a muted description, laid out in a single horizontal row.
-//
-// Tokens consumed from the MUI theme:
-//   - icon color   → 'primary.main'     (#2463EC, Fetch brand blue)
-//   - label color  → 'text.primary'     (#101827)
-//   - desc color   → 'text.secondary'   (#6B7280, spec-mandated muted)
-// The bold (fontWeight 700) on the label is per the spec — the visual contrast
-// between the bold label and the muted description is what makes the row
-// scannable at the 2x3 grid scale used on /permissions.
+// PermissionItem — one cell of the /permissions 2-col grid.
+// Layout per Phase 1 Figma (node 1931:13485 and siblings):
+//   row 1: 16px blue check icon + 8px gap + Roboto SemiBold 14px label (#001639)
+//   row 2: Roboto Regular 12px description (#6B7281), starting at the left edge
+//          (no indent under the label — the description aligns with the icon).
+//   8px vertical gap between the two rows.
 
 export type PermissionItemProps = {
   label: string;
@@ -21,26 +16,16 @@ export type PermissionItemProps = {
 
 export function PermissionItem({ label, description }: PermissionItemProps) {
   return (
-    <Stack
-      direction="row"
-      spacing={2}
-      sx={{ alignItems: 'flex-start' }}
-    >
-      <CheckCircleIcon
-        fontSize="small"
-        sx={{ color: 'primary.main', mt: '2px' }}
-      />
-      <Box>
-        <Typography
-          variant="body1"
-          sx={{ fontWeight: 700, color: 'text.primary' }}
-        >
+    <Stack spacing={1}>
+      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+        <CheckCircleIcon sx={{ color: '#005EFF', fontSize: 16 }} />
+        <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#001639', lineHeight: 'normal' }}>
           {label}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {description}
-        </Typography>
-      </Box>
+      </Stack>
+      <Typography sx={{ fontSize: 12, color: '#6B7281', lineHeight: 1.4 }}>
+        {description}
+      </Typography>
     </Stack>
   );
 }
