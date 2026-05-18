@@ -30,7 +30,11 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
   3. Inter font from `next/font/google` is applied to body text (verifiable via DevTools computed font-family), and MUI theme primary `#2463EC` plus the full brand token palette (surfaces, text, success/warning/danger) drives component colors
   4. Importing from `src/lib/providers.ts` returns four entries (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) and a rendered `PermissionItem` shows a blue checkmark + bold label + muted description in one row
   5. No flicker on hard reload — `AppRouterCacheProvider` + `ThemeProvider` + `CssBaseline` are wired in `app/layout.tsx` and SSR delivers themed markup
-**Plans:** TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next.js 15 + MUI + Emotion, brand-token theme, root layout (FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, QUAL-04)
+- [ ] 01-02-PLAN.md — Provider catalog + shared chrome components (FlowLayout, FetchLogo, PermissionItem) (FOUND-07, UI-01, UI-02, UI-03)
+- [ ] 01-03-PLAN.md — Six route stubs wired to shared chrome; end-to-end skeleton smoke test (FOUND-06)
 **UI hint:** yes
 
 ### Phase 2: Pre-Provider Flow
@@ -77,7 +81,7 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Shared Chrome | 0/0 | Not started | - |
+| 1. Foundation & Shared Chrome | 0/3 | Planned | - |
 | 2. Pre-Provider Flow | 0/0 | Not started | - |
 | 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
@@ -104,4 +108,4 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 - **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
 
 ---
-*Last updated: 2026-05-18 after initial roadmap creation*
+*Last updated: 2026-05-18 after Phase 1 planning (3 plans + Walking Skeleton)*
