@@ -9,11 +9,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Foundation
 
-- [ ] **FOUND-01**: Next.js 15 App Router project with TypeScript, `src/` directory, strict typing (no `any`)
-- [ ] **FOUND-02**: Dev server runs on port 3001 (configured in `package.json`)
-- [ ] **FOUND-03**: MUI theme in `src/theme/theme.ts` encodes brand tokens (primary `#2463EC`, page bg `#EBF5FF`, panel `#FFFFFF`, text `#101827`/`#6B7280`, border `#E5E7EB`, success `#10B981`, warning `#F59E0B`, danger `#EF4444`)
-- [ ] **FOUND-04**: Root `app/layout.tsx` wires `ThemeProvider` + `AppRouterCacheProvider` (`@mui/material-nextjs/v15-appRouter`) + `CssBaseline`
-- [ ] **FOUND-05**: Inter font loaded via `next/font/google` as `--font-inter` CSS variable, applied to body
+- [x] **FOUND-01**: Next.js 15 App Router project with TypeScript, `src/` directory, strict typing (no `any`)
+- [x] **FOUND-02**: Dev server runs on port 3001 (configured in `package.json`)
+- [x] **FOUND-03**: MUI theme in `src/theme/theme.ts` encodes brand tokens (primary `#2463EC`, page bg `#EBF5FF`, panel `#FFFFFF`, text `#101827`/`#6B7280`, border `#E5E7EB`, success `#10B981`, warning `#F59E0B`, danger `#EF4444`)
+- [x] **FOUND-04**: Root `app/layout.tsx` wires `ThemeProvider` + `AppRouterCacheProvider` (`@mui/material-nextjs/v15-appRouter`) + `CssBaseline`
+- [x] **FOUND-05**: Inter font loaded via `next/font/google` as `--font-inter` CSS variable, applied to body
 - [ ] **FOUND-06**: Route stubs exist for all 6 routes: `/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`
 - [ ] **FOUND-07**: Provider catalog in `src/lib/providers.ts` (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) — single source of truth for provider data
 
@@ -39,7 +39,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **QUAL-01**: Zero `any` types across the TypeScript codebase
 - [ ] **QUAL-02**: No `console.log` statements in committed code
 - [ ] **QUAL-03**: All navigation buttons land on a real route — no dead buttons
-- [ ] **QUAL-04**: No Tailwind, shadcn, lucide-react, or class-variance-authority dependencies installed
+- [x] **QUAL-04**: No Tailwind, shadcn, lucide-react, or class-variance-authority dependencies installed
 
 ## v2 Requirements
 
@@ -68,11 +68,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1: Foundation & Shared Chrome | Pending |
-| FOUND-02 | Phase 1: Foundation & Shared Chrome | Pending |
-| FOUND-03 | Phase 1: Foundation & Shared Chrome | Pending |
-| FOUND-04 | Phase 1: Foundation & Shared Chrome | Pending |
-| FOUND-05 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-01 | Phase 1: Foundation & Shared Chrome | Complete |
+| FOUND-02 | Phase 1: Foundation & Shared Chrome | Complete |
+| FOUND-03 | Phase 1: Foundation & Shared Chrome | Complete |
+| FOUND-04 | Phase 1: Foundation & Shared Chrome | Complete |
+| FOUND-05 | Phase 1: Foundation & Shared Chrome | Complete |
 | FOUND-06 | Phase 1: Foundation & Shared Chrome | Pending |
 | FOUND-07 | Phase 1: Foundation & Shared Chrome | Pending |
 | UI-01 | Phase 1: Foundation & Shared Chrome | Pending |
@@ -89,7 +89,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QUAL-01 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-02 | Phase 4: Success & Quality Hardening | Pending |
 | QUAL-03 | Phase 4: Success & Quality Hardening | Pending |
-| QUAL-04 | Phase 1: Foundation & Shared Chrome | Pending |
+| QUAL-04 | Phase 1: Foundation & Shared Chrome | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total

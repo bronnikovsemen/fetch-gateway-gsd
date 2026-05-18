@@ -30,9 +30,9 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
   3. Inter font from `next/font/google` is applied to body text (verifiable via DevTools computed font-family), and MUI theme primary `#2463EC` plus the full brand token palette (surfaces, text, success/warning/danger) drives component colors
   4. Importing from `src/lib/providers.ts` returns four entries (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) and a rendered `PermissionItem` shows a blue checkmark + bold label + muted description in one row
   5. No flicker on hard reload — `AppRouterCacheProvider` + `ThemeProvider` + `CssBaseline` are wired in `app/layout.tsx` and SSR delivers themed markup
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Next.js 15 + MUI + Emotion, brand-token theme, root layout (FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, QUAL-04)
+- [x] 01-01-PLAN.md — Scaffold Next.js 15 + MUI + Emotion, brand-token theme, root layout (FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, QUAL-04)
 - [ ] 01-02-PLAN.md — Provider catalog + shared chrome components (FlowLayout, FetchLogo, PermissionItem) (FOUND-07, UI-01, UI-02, UI-03)
 - [ ] 01-03-PLAN.md — Six route stubs wired to shared chrome; end-to-end skeleton smoke test (FOUND-06)
 **UI hint:** yes
@@ -81,7 +81,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Shared Chrome | 0/3 | Planned | - |
+| 1. Foundation & Shared Chrome | 1/3 | In Progress|  |
 | 2. Pre-Provider Flow | 0/0 | Not started | - |
 | 3. Provider Selection & Connecting Bridge | 0/0 | Not started | - |
 | 4. Success & Quality Hardening | 0/0 | Not started | - |
