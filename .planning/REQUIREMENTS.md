@@ -68,16 +68,34 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 — FOUND-07 | TBD | Pending |
-| UI-01 — UI-03 | TBD | Pending |
-| FLOW-01 — FLOW-08 | TBD | Pending |
-| QUAL-01 — QUAL-04 | TBD | Pending |
+| FOUND-01 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-02 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-03 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-04 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-05 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-06 | Phase 1: Foundation & Shared Chrome | Pending |
+| FOUND-07 | Phase 1: Foundation & Shared Chrome | Pending |
+| UI-01 | Phase 1: Foundation & Shared Chrome | Pending |
+| UI-02 | Phase 1: Foundation & Shared Chrome | Pending |
+| UI-03 | Phase 1: Foundation & Shared Chrome | Pending |
+| FLOW-01 | Phase 2: Pre-Provider Flow | Pending |
+| FLOW-02 | Phase 2: Pre-Provider Flow | Pending |
+| FLOW-03 | Phase 2: Pre-Provider Flow | Pending |
+| FLOW-04 | Phase 3: Provider Selection & Connecting Bridge | Pending |
+| FLOW-05 | Phase 3: Provider Selection & Connecting Bridge | Pending |
+| FLOW-06 | Phase 3: Provider Selection & Connecting Bridge | Pending |
+| FLOW-07 | Phase 3: Provider Selection & Connecting Bridge | Pending |
+| FLOW-08 | Phase 4: Success & Quality Hardening | Pending |
+| QUAL-01 | Phase 4: Success & Quality Hardening | Pending |
+| QUAL-02 | Phase 4: Success & Quality Hardening | Pending |
+| QUAL-03 | Phase 4: Success & Quality Hardening | Pending |
+| QUAL-04 | Phase 1: Foundation & Shared Chrome | Pending |
 
 **Coverage:**
 - v1 requirements: 22 total
-- Mapped to phases: 0 (filled by roadmapper)
-- Unmapped: 22 ⚠️
+- Mapped to phases: 22 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-18*
-*Last updated: 2026-05-18 after initial definition*
+*Last updated: 2026-05-18 after roadmap traceability mapping*
