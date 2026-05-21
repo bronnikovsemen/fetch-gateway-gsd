@@ -5,14 +5,13 @@ import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import CircularProgress from '@mui/material/CircularProgress';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FetchLogo from '@/components/FetchLogo';
+import Button from '@/components/Button';
 import providers, { type Provider } from '@/lib/providers';
 
 // `/select-provider` — third screen of the Pre-Provider Flow.
@@ -168,47 +167,18 @@ export default function Page() {
 
           <Stack direction="row" spacing={3} sx={{ width: '100%', justifyContent: 'center' }}>
             <Button
-              disableElevation
+              variant="secondary"
               onClick={handleBack}
               disabled={submitting}
-              sx={{
-                width: 100,
-                flexShrink: 0,
-                bgcolor: '#F3FCFF',
-                color: '#001639',
-                textTransform: 'none',
-                fontWeight: 500,
-                fontSize: 14,
-                minHeight: 40,
-                borderRadius: '8px',
-                px: '24px',
-                py: '8px',
-                '&:hover': { bgcolor: '#E5F4FE' },
-                '&.Mui-disabled': { color: '#001639', opacity: 0.5 },
-              }}
+              sx={{ width: 100, flexShrink: 0 }}
             >
               Back
             </Button>
             <Button
-              disableElevation
-              variant="contained"
               onClick={handleConnect}
-              disabled={!selected || submitting}
-              startIcon={submitting ? <CircularProgress size={18} color="inherit" /> : undefined}
-              sx={{
-                flex: 1,
-                bgcolor: '#005EFF',
-                color: '#FFFFFF',
-                textTransform: 'none',
-                fontWeight: 500,
-                fontSize: 14,
-                minHeight: 40,
-                borderRadius: '8px',
-                px: '24px',
-                py: '8px',
-                '&:hover': { bgcolor: '#004ACC' },
-                '&.Mui-disabled': { bgcolor: '#005EFF', color: '#FFFFFF', opacity: 0.3 },
-              }}
+              disabled={!selected}
+              loading={submitting}
+              sx={{ flex: 1 }}
             >
               {submitting ? 'Redirecting…' : 'Get Started'}
             </Button>
