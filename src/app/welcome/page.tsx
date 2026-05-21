@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import FetchLogo from '@/components/FetchLogo';
+import Button from '@/components/Button';
 
 // `/welcome` — first screen of the Pre-Provider Flow.
 // Layout per Phase 1 Figma node 1931:13455:
@@ -58,24 +58,7 @@ export default function Page() {
             </Typography>
           </Stack>
 
-          <Button
-            disableElevation
-            variant="contained"
-            onClick={() => router.push('/permissions')}
-            sx={{
-              width: '100%',
-              bgcolor: '#005EFF',
-              color: '#FFFFFF',
-              textTransform: 'none',
-              fontWeight: 500,
-              fontSize: 14,
-              minHeight: 40,
-              borderRadius: '8px',
-              px: '24px',
-              py: '8px',
-              '&:hover': { bgcolor: '#004ACC' },
-            }}
-          >
+          <Button fullWidth onClick={() => router.push('/permissions')}>
             Get Started
           </Button>
         </Stack>
