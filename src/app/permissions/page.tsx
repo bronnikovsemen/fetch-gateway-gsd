@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import FetchLogo from '@/components/FetchLogo';
 import PermissionItem from '@/components/PermissionItem';
+import Button from '@/components/Button';
 
 // `/permissions` — second screen of the Pre-Provider Flow.
 // Layout per Phase 1 Figma node 1931:13477 (header removed per latest direction):
@@ -87,41 +87,15 @@ export default function Page() {
 
             <Stack direction="row" spacing={3}>
               <Button
-                disableElevation
+                variant="secondary"
                 onClick={() => router.push('/welcome')}
-                sx={{
-                  flex: 1,
-                  bgcolor: '#F3FCFF',
-                  color: '#001639',
-                  textTransform: 'none',
-                  fontWeight: 500,
-                  fontSize: 14,
-                  minHeight: 40,
-                  borderRadius: '8px',
-                  px: '24px',
-                  py: '8px',
-                  '&:hover': { bgcolor: '#E5F4FE' },
-                }}
+                sx={{ flex: 1 }}
               >
                 Back
               </Button>
               <Button
-                disableElevation
-                variant="contained"
                 onClick={() => router.push('/select-provider')}
-                sx={{
-                  flex: 1,
-                  bgcolor: '#005EFF',
-                  color: '#FFFFFF',
-                  textTransform: 'none',
-                  fontWeight: 500,
-                  fontSize: 14,
-                  minHeight: 40,
-                  borderRadius: '8px',
-                  px: '24px',
-                  py: '8px',
-                  '&:hover': { bgcolor: '#004ACC' },
-                }}
+                sx={{ flex: 1 }}
               >
                 Continue
               </Button>
