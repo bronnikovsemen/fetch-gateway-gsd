@@ -15,7 +15,7 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-08 — Milestone v2 (Connection flow v2): Stages 1 + 2 done (self branch incl. /verify 2FA; also backfilled the missing /success route, FLOW-08). Building branch-at-a-time; Stage 3 (delegate branch) pending. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
+**Last updated:** 2026-06-08 — **Milestone v2 (Connection flow v2) COMPLETE** (all 3 stages: rewire + /connect-method, self + 2FA + /success, delegate /invite + /invitation-sent + /recipient). Both branches navigable end-to-end on :3001; also backfilled the missing /success route (FLOW-08). FLOW-09/10/11 done. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
 
 ### Milestone v2 — Connection Flow v2 (in progress)
 
@@ -23,7 +23,7 @@ Figma "Connection flow v2" (node 2068:70, COPY file is2HhftlhJsdorY0J7zKdr) is a
 
 - [x] **Stage 1 — FLOW-09**: `/select-provider` Continue → new `/connect-method?provider=`; two DS `OptionRow` branches (self → `/connecting`, delegate → `/invite`). Commits d02ecdd (new screen) + 8d0b333 (rewire + "Continue" CTA, resolves old WR-01 copy defect). Gates tsc/lint/lint:tokens/build PASS; deps unchanged. NOTE: delegate's `/invite` target lands in Stage 3 (404 until then, by design). Follow-up quick 260608-rdm fixed /select-provider Select navy focus + radius.lg panel.
 - [x] **Stage 2 — FLOW-11 (+ FLOW-08 backfill)**: self branch — new `/verify` 6-cell OTP (navy active cell, "Verify" → /success, "Resend code" clears) + `/connecting` 2FA gate (`?2fa=1` → /verify, else → /success) + `/connect-method` self OptionRow carries `&2fa=1`. **Discovered `/success` (FLOW-08) was recorded complete but never on disk (404) — created it from Figma 2069:145** ("You’re connected" + 56px CheckCircleRounded success mark + "Continue" → /). Commits 2e8e25d, c618853, dd0206c. Gates tsc/lint/lint:tokens/build PASS; deps unchanged. Full self path navigable on :3001.
-- [ ] **Stage 3 — FLOW-10**: delegate branch — new `/invite`, `/invitation-sent` (Pending chip), `/recipient` looping back to `/success`.
+- [x] **Stage 3 — FLOW-10**: delegate branch — new `/invite` (3 controlled DS Inputs + Send invite + navy Back), `/invitation-sent` (navy check + DS Chip warning "Pending" + Done→/ + Resend→/invite + demo "open as teammate"→/recipient), `/recipient` ("Plantegrity asked you to connect {Provider}" + Get Started → /connecting?&2fa=1, reusing the self tail). Commit ff5f4c0. Gates tsc/lint/lint:tokens/build PASS; deps unchanged. **Milestone v2 COMPLETE — both branches navigable end-to-end on :3001.**
 
 ## Project Reference
 
