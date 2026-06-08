@@ -65,7 +65,9 @@ function ConnectMethodContent() {
         <OptionRow
           title="I’ll connect it now"
           description={`I have access to ${name}`}
-          onClick={() => router.push(`/connecting?provider=${slug}`)}
+          // &2fa=1 drives the self demo through Establishing → 2FA → Success.
+          // Omitting it is the no-2FA variant (Establishing → Success straight).
+          onClick={() => router.push(`/connecting?provider=${slug}&2fa=1`)}
         />
         <OptionRow
           title="Someone on my team manages it"
