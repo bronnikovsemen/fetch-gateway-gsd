@@ -28,7 +28,7 @@ import { tokens } from '@/theme/theme';
 //
 // Loading-state submit (FLOW-05): when a provider is chosen and Get Started
 // is clicked, the button swaps into an inline CircularProgress for ~1.2s with
-// both buttons + Select disabled, then navigates to /connecting?provider={slug}.
+// both buttons + Select disabled, then navigates to /connect-method?provider={slug}.
 // The pending setTimeout is held in a ref and cleared by the useEffect cleanup
 // if the user unmounts mid-flight (T-03-01-01 mitigation).
 
@@ -57,7 +57,7 @@ export default function Page() {
     if (!selected || submitting) return;
     setSubmitting(true);
     timerRef.current = setTimeout(() => {
-      router.push(`/connecting?provider=${selected}`);
+      router.push(`/connect-method?provider=${selected}`);
     }, 1200);
   };
 
@@ -178,7 +178,7 @@ export default function Page() {
               loading={submitting}
               sx={{ flex: 1 }}
             >
-              {submitting ? 'Redirecting…' : 'Get Started'}
+              {submitting ? 'Continue…' : 'Continue'}
             </Button>
           </Stack>
         </Stack>
