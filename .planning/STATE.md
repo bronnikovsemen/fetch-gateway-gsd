@@ -15,7 +15,15 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-08 after completing quick task 260608-qqi (fixed Input.tsx focus-outline selector specificity so the focused field renders navy not purple; runtime-verified on /ds-preview)
+**Last updated:** 2026-06-08 — started **Milestone v2 (Connection flow v2)**; completed v2 Stage 1 (Select-Provider-first rewire + new `/connect-method` decision screen, FLOW-09). Building branch-at-a-time; Stages 2 (self/2FA) and 3 (delegate) pending. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
+
+### Milestone v2 — Connection Flow v2 (in progress)
+
+Figma "Connection flow v2" (node 2068:70, COPY file is2HhftlhJsdorY0J7zKdr) is authoritative. Assembled from the Phase-A DS components; obeys QUAL-05. Branch-at-a-time with a checkpoint after each stage.
+
+- [x] **Stage 1 — FLOW-09**: `/select-provider` Continue → new `/connect-method?provider=`; two DS `OptionRow` branches (self → `/connecting`, delegate → `/invite`). Commits d02ecdd (new screen) + 8d0b333 (rewire + "Continue" CTA, resolves old WR-01 copy defect). Gates tsc/lint/lint:tokens/build PASS; deps unchanged. NOTE: delegate's `/invite` target lands in Stage 3 (404 until then, by design).
+- [ ] **Stage 2 — FLOW-11**: self branch — `/connecting` `?2fa=1` gate → new `/verify` 6-cell OTP → `/success`.
+- [ ] **Stage 3 — FLOW-10**: delegate branch — new `/invite`, `/invitation-sent` (Pending chip), `/recipient` looping back to `/success`.
 
 ## Project Reference
 

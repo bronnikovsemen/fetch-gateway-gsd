@@ -17,6 +17,14 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 - [x] **Phase 3: Provider Selection & Connecting Bridge** — `/select-provider` MUI Select with loading-state submit, and `/connecting` spinner with query-param guard and auto-advance (completed 2026-05-18)
 - [x] **Phase 4: Success & Quality Hardening** — `/success` confirmation panel closes the loop back to `/`, with codebase-wide TypeScript, hygiene, and dependency gates enforced
 
+### Milestone v2 — Connection flow v2 (in progress)
+
+Phase A (DS components) shipped via quick tasks 260608-psx (OptionRow/Chip/Input/Link) + 260608-nk0 (token source of truth). Phase B reorders the flow and adds the self/delegate branches, assembled from those DS components. Source of truth: Figma "Connection flow v2" (node 2068:70, COPY file is2HhftlhJsdorY0J7zKdr) → `.planning/v2/V2-FIGMA-SPEC.md`. Delivered branch-at-a-time:
+
+- [x] **v2 Stage 1: Select-Provider-first + `/connect-method` decision** (FLOW-09) — `/select-provider` Continue → new `/connect-method?provider=`; two DS `OptionRow` branches (self → `/connecting`, delegate → `/invite`). Done 2026-06-08.
+- [ ] **v2 Stage 2: self branch — `/verify` 2FA + `/connecting` gate + `/success`** (FLOW-11) — `?2fa=1` routes `/connecting` → `/verify` (6-cell OTP) → `/success`; else straight to `/success`.
+- [ ] **v2 Stage 3: delegate branch — `/invite` + `/invitation-sent` + `/recipient`** (FLOW-10) — invite form → invitation-sent (Pending chip) → recipient entry looping back through `/permissions → … → /success`.
+
 ## Phase Details
 
 ### Phase 1: Foundation & Shared Chrome

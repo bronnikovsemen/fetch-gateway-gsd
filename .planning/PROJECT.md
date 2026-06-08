@@ -79,6 +79,9 @@ Phase 3 (Provider Selection & Connecting Bridge) automated checks complete — t
 | `/select-provider` Connect loading state held in a `useRef` setTimeout cleared via `useEffect` cleanup | Prevent stale `router.push` after unmount mid-load (T-03-01-01 mitigation). Same shape as `/connecting`'s 2500ms timer (T-03-02-01). | ✓ Phase 3 |
 | `/select-provider` `<Select MenuProps={{ disablePortal: true, keepMounted: true }}>` | Required so MUI renders MenuItems into initial SSR markup (without this, the four provider names are missing from `curl` output and the plan's live HTTP smoke gate fails). Trade-off: full provider list mounts eagerly — negligible at four items. | ✓ Phase 3 |
 | Figma DS is the single source of truth for design tokens; theme.ts mirrors it; off-token hex/px forbidden in src/ (enforced by `npm run lint:tokens`) | Prior theme followed obsolete Main_Fetch_Gateway.md and screens hardcoded hex/px, causing drift from the canonical DS | ✓ Quick 260608-nk0 |
+| Milestone v2: reorder the flow so Select-Provider comes BEFORE a "How do you want to connect?" decision (`/connect-method`), which branches into self vs. delegate | Real HR admins often don't hold the payroll credentials; v2 lets them connect now or delegate to a teammate via a secure link. Figma "Connection flow v2" (node 2068:70 in COPY file is2HhftlhJsdorY0J7zKdr) is authoritative. | ◐ v2 Stage 1 (`/connect-method`) |
+| v2 2FA is gated by a demo query param `?2fa=1` (carried `/connecting` → `/verify`), not per-provider data | Simplest demo gate; no provider-catalog change; easy to trigger/skip when walking the flow | — v2 Stage 2 (planned) |
+| v2 recipient entry is a dedicated `/recipient?provider=` route (not `/welcome?invite=`) | Clearer separation of the invited-person entry point from the primary splash; its "Continue" re-enters the normal `/permissions → /connecting → (/verify) → /success` chain | — v2 Stage 3 (planned) |
 
 ## Evolution
 

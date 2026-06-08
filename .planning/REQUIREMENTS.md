@@ -44,9 +44,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ## v2 Requirements
 
-Deferred to future release. Tracked but not in current roadmap.
+Milestone v2 — "Connection flow v2": Select-Provider FIRST, then a "How do you want to connect?" decision, branching into a self path (with 2FA when required) and a delegate path (invite a teammate). Source of truth: Figma COPY file `is2HhftlhJsdorY0J7zKdr`, canvas "Connection flow v2" (node 2068:70). Spec mirrored to `.planning/v2/V2-FIGMA-SPEC.md`. All v2 screens are assembled from the Phase-A DS components and obey QUAL-05 (zero off-token hex/px).
 
-(None — scope is fully captured in v1.)
+- [x] **FLOW-09** (Stage 1 ✓): NEW `/connect-method?provider={slug}` decision screen — FetchLogo + h5 "How do you want to connect {Provider}?" + body2 subtitle, then two DS `OptionRow`s: "I'll connect it now / I have access to {Provider}" → self → `/connecting?provider=`; "Someone on my team manages it / We'll send them a secure link to connect" → delegate → `/invite?provider=`. `/select-provider` Continue now routes here (not directly to `/connecting`). Provider resolved from catalog via `?provider=` with the standard Suspense + redirect guard.
+- [ ] **FLOW-11** (Stage 2): self-branch 2FA — `/connecting` routes to NEW `/verify?provider={slug}` when the demo flag `?2fa=1` is present, else straight to `/success`. `/verify` = h5 "Enter verification code" + 6-cell OTP built from token-styled `Box` primitives (no DS OTP component; `tokens.radius.md`, `divider`/`secondary.main` borders) + "Verify" Button → `/success` + "Resend code" Link.
+- [ ] **FLOW-10** (Stage 3): delegate branch — NEW `/invite?provider={slug}` (3 DS `Input`s: work email required, name + note optional; "Send invite" Button → `/invitation-sent`, "Back" Link); NEW `/invitation-sent?provider={slug}` (DS `Chip severity="warning" label="Pending"`, "Done" Button, "Resend invite" Link); NEW `/recipient?provider={slug}` (read-only "Plantegrity asked you to connect {Provider}", "Continue" → enters `/permissions → /connecting → (/verify) → /success`).
 
 ## Out of Scope
 
