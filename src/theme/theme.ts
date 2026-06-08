@@ -80,6 +80,17 @@ export const tokens = {
     sectionLabel: { fontWeight: 600, fontSize: 12, lineHeight: 16 / 12 },
     code: { fontWeight: 400, fontSize: 13, lineHeight: 20 / 13 },
   },
+  // Status pill fg/bg pairs — Figma "Fetch Design System" is the source of truth.
+  // The neutral filled chip reuses background-page (#fafafa) on text-muted
+  // (#64748b) per Figma (NOT the notes' draft #475569/#f1f5f9). theme.ts is the
+  // only file allowed to hold these raw values; Chip reads tokens.status[severity].
+  status: {
+    warning: { fg: '#f59e0b', bg: '#fef9c3' },
+    success: { fg: '#22c55e', bg: '#f0fdf4' },
+    rejection: { fg: '#ef4444', bg: '#fee2e2' },
+    info: { fg: '#4338ca', bg: '#eef2ff' },
+    neutral: { fg: '#64748b', bg: '#fafafa' },
+  },
 } as const;
 
 export default theme;
