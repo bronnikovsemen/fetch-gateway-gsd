@@ -53,7 +53,7 @@ function ConnectMethodContent() {
     <FlowLayout maxWidth={440} px={4} py={4}>
       <Stack spacing={2}>
         <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
-          <FetchLogo size={64} />
+          <FetchLogo size={40} />
           <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
             {`How do you want to connect ${name}?`}
           </Typography>

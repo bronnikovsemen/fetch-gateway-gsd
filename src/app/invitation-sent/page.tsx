@@ -57,7 +57,7 @@ function InvitationSentContent() {
   return (
     <FlowLayout maxWidth={400} px={4} py={4}>
       <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
-        <FetchLogo size={64} />
+        <FetchLogo size={40} />
         <CheckCircleRounded sx={{ color: 'secondary.main', fontSize: 56 }} />
         <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
           Invitation sent

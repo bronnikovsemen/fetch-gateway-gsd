@@ -53,7 +53,7 @@ export default function Page() {
         >
           <Stack spacing={6} sx={{ alignItems: 'stretch' }}>
             <Stack spacing={6} sx={{ alignItems: 'center' }}>
-              <FetchLogo size={64} />
+              <FetchLogo size={40} />
               <Typography
                 variant="h5"
                 component="h1"

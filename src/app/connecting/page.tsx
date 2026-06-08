@@ -77,7 +77,7 @@ function ConnectingContent() {
   return (
     <FlowLayout maxWidth={440}>
       <Stack spacing={3} sx={{ alignItems: 'center' }}>
-        <FetchLogo size={100} />
+        <FetchLogo size={56} />
         <CircularProgress color="primary" size={48} />
         <Typography
           variant="h5"

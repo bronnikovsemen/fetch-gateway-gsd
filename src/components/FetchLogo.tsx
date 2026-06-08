@@ -1,11 +1,13 @@
 import Image from 'next/image';
 
-// FetchLogo — Fetch wordmark (arrows + FETCH text) from the Phase 1 Figma file.
+// FetchLogo — Fetch horizontal lockup (blue gradient arrows mark + "Fetch"
+// wordmark) from the Plantegrity Phase-1 Figma file (node 1964:177).
 //
-// Public API is preserved from the previous placeholder so consumers don't change:
+// Public API is preserved so consumers don't change:
 //   named export `FetchLogo`, props `size` / `color` / `title`.
 // `size` controls the rendered HEIGHT in px; width is derived from the artwork's
-// native 66:64 aspect ratio.
+// native 1960:802 aspect ratio (a wide ~2.44:1 lockup). Default height suits a
+// card header; the splash/connecting heroes pass a larger height.
 //
 // `color` defaults to a theme palette-token reference ('secondary.main' — the
 // DS navy ink) rather than a literal hex. The current logo is a multi-color
@@ -21,11 +23,11 @@ export type FetchLogoProps = {
 };
 
 export function FetchLogo({
-  size = 100,
+  size = 40,
   color = 'secondary.main',
   title = 'Fetch',
 }: FetchLogoProps) {
-  const width = Math.round(size * (66 / 64));
+  const width = Math.round(size * (1960 / 802));
   return (
     <Image
       src="/images/fetch-logo.png"

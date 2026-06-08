@@ -69,7 +69,7 @@ export default function Page() {
             animation: `${scaleIn} 500ms ease-out, ${breathe} 2s ease-in-out 500ms infinite`,
           }}
         >
-          <FetchLogo size={100} />
+          <FetchLogo size={56} />
         </Box>
         <Typography
           variant="h6"
