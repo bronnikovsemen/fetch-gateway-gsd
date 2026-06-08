@@ -15,7 +15,7 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-08 — started **Milestone v2 (Connection flow v2)**; completed v2 Stage 1 (Select-Provider-first rewire + new `/connect-method` decision screen, FLOW-09). Building branch-at-a-time; Stages 2 (self/2FA) and 3 (delegate) pending. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
+**Last updated:** 2026-06-08 — Milestone v2 (Connection flow v2): Stage 1 done + quick task 260608-rdm (DS-consistency fixes on /select-provider — navy Select focus + radius.lg panel). Building branch-at-a-time; Stages 2 (self/2FA) and 3 (delegate) pending. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
 
 ### Milestone v2 — Connection Flow v2 (in progress)
 
@@ -82,6 +82,7 @@ Plan: 2 of 2 complete
 | 260608-psx | build-mui-versions-of-fetch-ds-component   | 2026-06-08 | COMPLETE | Built OptionRow / Chip / Input / Link DS components + `tokens.status` (5 severities fg+bg), all to the authoritative Figma spec. CLAUDE.md gained the Figma↔code mapping table (8 rows) + the v2-screens-use-DS rule line (DS file key pZYTXYGKR5lJAcaE0SnzLV). All gates (tsc/lint/lint:tokens/build) PASS; package.json deps unchanged; zero literal hex / raw px in the four component files. Commit c4653fb. Components only — no screen wiring. |
 | 260608-qg2 | ds-preview-page-dev-only-for-optionrow-c   | 2026-06-08 | COMPLETE | Added throwaway dev-only `/ds-preview` route (`src/app/ds-preview/page.tsx`, 'use client') — a labeled gallery of every DS variant/state: Button (primary/secondary × sm/md/lg + loading + disabled), OptionRow (4 states in 440px containers), Chip (5 severities × 2 sizes = 10), Input (4 controlled states), Link (sm/md). Imports real `@/components/*`; not linked from any route; safe to delete. All gates (tsc/lint/lint:tokens/build) PASS; deps unchanged; zero literal hex/px. Commit 6faafad. No components/screens otherwise changed. |
 | 260608-qqi | fix-input-focus-selector-specificity-nav   | 2026-06-08 | COMPLETE | Fixed `Input.tsx` focus border: single-class `.Mui-focused` selector lost the cascade to MUI's two-class default rule, so focus rendered purple not navy. Anchored to `.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline` to match MUI's specificity. Runtime-verified on `/ds-preview` (HTTP 200): compiled rule binds navy `#0a2540` / `border-width:2px`, no purple `#635bff`. Gates tsc/lint/lint:tokens/build PASS. Code committed inline as 5f47356 in the prior turn; this task logs it + adds the runtime verification. |
+| 260608-rdm | fix-select-provider-navy-focus-radius      | 2026-06-08 | COMPLETE | Fixed two DS inconsistencies on `/select-provider` (from the v2 Stage-1 restyle): provider `Select` hover/focus border `primary.main` (purple) → `secondary.main` (navy, matching Input); panel `Paper` radius `radius.sm` (6px) → `radius.lg` (12px, matching every other gateway card). Select's own inner field radius left as-is (out of scope). Gates tsc/lint/lint:tokens PASS; runtime: `/select-provider` 200, navy `secondary.main` present in served chunk. Commit 2a20b4c. |
 
 **Divergence ledger — quick task 260608-psx (Figma wins; resolved decisions):**
 
