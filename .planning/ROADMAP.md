@@ -22,7 +22,7 @@ A polished, on-brand five-step demo flow that takes the user from splash → suc
 Phase A (DS components) shipped via quick tasks 260608-psx (OptionRow/Chip/Input/Link) + 260608-nk0 (token source of truth). Phase B reorders the flow and adds the self/delegate branches, assembled from those DS components. Source of truth: Figma "Connection flow v2" (node 2068:70, COPY file is2HhftlhJsdorY0J7zKdr) → `.planning/v2/V2-FIGMA-SPEC.md`. Delivered branch-at-a-time:
 
 - [x] **v2 Stage 1: Select-Provider-first + `/connect-method` decision** (FLOW-09) — `/select-provider` Continue → new `/connect-method?provider=`; two DS `OptionRow` branches (self → `/connecting`, delegate → `/invite`). Done 2026-06-08.
-- [ ] **v2 Stage 2: self branch — `/verify` 2FA + `/connecting` gate + `/success`** (FLOW-11) — `?2fa=1` routes `/connecting` → `/verify` (6-cell OTP) → `/success`; else straight to `/success`.
+- [x] **v2 Stage 2: self branch — `/verify` 2FA + `/connecting` gate + `/success`** (FLOW-11; also backfilled FLOW-08 `/success` which was missing on disk) — `?2fa=1` routes `/connecting` → `/verify` (6-cell OTP, navy active cell) → `/success`; else straight to `/success`. Commits 2e8e25d (/success), c618853 (/verify), dd0206c (gate). Done 2026-06-08.
 - [ ] **v2 Stage 3: delegate branch — `/invite` + `/invitation-sent` + `/recipient`** (FLOW-10) — invite form → invitation-sent (Pending chip) → recipient entry looping back through `/permissions → … → /success`.
 
 ## Phase Details
