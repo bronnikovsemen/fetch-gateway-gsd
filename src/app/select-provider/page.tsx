@@ -78,7 +78,7 @@ export default function Page() {
           width: 498,
           maxWidth: '100%',
           bgcolor: 'background.paper',
-          borderRadius: tokens.radius.sm / tokens.radius.lg,
+          borderRadius: tokens.radius.lg / tokens.radius.lg,
           boxShadow: '0 2px 2px rgba(99, 91, 255, 0.05)',
           px: tokens.space[8] / 8,
           py: 4.5,
@@ -136,10 +136,10 @@ export default function Page() {
                   borderColor: 'transparent',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'primary.main',
+                  borderColor: 'secondary.main',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'primary.main',
+                  borderColor: 'secondary.main',
                 },
                 '& .MuiSelect-select': {
                   py: 0,
