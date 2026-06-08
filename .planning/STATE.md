@@ -15,7 +15,7 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-05-21 after completing quick task 260521-lhj (Button wrapper deduplication — `src/components/Button.tsx` added; /welcome, /permissions, /select-provider refactored to use it)
+**Last updated:** 2026-06-08 after completing quick task 260608-nk0 (DS token source of truth — `theme.ts` rewritten to mirror the Figma "Fetch Design System" verbatim; all components + routes refactored to theme/tokens only; QUAL-05 `lint:tokens` enforcement added)
 
 ## Project Reference
 
@@ -70,6 +70,7 @@ Plan: 2 of 2 complete
 |------------|--------------------------------------------|------------|-------------------------|-------|
 | 260518-wwp | full-code-review-and-health-check-no-bro   | 2026-05-18 | MINOR ISSUES (non-blocking) | 4 gates PASS; review 0 crit / 4 warn / 6 info. WR-01: `/select-provider` button label "Get Started" ≠ FLOW-04 spec "Connect" — real copy defect, Phase 4 verifier missed it. |
 | 260521-lhj | create-thin-button-wrapper-component-and   | 2026-05-21 | COMPLETE | Created `src/components/Button.tsx` thin wrapper (variant primary/secondary, size sm/md/lg, loading, iconStart). Refactored /welcome, /permissions, /select-provider to use it; ~73 LOC net deduplication. tsc clean. Commits 99cc3e2, cc32244, 9873b01, 4139f76. |
+| 260608-nk0 | ds-token-source-of-truth                   | 2026-06-08 | COMPLETE | Figma DS ("Fetch Design System", key pZYTXYGKR5lJAcaE0SnzLV) is now the single source of truth. Rewrote `theme.ts` to mirror DS verbatim (purple primary #635bff, near-white bg #fafafa, success #22c55e, full type scale) + `export const tokens`. Refactored all components + 5 routes to theme/tokens only — zero off-token hex/px in src/ outside theme.ts (+ providers.ts brand-data exception). Added QUAL-05 `lint:tokens` enforcement script. Gates: tsc/lint/build/lint:tokens all PASS. Commits 9d1cc71, f143362, a44b5bf. Intended visual change (not a regression). |
 
 ## Accumulated Context
 

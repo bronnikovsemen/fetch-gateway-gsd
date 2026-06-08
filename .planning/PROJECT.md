@@ -47,7 +47,8 @@ Phase 3 (Provider Selection & Connecting Bridge) automated checks complete — t
 
 - The older prototype at `~/Documents/ai-ui-lab/Fetch Gateway/` (Tailwind + shadcn) is the visual and behavioural reference. Recreate from scratch here using MUI primitives — do not port code or modify the original.
 - All Fetch-branded screens share a centered white Paper layout on `#EBF5FF`. The shared `FlowLayout` component owns that chrome.
-- Brand tokens (hex values) are pinned in the spec; the MUI theme should reflect them so screens can use theme keys rather than hardcoding colors (except provider brand colors like Gusto coral).
+- Brand tokens are pinned in the Figma "Fetch Design System" (key pZYTXYGKR5lJAcaE0SnzLV); `src/theme/theme.ts` mirrors it as the single source of truth so screens use theme keys / the exported `tokens` object rather than hardcoding colors (except provider brand colors like Gusto coral in `src/lib/providers.ts`, which are catalog data).
+- **Visual change (Quick 260608-nk0, INTENDED — not a regression):** adopting the Figma DS shifts the primary accent to purple, the page background to near-white, the success color to a new green, and applies the full DS type scale. This realigns the prototype with the canonical DS and is the expected outcome of the token source-of-truth refactor.
 - `AppRouterCacheProvider` from `@mui/material-nextjs/v15-appRouter` is required — MUI flickers on SSR without it.
 - All navigation is mocked. No dead buttons — every Back/Next/Done lands on a real route.
 
@@ -77,6 +78,7 @@ Phase 3 (Provider Selection & Connecting Bridge) automated checks complete — t
 | `/connecting` auto-advance uses `router.replace` (not `router.push`); invalid/missing-slug guard uses `router.replace('/select-provider')` | `/connecting` is a transient bridge route — should not occupy a slot in browser history so Back from `/success` lands on `/select-provider`. | ✓ Phase 3 |
 | `/select-provider` Connect loading state held in a `useRef` setTimeout cleared via `useEffect` cleanup | Prevent stale `router.push` after unmount mid-load (T-03-01-01 mitigation). Same shape as `/connecting`'s 2500ms timer (T-03-02-01). | ✓ Phase 3 |
 | `/select-provider` `<Select MenuProps={{ disablePortal: true, keepMounted: true }}>` | Required so MUI renders MenuItems into initial SSR markup (without this, the four provider names are missing from `curl` output and the plan's live HTTP smoke gate fails). Trade-off: full provider list mounts eagerly — negligible at four items. | ✓ Phase 3 |
+| Figma DS is the single source of truth for design tokens; theme.ts mirrors it; off-token hex/px forbidden in src/ (enforced by `npm run lint:tokens`) | Prior theme followed obsolete Main_Fetch_Gateway.md and screens hardcoded hex/px, causing drift from the canonical DS | ✓ Quick 260608-nk0 |
 
 ## Evolution
 

@@ -40,6 +40,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **QUAL-02**: No `console.log` statements in committed code
 - [x] **QUAL-03**: All navigation buttons land on a real route — no dead buttons
 - [x] **QUAL-04**: No Tailwind, shadcn, lucide-react, or class-variance-authority dependencies installed
+- [x] **QUAL-05**: All design values in src/ trace to theme.ts tokens (the Figma "Fetch Design System", key pZYTXYGKR5lJAcaE0SnzLV); no off-token hex or raw px outside theme.ts (provider brand colors in src/lib/providers.ts are catalog data, not design tokens); enforced by `npm run lint:tokens`. The px rule targets CSS-style `Npx` string literals, not bare SVG numeric attributes.
 
 ## v2 Requirements
 
@@ -90,12 +91,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QUAL-02 | Phase 4: Success & Quality Hardening | Complete |
 | QUAL-03 | Phase 4: Success & Quality Hardening | Complete |
 | QUAL-04 | Phase 1: Foundation & Shared Chrome | Complete |
+| QUAL-05 | Quick 260608-nk0 (DS token source of truth) | Complete |
 
 **Coverage:**
 - v1 requirements: 22 total
 - Mapped to phases: 22 ✓
 - Unmapped: 0
 - Complete: 22 ✓ (v1 milestone shippable)
+- Post-v1 quality requirement added: QUAL-05 (Figma DS token source of truth, enforced by `npm run lint:tokens`) — Quick 260608-nk0.
 
 ---
 *Requirements defined: 2026-05-18*
