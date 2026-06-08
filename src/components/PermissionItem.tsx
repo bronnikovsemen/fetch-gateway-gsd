@@ -1,13 +1,12 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { tokens } from '@/theme/theme';
 
 // PermissionItem — one cell of the /permissions 2-col grid.
-// Layout per Phase 1 Figma (node 1931:13485 and siblings):
-//   row 1: 16px blue check icon + 8px gap + Roboto SemiBold 14px label (#001639)
-//   row 2: Roboto Regular 12px description (#6B7281), starting at the left edge
-//          (no indent under the label — the description aligns with the icon).
-//   8px vertical gap between the two rows.
+//   row 1: small accent check icon + gap + medium-weight label (text.primary)
+//   row 2: secondary-text description, aligned with the icon (no indent).
+// All colors + type sizing flow through the MUI theme / DS tokens.
 
 export type PermissionItemProps = {
   label: string;
@@ -18,12 +17,12 @@ export function PermissionItem({ label, description }: PermissionItemProps) {
   return (
     <Stack spacing={1}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <CheckCircleIcon sx={{ color: '#005EFF', fontSize: 16 }} />
-        <Typography sx={{ fontWeight: 600, fontSize: 14, color: '#001639', lineHeight: 'normal' }}>
+        <CheckCircleIcon sx={{ color: 'primary.main', fontSize: 16 }} />
+        <Typography sx={{ ...tokens.text.body2Medium, color: 'text.primary' }}>
           {label}
         </Typography>
       </Stack>
-      <Typography sx={{ fontSize: 12, color: '#6B7281', lineHeight: 1.4 }}>
+      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
         {description}
       </Typography>
     </Stack>

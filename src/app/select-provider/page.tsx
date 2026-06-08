@@ -13,18 +13,18 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
 import providers, { type Provider } from '@/lib/providers';
+import { tokens } from '@/theme/theme';
 
 // `/select-provider` — third screen of the Pre-Provider Flow.
-// Layout per Phase 1 Figma node 1931:13600:
-//   - Light-blue page background (#F3FCFF)
-//   - Centered white panel, 6px radius, soft purple-tinted shadow,
-//     48px horizontal / 36px vertical padding, 36px vertical gap between sections
-//   - Fetch logo (64px) at the top of the card
-//   - Heading + subtitle (8px gap)
-//   - 402px input field block: bold static label above a light-blue Select with
+//   - Page background + white panel surface sourced from the theme
+//   - Centered white panel, DS radius, soft shadow,
+//     48px horizontal / 36px vertical padding
+//   - Fetch logo at the top of the card
+//   - Heading + subtitle
+//   - 402px input field block: bold static label above a tonal Select with
 //     a chevron-down trailing icon
-//   - Back (100px, light-blue) + Get Started (flex-1, brand-blue) buttons.
-//     Get Started is disabled (30% opacity) until a provider is chosen.
+//   - Back (tonal) + Get Started (brand-accent) buttons.
+//     Get Started is disabled until a provider is chosen.
 //
 // Loading-state submit (FLOW-05): when a provider is chosen and Get Started
 // is clicked, the button swaps into an inline CircularProgress for ~1.2s with
@@ -65,7 +65,7 @@ export default function Page() {
     <Box
       sx={{
         minHeight: '100vh',
-        bgcolor: '#F3FCFF',
+        bgcolor: 'background.default',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -77,24 +77,21 @@ export default function Page() {
         sx={{
           width: 498,
           maxWidth: '100%',
-          bgcolor: '#FFFFFF',
-          borderRadius: '6px',
-          boxShadow: '0 2px 2px rgba(134, 53, 246, 0.05)',
-          px: '48px',
-          py: '36px',
+          bgcolor: 'background.paper',
+          borderRadius: tokens.radius.sm / tokens.radius.lg,
+          boxShadow: '0 2px 2px rgba(99, 91, 255, 0.05)',
+          px: tokens.space[8] / 8,
+          py: 4.5,
         }}
       >
         <Stack spacing={4.5} sx={{ alignItems: 'center' }}>
           <FetchLogo size={64} />
 
           <Stack spacing={1} sx={{ width: '100%', textAlign: 'center' }}>
-            <Typography
-              component="h1"
-              sx={{ fontWeight: 600, fontSize: 24, color: '#001639', lineHeight: 'normal' }}
-            >
+            <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
               Select your payroll provider
             </Typography>
-            <Typography sx={{ fontSize: 14, color: '#6B7281', lineHeight: 'normal' }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Select the payroll system you want to connect
             </Typography>
           </Stack>
@@ -102,7 +99,8 @@ export default function Page() {
           <Box sx={{ width: 402, maxWidth: '100%' }}>
             <Typography
               id="provider-label"
-              sx={{ fontWeight: 700, fontSize: 14, color: '#001639', mb: '4px' }}
+              variant="body2"
+              sx={{ fontWeight: 700, color: 'text.primary', mb: tokens.space[0] / 8 }}
             >
               Select Payroll Provider
             </Typography>
@@ -118,47 +116,47 @@ export default function Page() {
               renderValue={(value) => {
                 if (!value) {
                   return (
-                    <Typography component="span" sx={{ color: '#6B7281', fontSize: 14, fontWeight: 500 }}>
+                    <Typography component="span" sx={{ ...tokens.text.body2Medium, color: 'text.secondary' }}>
                       Payroll Provider
                     </Typography>
                   );
                 }
                 const provider = providers.find((p) => p.slug === value);
                 return (
-                  <Typography component="span" sx={{ color: '#001639', fontSize: 14, fontWeight: 500 }}>
+                  <Typography component="span" sx={{ ...tokens.text.body2Medium, color: 'text.primary' }}>
                     {provider?.name ?? ''}
                   </Typography>
                 );
               }}
               sx={{
-                bgcolor: '#F3FCFF',
+                bgcolor: 'action.hover',
                 height: 40,
-                borderRadius: '6px',
+                borderRadius: tokens.radius.sm / tokens.radius.lg,
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#F3FCFF',
+                  borderColor: 'transparent',
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#005EFF',
+                  borderColor: 'primary.main',
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#005EFF',
+                  borderColor: 'primary.main',
                 },
                 '& .MuiSelect-select': {
                   py: 0,
-                  pl: '16px',
-                  pr: '16px',
+                  pl: tokens.space[3] / 8,
+                  pr: tokens.space[3] / 8,
                   display: 'flex',
                   alignItems: 'center',
                   minHeight: 'unset !important',
                 },
                 '& .MuiSelect-icon': {
-                  color: '#001639',
+                  color: 'text.primary',
                   right: 12,
                 },
               }}
             >
               {providers.map((p) => (
-                <MenuItem key={p.slug} value={p.slug} sx={{ fontSize: 14 }}>
+                <MenuItem key={p.slug} value={p.slug} sx={{ ...tokens.text.body2Medium }}>
                   {p.name}
                 </MenuItem>
               ))}

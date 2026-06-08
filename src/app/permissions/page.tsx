@@ -8,15 +8,13 @@ import Paper from '@mui/material/Paper';
 import FetchLogo from '@/components/FetchLogo';
 import PermissionItem from '@/components/PermissionItem';
 import Button from '@/components/Button';
+import { tokens } from '@/theme/theme';
 
 // `/permissions` — second screen of the Pre-Provider Flow.
-// Layout per Phase 1 Figma node 1931:13477 (header removed per latest direction):
-//   - Light-blue page background (#F3FCFF)
-//   - Centered white 768px panel, 6px radius, 48px horizontal / 36px vertical padding
+//   - Page background + white panel surface sourced from the theme
+//   - Centered white 768px panel, DS radius, 48px horizontal / 36px vertical padding
 //   - 2-column column-major grid of 6 permissions (Org/Team/Employment | Payroll/Statement/SSN)
-//   - Equal-width Back (light-blue) and Continue (brand-blue #005EFF) buttons
-// Not using FlowLayout because this page uses different tokens (6px radius, soft
-// purple-tinted shadow) than the shared component. FlowLayout drives other pages.
+//   - Equal-width Back (tonal) and Continue (brand-accent) buttons
 
 const PERMISSIONS = [
   { label: 'Organization', description: 'Business profile, contact details, and banking information' },
@@ -34,7 +32,7 @@ export default function Page() {
     <Box
       sx={{
         minHeight: '100vh',
-        bgcolor: '#F3FCFF',
+        bgcolor: 'background.default',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -46,25 +44,20 @@ export default function Page() {
           sx={{
             width: 768,
             maxWidth: '100%',
-            bgcolor: '#FFFFFF',
-            borderRadius: '6px',
-            boxShadow: '0 2px 2px rgba(134, 53, 246, 0.05)',
-            px: '48px',
-            py: '36px',
+            bgcolor: 'background.paper',
+            borderRadius: tokens.radius.sm / tokens.radius.lg,
+            boxShadow: '0 2px 2px rgba(99, 91, 255, 0.05)',
+            px: tokens.space[8] / 8,
+            py: 4.5,
           }}
         >
           <Stack spacing={6} sx={{ alignItems: 'stretch' }}>
             <Stack spacing={6} sx={{ alignItems: 'center' }}>
               <FetchLogo size={64} />
               <Typography
+                variant="h5"
                 component="h1"
-                sx={{
-                  fontWeight: 600,
-                  fontSize: 24,
-                  color: '#001639',
-                  textAlign: 'center',
-                  width: '100%',
-                }}
+                sx={{ color: 'text.primary', textAlign: 'center', width: '100%' }}
               >
                 To connect your payroll, Fetch will need access to:
               </Typography>
