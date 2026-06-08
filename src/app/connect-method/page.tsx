@@ -18,8 +18,10 @@ import { tokens } from '@/theme/theme';
 //
 // Sits between /select-provider and the two connection branches. After the
 // admin picks a provider, this screen asks WHO will actually connect it:
-//   • "I'll connect it now"  (self)     → opens a credential-entry modal, then
-//     Connect → /connecting?provider={slug}&2fa=1  (exploratory probe)
+//   • "I'll connect it now"  (self)     → branches by provider.authMethod:
+//       - 'redirect'    (Gusto)     → no modal; /connecting (no 2FA)
+//       - 'credentials' (Principal) → user+password modal; /connecting?&2fa=1 (2FA)
+//       - 'sftp'        (SFTP)      → host+user+password modal; /connecting (no 2FA)
 //   • "Someone on my team…"  (delegate) → /invite?provider={slug}  (Stage 3)
 //
 // Guard pattern mirrors /connecting verbatim:
@@ -43,9 +45,11 @@ function ConnectMethodContent() {
     ? providers.find((p) => p.slug === slugParam)
     : undefined;
 
-  // Credential-entry modal state (self path). Exploratory probe — the self
-  // OptionRow opens this instead of navigating straight to /connecting.
+  // Credential-entry modal state (self path). Exploratory probe — for
+  // credentials/sftp providers the self OptionRow opens this instead of
+  // navigating straight to /connecting.
   const [open, setOpen] = useState(false);
+  const [host, setHost] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -59,11 +63,23 @@ function ConnectMethodContent() {
     return null;
   }
 
-  const { name, slug } = provider;
+  const { name, slug, authMethod } = provider;
+  const isSftp = authMethod === 'sftp';
 
-  // &2fa=1 drives the self demo through Establishing → 2FA → Success.
-  // Omitting it is the no-2FA variant (Establishing → Success straight).
-  const handleConnect = () => router.push(`/connecting?provider=${slug}&2fa=1`);
+  // 'redirect' goes straight to /connecting (no modal); 'credentials'/'sftp'
+  // collect details in the modal first. Only 'credentials' carries &2fa=1
+  // (→ /verify); the others go Establishing → Success straight.
+  const handleSelfClick = () => {
+    if (authMethod === 'redirect') {
+      router.push(`/connecting?provider=${slug}`);
+    } else {
+      setOpen(true);
+    }
+  };
+  const handleConnect = () => {
+    const suffix = authMethod === 'credentials' ? '&2fa=1' : '';
+    router.push(`/connecting?provider=${slug}${suffix}`);
+  };
 
   return (
     <>
@@ -82,7 +98,7 @@ function ConnectMethodContent() {
           <OptionRow
             title="I’ll connect it now"
             description={`I have access to ${name}`}
-            onClick={() => setOpen(true)}
+            onClick={handleSelfClick}
           />
           <OptionRow
             title="Someone on my team manages it"
@@ -113,13 +129,23 @@ function ConnectMethodContent() {
         <Stack spacing={2.5}>
           <Stack spacing={1}>
             <Typography variant="h5" component="h2" sx={{ color: 'text.primary' }}>
-              {`Sign in to ${name}`}
+              {isSftp ? 'Connect via SFTP' : `Sign in to ${name}`}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {`Enter your ${name} credentials to connect. Read-only access — no data is modified.`}
+              {isSftp
+                ? 'Enter your SFTP host and credentials.'
+                : `Enter your ${name} credentials to connect. Read-only access.`}
             </Typography>
           </Stack>
 
+          {isSftp && (
+            <Input
+              label="Host"
+              placeholder="sftp.example.com"
+              value={host}
+              onChange={(e) => setHost(e.target.value)}
+            />
+          )}
           <Input
             label="Username or email"
             value={username}

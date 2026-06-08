@@ -89,10 +89,10 @@ export default function Page() {
 
           <Stack spacing={1} sx={{ width: '100%', textAlign: 'center' }}>
             <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
-              Select your payroll provider
+              What are you connecting?
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Select the payroll system you want to connect
+              Choose the system you want to connect
             </Typography>
           </Stack>
 

@@ -1,32 +1,34 @@
-// Provider catalog — single source of truth for the four payroll providers
-// supported by the Fetch Gateway demo flow.
+// Provider catalog — single source of truth for the systems the Fetch Gateway
+// demo can connect. Exactly three, each with a different auth method that drives
+// a different credential flow on /connect-method.
 //
-// Source of truth: Main_Fetch_Gateway.md "Routes — `/select-provider`" section
-// pins the slug / name / brandColor for every provider. Every screen that
-// references a provider (the `/select-provider` MUI Select, the `/connecting`
-// query-param guard, every brand-color swatch) imports from this file.
+// Every screen that references a provider (the `/select-provider` MUI Select,
+// the `/connecting` query-param guard, the `/connect-method` flow branch)
+// imports from this file. DO NOT redeclare provider slugs, names, or auth
+// methods anywhere else — that's the drift this catalog exists to prevent.
 //
-// DO NOT redeclare provider slugs, names, or brand colors anywhere else in the
-// codebase — that's the drift this catalog exists to prevent (T-01-02-01).
-//
-// Slugs are typed as a string-literal union (not generic `string`) so that
-// Phase 3's `/connecting` query-param parser can use the union as a precise
+// Slugs are typed as a string-literal union (not generic `string`) so the
+// `/connecting` and `/connect-method` parsers can use the union as a precise
 // discriminator: `providers.find(p => p.slug === slugFromQuery)` narrows
 // correctly without a runtime cast.
+//
+// authMethod drives the self-path credential flow (/connect-method):
+//   • 'redirect'    → no modal; straight to /connecting (no 2FA)          e.g. Gusto
+//   • 'credentials' → username + password modal; /connecting?&2fa=1 (2FA) e.g. Principal
+//   • 'sftp'        → host + username + password modal; /connecting (no 2FA)
 
 export type Provider = {
-  slug: 'gusto' | 'adp' | 'paycom' | 'rippling';
+  slug: 'gusto' | 'principal' | 'sftp';
   name: string;
-  brandColor: string;
+  authMethod: 'redirect' | 'credentials' | 'sftp';
 };
 
 // `as const` preserves the literal slug types at the call site, and the array
 // is `readonly` so consumers can iterate but not mutate the catalog.
 const providers = [
-  { slug: 'gusto', name: 'Gusto', brandColor: '#F45D48' },
-  { slug: 'adp', name: 'ADP', brandColor: '#D90429' },
-  { slug: 'paycom', name: 'Paycom', brandColor: '#003DA5' },
-  { slug: 'rippling', name: 'Rippling', brandColor: '#F5A623' },
+  { slug: 'gusto', name: 'Gusto', authMethod: 'redirect' },
+  { slug: 'principal', name: 'Principal', authMethod: 'credentials' },
+  { slug: 'sftp', name: 'SFTP', authMethod: 'sftp' },
 ] as const satisfies readonly Provider[];
 
 export default providers;
