@@ -36,6 +36,23 @@ Conventions not yet established. Will populate as patterns emerge during develop
 Architecture not yet mapped. Follow existing patterns found in the codebase.
 <!-- GSD:architecture-end -->
 
+## Figma <-> Code Component Mapping
+
+These DS components are the canonical implementations of their Figma counterparts (substitutes for Code Connect):
+
+| Figma component | Code | Figma node |
+|---|---|---|
+| Button | src/components/Button.tsx | 323:128 |
+| Input | src/components/Input.tsx | 378:141 |
+| Chip | src/components/Chip.tsx | 326:110 |
+| OptionRow | src/components/OptionRow.tsx | 426:78 |
+| Link | src/components/Link.tsx | 338:92 |
+| AuthLogoCluster / FetchLogo | src/components/FetchLogo.tsx | 397:58 |
+| PermissionItem | src/components/PermissionItem.tsx | — |
+| FlowLayout (panel chrome) | src/components/FlowLayout.tsx | — |
+
+v2 screens MUST be assembled from these components — never raw MUI primitives where a DS component exists. Main DS file: `pZYTXYGKR5lJAcaE0SnzLV`.
+
 <!-- GSD:skills-start source:skills/ -->
 ## Project Skills
 
