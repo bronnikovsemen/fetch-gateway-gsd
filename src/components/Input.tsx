@@ -53,7 +53,7 @@ export function Input({
         '& .MuiOutlinedInput-notchedOutline': {
           borderColor: 'divider',
         },
-        '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
           borderColor: 'secondary.main',
           borderWidth: 2,
         },
