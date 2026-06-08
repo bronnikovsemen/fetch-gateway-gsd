@@ -15,7 +15,7 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-08 after completing quick task 260608-psx (built MUI versions of four Figma DS components — OptionRow / Chip / Input / Link — plus the `tokens.status` extension, all built verbatim to the authoritative Figma spec; CLAUDE.md gained the Figma↔code mapping table + v2-screens-use-DS rule)
+**Last updated:** 2026-06-08 after completing quick task 260608-qg2 (added throwaway dev-only `/ds-preview` route to eyeball every DS component variant/state before v2 screen wiring; not linked from any route, safe to delete)
 
 ## Project Reference
 
@@ -72,6 +72,7 @@ Plan: 2 of 2 complete
 | 260521-lhj | create-thin-button-wrapper-component-and   | 2026-05-21 | COMPLETE | Created `src/components/Button.tsx` thin wrapper (variant primary/secondary, size sm/md/lg, loading, iconStart). Refactored /welcome, /permissions, /select-provider to use it; ~73 LOC net deduplication. tsc clean. Commits 99cc3e2, cc32244, 9873b01, 4139f76. |
 | 260608-nk0 | ds-token-source-of-truth                   | 2026-06-08 | COMPLETE | Figma DS ("Fetch Design System", key pZYTXYGKR5lJAcaE0SnzLV) is now the single source of truth. Rewrote `theme.ts` to mirror DS verbatim (purple primary #635bff, near-white bg #fafafa, success #22c55e, full type scale) + `export const tokens`. Refactored all components + 5 routes to theme/tokens only — zero off-token hex/px in src/ outside theme.ts (+ providers.ts brand-data exception). Added QUAL-05 `lint:tokens` enforcement script. Gates: tsc/lint/build/lint:tokens all PASS. Commits 9d1cc71, f143362, a44b5bf. Intended visual change (not a regression). |
 | 260608-psx | build-mui-versions-of-fetch-ds-component   | 2026-06-08 | COMPLETE | Built OptionRow / Chip / Input / Link DS components + `tokens.status` (5 severities fg+bg), all to the authoritative Figma spec. CLAUDE.md gained the Figma↔code mapping table (8 rows) + the v2-screens-use-DS rule line (DS file key pZYTXYGKR5lJAcaE0SnzLV). All gates (tsc/lint/lint:tokens/build) PASS; package.json deps unchanged; zero literal hex / raw px in the four component files. Commit c4653fb. Components only — no screen wiring. |
+| 260608-qg2 | ds-preview-page-dev-only-for-optionrow-c   | 2026-06-08 | COMPLETE | Added throwaway dev-only `/ds-preview` route (`src/app/ds-preview/page.tsx`, 'use client') — a labeled gallery of every DS variant/state: Button (primary/secondary × sm/md/lg + loading + disabled), OptionRow (4 states in 440px containers), Chip (5 severities × 2 sizes = 10), Input (4 controlled states), Link (sm/md). Imports real `@/components/*`; not linked from any route; safe to delete. All gates (tsc/lint/lint:tokens/build) PASS; deps unchanged; zero literal hex/px. Commit 6faafad. No components/screens otherwise changed. |
 
 **Divergence ledger — quick task 260608-psx (Figma wins; resolved decisions):**
 
