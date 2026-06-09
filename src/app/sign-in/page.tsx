@@ -33,18 +33,19 @@ export default function Page() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Input
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
-          <Link size="sm" onClick={() => router.push('/forgot-password')}>
-            Forgot password?
-          </Link>
-        </Box>
+        <Stack spacing={0.5} sx={{ width: '100%' }}>
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Link size="sm" onClick={() => router.push('/forgot-password')}>
+              Forgot password?
+            </Link>
+          </Box>
+        </Stack>
 
         <Button variant="primary" sx={{ width: '100%' }} onClick={() => router.push('/')}>
           Sign in
