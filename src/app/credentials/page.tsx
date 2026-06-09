@@ -66,7 +66,7 @@ function CredentialsContent() {
   const title = isSftp ? 'Connect via SFTP' : `Sign in to ${name}`;
   const subtitle = isSftp
     ? 'Enter your SFTP administrator credentials'
-    : `Enter your ${name} credentials to connect. Read-only access.`;
+    : `Enter your ${name} credentials to connect.\nRead-only access.`;
 
   const handleContinue = () => {
     // Credentials providers (Principal) authenticate via 2FA FIRST, then the
@@ -87,7 +87,7 @@ function CredentialsContent() {
         <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
           {title}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}>
           {subtitle}
         </Typography>
 
