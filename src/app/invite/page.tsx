@@ -8,7 +8,6 @@ import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import { Input } from '@/components/Input';
 import Button from '@/components/Button';
-import { Link } from '@/components/Link';
 import providers, { type Provider } from '@/lib/providers';
 
 // `/invite` — v2 Stage 3 delegate-branch entry (FLOW-10, Figma 2070:123).
@@ -81,18 +80,21 @@ function InviteContent() {
           onChange={(e) => setNote(e.target.value)}
         />
 
-        <Button
-          variant="primary"
-          sx={{ width: '100%' }}
-          onClick={() => router.push(`/invitation-sent?provider=${slug}`)}
-        >
-          Send invite
-        </Button>
-
-        <Stack sx={{ alignItems: 'center' }}>
-          <Link size="md" onClick={() => router.push(`/connect-method?provider=${slug}`)}>
+        <Stack direction="row" spacing={1.5}>
+          <Button
+            variant="secondary"
+            sx={{ width: 120, flexShrink: 0 }}
+            onClick={() => router.push(`/connect-method?provider=${slug}`)}
+          >
             Back
-          </Link>
+          </Button>
+          <Button
+            variant="primary"
+            sx={{ flex: 2 }}
+            onClick={() => router.push(`/invitation-sent?provider=${slug}`)}
+          >
+            Send invite
+          </Button>
         </Stack>
       </Stack>
     </FlowLayout>

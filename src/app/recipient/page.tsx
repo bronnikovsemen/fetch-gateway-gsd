@@ -65,10 +65,6 @@ function RecipientContent() {
         >
           Get Started
         </Button>
-
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          Continues through the same Permissions → sign-in → Success steps.
-        </Typography>
       </Stack>
     </FlowLayout>
   );

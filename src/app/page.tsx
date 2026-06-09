@@ -46,7 +46,7 @@ export default function Page() {
           />
           <OptionRow
             title="Connection flow"
-            description="Connect a payroll provider — Gusto, Principal, or SFTP"
+            description="Connect a payroll system — Gusto, Principal, or SFTP"
             onClick={() => router.push('/welcome')}
           />
         </Stack>

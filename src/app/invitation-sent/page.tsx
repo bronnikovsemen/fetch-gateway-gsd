@@ -4,19 +4,16 @@ import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import CheckCircleRounded from '@mui/icons-material/CheckCircleRounded';
 import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
 import { Link } from '@/components/Link';
-import { Chip } from '@/components/Chip';
 import providers, { type Provider } from '@/lib/providers';
 
-// `/invitation-sent` — v2 Stage 3 delegate-branch confirmation (FLOW-10,
-// Figma 2070:146 + Pending chip from the 2047 detail).
+// `/invitation-sent` — Stage 3 delegate-branch confirmation (Figma 456:176).
 //
-// Reached from /invite after "Send invite". Confirms the invite was sent and
-// surfaces the connection's PENDING state (the teammate hasn't connected yet).
+// Reached from /invite after "Send invite". Confirms the invite was sent; the
+// subtitle conveys that the connection stays pending until the teammate finishes.
 // Guard pattern mirrors /connect-method verbatim:
 //   1. Read ?provider= via useSearchParams (inside a <Suspense> boundary so the
 //      route still pre-renders while this subtree streams on the client).
@@ -31,8 +28,8 @@ import providers, { type Provider } from '@/lib/providers';
 //   • "Resend invite"                 → /invite (re-draft)
 //   • "Open the invite … (demo)"      → /recipient (makes the recipient path
 //                                       click-reachable from the UI).
-// The navy success mark uses @mui/icons-material/CheckCircleRounded tinted via
-// secondary.main (DS navy) — a theme palette key, not a literal color.
+// Per the current Figma (456:176) this screen has no success mark and no
+// "Pending" chip — just the heading, subtitle, "Done" CTA, and the two links.
 
 function InvitationSentContent() {
   const router = useRouter();
@@ -58,11 +55,9 @@ function InvitationSentContent() {
     <FlowLayout maxWidth={400} px={4} py={4}>
       <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
         <FetchLogo size={40} />
-        <CheckCircleRounded sx={{ color: 'secondary.main', fontSize: 56 }} />
         <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
           Invitation sent
         </Typography>
-        <Chip severity="warning" label="Pending" />
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {`We emailed your teammate a secure link to connect ${name}. The connection stays pending until they finish.`}
         </Typography>
