@@ -47,8 +47,8 @@ export default function Page() {
             <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
               Connect your payroll data
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Plantegrity has requested a secure read-only connection to your payroll data. No data will be modified.
+            <Typography variant="body2" sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}>
+              {'Plantegrity has requested a secure read-only connection to your payroll data.\nNo data will be modified.'}
             </Typography>
           </Stack>
 
