@@ -35,6 +35,7 @@ export type FetchLogoProps = {
   title?: string;
   tagline?: boolean;
   href?: string;
+  trademark?: boolean;
 };
 
 export function FetchLogo({
@@ -43,21 +44,45 @@ export function FetchLogo({
   title = 'Fetch',
   tagline = true,
   href = '/',
+  trademark = true,
 }: FetchLogoProps) {
+  // Shared superscript ™ — sits at the TOP-right of the wordmark (alignSelf
+  // flex-start) and scales with `size`. Theme color + spacing only; the
+  // fontSize is a computed number (allowed by lint:tokens). Hidden per
+  // instance via trademark={false}.
+  const tm = trademark ? (
+    <Box
+      component="span"
+      aria-hidden
+      sx={{
+        alignSelf: 'flex-start',
+        fontSize: size * 0.35,
+        lineHeight: 1,
+        fontWeight: 600,
+        color: 'text.primary',
+        ml: 0.25,
+      }}
+    >
+      ™
+    </Box>
+  ) : null;
   // Bare logo (tagline=false): `size` is the rendered HEIGHT; width derives from
   // the native 1960:802 aspect ratio.
   const content = !tagline ? (
     (() => {
       const width = Math.round(size * (1960 / 802));
       return (
-        <Image
-          src="/images/fetch-logo.png"
-          alt={title}
-          width={width}
-          height={size}
-          style={{ width, height: size, display: 'block', objectFit: 'contain', color }}
-          priority
-        />
+        <Box sx={{ display: 'inline-flex', alignItems: 'flex-start' }}>
+          <Image
+            src="/images/fetch-logo.png"
+            alt={title}
+            width={width}
+            height={size}
+            style={{ width, height: size, display: 'block', objectFit: 'contain', color }}
+            priority
+          />
+          {tm}
+        </Box>
       );
     })()
   ) : (
@@ -68,15 +93,18 @@ export function FetchLogo({
     // out of flow), so it never widens the cluster; it just fills the tagline
     // width with height derived from the native 1960:802 ratio.
     <Stack spacing={0} sx={{ alignItems: 'center', width: 'fit-content' }}>
-      <Box sx={{ position: 'relative', width: '100%', aspectRatio: '1960 / 802' }}>
-        <Image
-          src="/images/fetch-logo.png"
-          alt={title}
-          fill
-          sizes="200px"
-          style={{ objectFit: 'contain', color }}
-          priority
-        />
+      <Box sx={{ display: 'inline-flex', alignItems: 'flex-start', width: '100%' }}>
+        <Box sx={{ position: 'relative', flex: 1, minWidth: 0, aspectRatio: '1960 / 802' }}>
+          <Image
+            src="/images/fetch-logo.png"
+            alt={title}
+            fill
+            sizes="200px"
+            style={{ objectFit: 'contain', color }}
+            priority
+          />
+        </Box>
+        {tm}
       </Box>
       <Typography
         component="p"
