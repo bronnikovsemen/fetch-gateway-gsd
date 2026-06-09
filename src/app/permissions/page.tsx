@@ -42,7 +42,10 @@ export default function Page() {
       <Paper
           elevation={0}
           sx={{
-            width: 640,
+            // Widened from the Figma 640 so every permission description fits on
+            // ONE line (whiteSpace:nowrap on the description); at 640 the two long
+            // ones wrapped to two lines.
+            width: 880,
             maxWidth: '100%',
             bgcolor: 'background.paper',
             borderRadius: tokens.radius.sm / tokens.radius.lg,

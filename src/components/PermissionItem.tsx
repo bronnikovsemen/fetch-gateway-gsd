@@ -39,7 +39,7 @@ export function PermissionItem({ label, description }: PermissionItemProps) {
           {label}
         </Typography>
       </Stack>
-      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+      <Typography variant="caption" sx={{ color: 'text.secondary', whiteSpace: 'nowrap' }}>
         {description}
       </Typography>
     </Stack>
