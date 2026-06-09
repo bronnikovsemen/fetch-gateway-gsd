@@ -42,13 +42,12 @@ export default function Page() {
       <Paper
           elevation={0}
           sx={{
-            width: 768,
+            width: 640,
             maxWidth: '100%',
             bgcolor: 'background.paper',
             borderRadius: tokens.radius.sm / tokens.radius.lg,
             boxShadow: '0 2px 2px rgba(99, 91, 255, 0.05)',
-            px: tokens.space[8] / 8,
-            py: 4.5,
+            p: tokens.space[7] / 8,
           }}
         >
           <Stack spacing={6} sx={{ alignItems: 'stretch' }}>
@@ -59,7 +58,7 @@ export default function Page() {
                 component="h1"
                 sx={{ color: 'text.primary', textAlign: 'center', width: '100%' }}
               >
-                To connect your payroll, Fetch will need access to:
+                Fetch will need access to:
               </Typography>
             </Stack>
 
@@ -69,8 +68,8 @@ export default function Page() {
                 gridTemplateColumns: '1fr 1fr',
                 gridTemplateRows: 'repeat(3, auto)',
                 gridAutoFlow: 'column',
-                columnGap: 3,
-                rowGap: 3,
+                columnGap: 4,
+                rowGap: 2.5,
               }}
             >
               {PERMISSIONS.map((perm) => (
@@ -78,11 +77,11 @@ export default function Page() {
               ))}
             </Box>
 
-            <Stack direction="row" spacing={3}>
+            <Stack direction="row" spacing={2}>
               <Button
                 variant="secondary"
                 onClick={() => router.push('/welcome')}
-                sx={{ flex: 1 }}
+                sx={{ width: 120, flexShrink: 0 }}
               >
                 Back
               </Button>

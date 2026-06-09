@@ -1,6 +1,7 @@
 'use client';
 
 import TextField from '@mui/material/TextField';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { tokens } from '@/theme/theme';
 
 // Input — Figma node 378:141. A thin wrapper over MUI's outlined size-small
@@ -21,6 +22,11 @@ export type InputProps = {
   helperText?: string;
   disabled?: boolean;
   fullWidth?: boolean;
+  // Select mode: when true, the TextField renders as a dropdown whose options
+  // are the passed `children` (<MenuItem>s), with a chevron-down trailing icon.
+  // Backward-compatible — default false keeps the plain outlined text input.
+  select?: boolean;
+  children?: React.ReactNode;
 };
 
 export function Input({
@@ -33,6 +39,8 @@ export function Input({
   helperText,
   disabled = false,
   fullWidth = true,
+  select = false,
+  children,
 }: InputProps) {
   return (
     <TextField
@@ -47,6 +55,8 @@ export function Input({
       helperText={helperText}
       disabled={disabled}
       fullWidth={fullWidth}
+      select={select}
+      slotProps={select ? { select: { IconComponent: KeyboardArrowDownIcon } } : undefined}
       sx={{
         '& .MuiOutlinedInput-root': {
           borderRadius: tokens.radius.md / tokens.radius.lg,
@@ -65,7 +75,9 @@ export function Input({
           color: 'primary.main',
         },
       }}
-    />
+    >
+      {children}
+    </TextField>
   );
 }
 

@@ -45,10 +45,10 @@ export default function Page() {
 
           <Stack spacing={2} sx={{ width: '100%', textAlign: 'center' }}>
             <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
-              Connect your payroll provider
+              Connect your payroll data
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Plantegrity has requested a secure read-only connection to your payroll data for plan validation and reconciliation. No data will be modified.
+              Plantegrity has requested a secure read-only connection to your payroll data. No data will be modified.
             </Typography>
           </Stack>
 

@@ -6,31 +6,28 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Select from '@mui/material/Select';
-import type { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
+import { Input } from '@/components/Input';
 import providers, { type Provider } from '@/lib/providers';
 import { tokens } from '@/theme/theme';
 
 // `/select-provider` — third screen of the Pre-Provider Flow.
 //   - Page background + white panel surface sourced from the theme
-//   - Centered white panel, DS radius, soft shadow,
-//     48px horizontal / 36px vertical padding
+//   - Centered white 440px panel, DS radius, soft shadow
 //   - Fetch logo at the top of the card
 //   - Heading + subtitle
-//   - 402px input field block: bold static label above a tonal Select with
-//     a chevron-down trailing icon
-//   - Back (tonal) + Get Started (brand-accent) buttons.
-//     Get Started is disabled until a provider is chosen.
+//   - DS Input in `select` mode (label "Connection", chevron-down, white/bordered)
+//     listing Gusto / Principal / SFTP — replaces the old tonal MUI Select.
+//   - Back (tonal) + Continue (brand-accent) buttons.
+//     Continue is disabled until a provider is chosen.
 //
-// Loading-state submit (FLOW-05): when a provider is chosen and Get Started
+// Loading-state submit (FLOW-05): when a provider is chosen and Continue
 // is clicked, the button swaps into an inline CircularProgress for ~1.2s with
-// both buttons + Select disabled, then navigates to /connect-method?provider={slug}.
-// The pending setTimeout is held in a ref and cleared by the useEffect cleanup
-// if the user unmounts mid-flight (T-03-01-01 mitigation).
+// both buttons + the dropdown disabled, then navigates to
+// /connect-method?provider={slug}. The pending setTimeout is held in a ref and
+// cleared by the useEffect cleanup if the user unmounts mid-flight.
 
 export default function Page() {
   const router = useRouter();
@@ -46,10 +43,6 @@ export default function Page() {
       }
     };
   }, []);
-
-  const handleChange = (event: SelectChangeEvent<Provider['slug'] | ''>) => {
-    setSelected(event.target.value as Provider['slug'] | '');
-  };
 
   const handleBack = () => router.push('/permissions');
 
@@ -75,7 +68,7 @@ export default function Page() {
       <Paper
         elevation={0}
         sx={{
-          width: 498,
+          width: 440,
           maxWidth: '100%',
           bgcolor: 'background.paper',
           borderRadius: tokens.radius.lg / tokens.radius.lg,
@@ -89,86 +82,35 @@ export default function Page() {
 
           <Stack spacing={1} sx={{ width: '100%', textAlign: 'center' }}>
             <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
-              What are you connecting?
+              What do you want to connect?
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Choose the system you want to connect
             </Typography>
           </Stack>
 
-          <Box sx={{ width: 402, maxWidth: '100%' }}>
-            <Typography
-              id="provider-label"
-              variant="body2"
-              sx={{ fontWeight: 700, color: 'text.primary', mb: tokens.space[0] / 8 }}
-            >
-              Select Payroll Provider
-            </Typography>
-            <Select
-              fullWidth
+          <Box sx={{ width: '100%' }}>
+            <Input
+              select
+              label="Connection"
               value={selected}
-              onChange={handleChange}
-              displayEmpty
+              onChange={(e) => setSelected(e.target.value as Provider['slug'] | '')}
               disabled={submitting}
-              IconComponent={KeyboardArrowDownIcon}
-              inputProps={{ 'aria-labelledby': 'provider-label' }}
-              MenuProps={{ disablePortal: true, keepMounted: true }}
-              renderValue={(value) => {
-                if (!value) {
-                  return (
-                    <Typography component="span" sx={{ ...tokens.text.body2Medium, color: 'text.secondary' }}>
-                      Payroll Provider
-                    </Typography>
-                  );
-                }
-                const provider = providers.find((p) => p.slug === value);
-                return (
-                  <Typography component="span" sx={{ ...tokens.text.body2Medium, color: 'text.primary' }}>
-                    {provider?.name ?? ''}
-                  </Typography>
-                );
-              }}
-              sx={{
-                bgcolor: 'action.hover',
-                height: 40,
-                borderRadius: tokens.radius.sm / tokens.radius.lg,
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'transparent',
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'secondary.main',
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'secondary.main',
-                },
-                '& .MuiSelect-select': {
-                  py: 0,
-                  pl: tokens.space[3] / 8,
-                  pr: tokens.space[3] / 8,
-                  display: 'flex',
-                  alignItems: 'center',
-                  minHeight: 'unset !important',
-                },
-                '& .MuiSelect-icon': {
-                  color: 'text.primary',
-                  right: 12,
-                },
-              }}
             >
               {providers.map((p) => (
-                <MenuItem key={p.slug} value={p.slug} sx={{ ...tokens.text.body2Medium }}>
+                <MenuItem key={p.slug} value={p.slug}>
                   {p.name}
                 </MenuItem>
               ))}
-            </Select>
+            </Input>
           </Box>
 
-          <Stack direction="row" spacing={3} sx={{ width: '100%', justifyContent: 'center' }}>
+          <Stack direction="row" spacing={1.5} sx={{ width: '100%', justifyContent: 'center' }}>
             <Button
               variant="secondary"
               onClick={handleBack}
               disabled={submitting}
-              sx={{ width: 100, flexShrink: 0 }}
+              sx={{ width: 120, flexShrink: 0 }}
             >
               Back
             </Button>
@@ -178,7 +120,7 @@ export default function Page() {
               loading={submitting}
               sx={{ flex: 1 }}
             >
-              {submitting ? 'Continue…' : 'Continue'}
+              Continue
             </Button>
           </Stack>
         </Stack>

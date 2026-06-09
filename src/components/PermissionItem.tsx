@@ -1,6 +1,8 @@
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckRounded from '@mui/icons-material/CheckRounded';
+import { alpha } from '@mui/material/styles';
 import { tokens } from '@/theme/theme';
 
 // PermissionItem — one cell of the /permissions 2-col grid.
@@ -17,7 +19,22 @@ export function PermissionItem({ label, description }: PermissionItemProps) {
   return (
     <Stack spacing={1}>
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <CheckCircleIcon sx={{ color: 'primary.main', fontSize: 16 }} />
+        <Box
+          sx={{
+            width: 20,
+            height: 20,
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            // MUI multiplies a numeric borderRadius by shape.borderRadius
+            // (= tokens.radius.lg); radius.full / radius.lg yields a full circle.
+            borderRadius: tokens.radius.full / tokens.radius.lg,
+            bgcolor: (t) => alpha(t.palette.primary.main, 0.12),
+          }}
+        >
+          <CheckRounded sx={{ fontSize: 13, color: 'primary.main' }} />
+        </Box>
         <Typography sx={{ ...tokens.text.body2Medium, color: 'text.primary' }}>
           {label}
         </Typography>
