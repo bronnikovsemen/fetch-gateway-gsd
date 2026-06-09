@@ -90,9 +90,9 @@ function ConnectingContent() {
         </Typography>
         <Typography
           variant="body2"
-          sx={{ color: 'text.secondary', textAlign: 'center' }}
+          sx={{ color: 'text.secondary', textAlign: 'center', whiteSpace: 'pre-line' }}
         >
-          {`Securely connecting to ${provider.name}. This will only take a moment.`}
+          {`Securely connecting to ${provider.name}.\nThis will only take a moment.`}
         </Typography>
       </Stack>
     </FlowLayout>
