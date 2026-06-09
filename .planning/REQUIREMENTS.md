@@ -49,6 +49,14 @@ Milestone v2 — "Connection flow v2": Select-Provider FIRST, then a "How do you
 - [x] **FLOW-09** (Stage 1 ✓): NEW `/connect-method?provider={slug}` decision screen — FetchLogo + h5 "How do you want to connect {Provider}?" + body2 subtitle, then two DS `OptionRow`s: "I'll connect it now / I have access to {Provider}" → self → `/connecting?provider=`; "Someone on my team manages it / We'll send them a secure link to connect" → delegate → `/invite?provider=`. `/select-provider` Continue now routes here (not directly to `/connecting`). Provider resolved from catalog via `?provider=` with the standard Suspense + redirect guard.
 - [x] **FLOW-11** (Stage 2 ✓): self-branch 2FA — `/connecting` routes to NEW `/verify?provider={slug}` when the demo flag `?2fa=1` is present, else straight to `/success`. `/verify` = h5 "Enter verification code" + 6-cell OTP built from token-styled `Box` primitives (no DS OTP component; `tokens.radius.md`, `divider` cells / active cell `secondary.main` navy 2px) + "Verify" Button → `/success` + navy "Resend code" Link. Self OptionRow on `/connect-method` carries `&2fa=1` to demo the full path; omitting it is the no-2FA variant.
 - [x] **FLOW-08** (backfilled in Stage 2 ✓): `/success` terminal screen — was recorded complete in Phase 4 but never existed on disk (404). Created from Figma 2069:145: FetchLogo + 56px `CheckCircleRounded` (success.main) + h5 "You’re connected" + body2 sync copy + primary "Continue" Button → `/`. Now the self path's real terminus.
+### Demo home (Phase 06) — launcher + tangible connection types
+
+A demo launcher at `/` and realistic credential flows for the 3 connection types. Spec: `.planning/phases/06-demo-home/DEMO-HOME-SPEC.md`. Fetch UI = DS/theme/tokens; the Gusto mock is a scoped bespoke exception.
+
+- [x] **DEMO-01** (Phase 06 ✓): demo home launcher at `/` (repurposes the splash) — FlowLayout + FetchLogo + 3 DS `OptionRow`s: join existing org → `/sign-up?org=existing`; create new org → `/sign-up`; Connection flow → `/welcome`. Commit ef8b114.
+- [x] **DEMO-02** (Phase 06 ✓): bespoke Gusto mock `/gusto-login` (recreated from user images: Gusto sign-in → OAuth authorize consent → `/connecting?provider=gusto` → `/success`). Gusto hex scoped to that file; `lint:tokens` excludes `src/app/gusto-login`. Commit 1b94009.
+- [x] **DEMO-03** (Phase 06 ✓): connection-type realism on the self path — Gusto (redirect) → `/gusto-login`; SFTP (sftp) modal fields per Figma `q2KVTdgfZaHTwViNlMdpb1` 8:365 (Host / Username or Email / Password + "encrypted, never stored" note); Principal (credentials) → creds modal → 2FA → success (confirmed). Commit 1821a96.
+
 ### Auth flows (Phase 05) — Playground auth screens (Figma file pZYTXYGKR5lJAcaE0SnzLV)
 
 Eight `'use client'` routes assembled from DS components (FlowLayout/FetchLogo/Input/Button/Link). `/` stands in for the signed-in app landing (no dashboard yet). Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`.

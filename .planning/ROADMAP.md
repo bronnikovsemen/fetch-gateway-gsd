@@ -38,13 +38,13 @@ Eight auth routes built from the Playground auth screens in the Fetch Design Sys
 **Plans:** 1 plan
 - [x] 05-01-PLAN.md — All 8 auth routes built from DS components, fully navigable per the spec graph. All gates (tsc/lint/lint:tokens/build) PASS; deps unchanged; all 8 routes + `?org=existing` serve 200 on :3001. Figma divergence: `/password-updated` uses a green `success.main` title with no checkmark icon (Figma-authoritative).
 
-### Phase 06 — Demo Home (in progress, branch `demo-home`)
+### Phase 06 — Demo Home (COMPLETE 2026-06-09, branch `demo-home`)
 
 A demo launcher at `/` to pick & run 3 flows, plus making the 3 connection types tangible (Gusto redirect → bespoke mock; Principal creds → 2FA; SFTP host+creds form per Figma). Spec: `.planning/phases/06-demo-home/DEMO-HOME-SPEC.md`.
 
-- [ ] **DEMO-01** — demo home launcher at `/` (3 OptionRow flows: join-org, create-org, connection flow)
-- [ ] **DEMO-02** — bespoke `/gusto-login` mock (sign-in → authorize → back to Fetch); lint:tokens excludes it
-- [ ] **DEMO-03** — connection-type realism: Gusto → `/gusto-login`; SFTP modal per Figma 8:365; Principal creds → 2FA
+- [x] **DEMO-01** — demo home launcher at `/` (3 OptionRow flows). Commit ef8b114.
+- [x] **DEMO-02** — bespoke `/gusto-login` mock (sign-in → authorize → back to Fetch); lint:tokens excludes it. Commit 1b94009.
+- [x] **DEMO-03** — connection-type realism: Gusto → `/gusto-login`; SFTP modal per Figma 8:365; Principal creds → 2FA. Commit 1821a96. Gates pass; all routes 200 on :3001.
 
 **Plans:** 1 plan
-- [ ] 06-01-PLAN.md — Demo home launcher (DEMO-01), bespoke 2-step `/gusto-login` Gusto mock + lint:tokens exclusion (DEMO-02), and connect-method realism: Gusto→/gusto-login rewire + SFTP modal per Figma 8:365 + Principal creds→2FA confirmed (DEMO-03). All three DEMO requirements in one autonomous plan (Wave 1).
+- [x] 06-01-PLAN.md — Demo home launcher (DEMO-01), bespoke 2-step `/gusto-login` Gusto mock + lint:tokens exclusion (DEMO-02), and connect-method realism: Gusto→/gusto-login rewire + SFTP modal per Figma 8:365 + Principal creds→2FA confirmed (DEMO-03). All three DEMO requirements in one autonomous plan (Wave 1).
