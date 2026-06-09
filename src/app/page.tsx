@@ -25,12 +25,14 @@ export default function Page() {
       <Stack spacing={3}>
         <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
           <FetchLogo />
-          <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
-            Fetch demo
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Pick a flow to run through the demo.
-          </Typography>
+          <Stack spacing={0.5} sx={{ alignItems: 'center' }}>
+            <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
+              Fetch demo
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Pick a flow to run through the demo.
+            </Typography>
+          </Stack>
         </Stack>
 
         <Stack spacing={2}>
