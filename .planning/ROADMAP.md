@@ -27,106 +27,13 @@ Phase A (DS components) shipped via quick tasks 260608-psx (OptionRow/Chip/Input
 
 **Milestone v2 complete.** Full flow navigable end-to-end on :3001 — both branches reach `/success`. Self: `/select-provider → /connect-method → /connecting?&2fa=1 → /verify → /success`. Delegate: `/connect-method → /invite → /invitation-sent → /recipient → /connecting?&2fa=1 → /verify → /success`. Also backfilled the missing `/success` route (FLOW-08).
 
-## Phase Details
+### Phase 05 — Auth Flows (in progress, branch `auth-flows`)
 
-### Phase 1: Foundation & Shared Chrome
-**Goal:** A user can navigate to every route (`/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success`) and see a Fetch-branded shell with theme, font, and chrome correctly wired — even though each route is a placeholder.
-**Mode:** mvp
-**Depends on:** Nothing (first phase)
-**Requirements:** FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, FOUND-06, FOUND-07, UI-01, UI-02, UI-03, QUAL-04
-**Success Criteria** (what must be TRUE):
-  1. Running `pnpm dev` (or `npm run dev`) starts the server on port 3001, and `package.json` has no Tailwind / shadcn / lucide-react / class-variance-authority dependencies installed
-  2. Navigating to any of `/`, `/welcome`, `/permissions`, `/select-provider`, `/connecting`, `/success` renders a placeholder screen wrapped in the shared `FlowLayout` (centered white Paper, `#EBF5FF` background, 12px radius, soft shadow, min-height 100vh) with the `FetchLogo` visible
-  3. Inter font from `next/font/google` is applied to body text (verifiable via DevTools computed font-family), and MUI theme primary `#2463EC` plus the full brand token palette (surfaces, text, success/warning/danger) drives component colors
-  4. Importing from `src/lib/providers.ts` returns four entries (Gusto `#F45D48`, ADP `#D90429`, Paycom `#003DA5`, Rippling `#F5A623`) and a rendered `PermissionItem` shows a blue checkmark + bold label + muted description in one row
-  5. No flicker on hard reload — `AppRouterCacheProvider` + `ThemeProvider` + `CssBaseline` are wired in `app/layout.tsx` and SSR delivers themed markup
-**Plans:** 3/3 plans executed
-Plans:
-- [x] 01-01-PLAN.md — Scaffold Next.js 15 + MUI + Emotion, brand-token theme, root layout (FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, QUAL-04)
-- [x] 01-02-PLAN.md — Provider catalog + shared chrome components (FlowLayout, FetchLogo, PermissionItem) (FOUND-07, UI-01, UI-02, UI-03)
-- [x] 01-03-PLAN.md — Six route stubs wired to shared chrome; end-to-end skeleton smoke test (FOUND-06)
-**UI hint:** yes
+Eight auth routes built from the Playground auth screens in the Fetch Design System (`pZYTXYGKR5lJAcaE0SnzLV`), assembled from DS components. `/` stands in for the signed-in landing (no dashboard yet). Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`.
 
-### Phase 2: Pre-Provider Flow
-**Goal:** A user landing on `/` is carried through the trust narrative — splash animation → welcome explainer → permissions disclosure — without seeing any placeholder content.
-**Mode:** mvp
-**Depends on:** Phase 1
-**Requirements:** FLOW-01, FLOW-02, FLOW-03
-**Success Criteria** (what must be TRUE):
-  1. Visiting `/` shows the Fetch logo centered on `#EBF5FF` with tagline "Retirement runs on Fetch", logo scales in over 500ms then breathes on a 2s cycle, and auto-redirects to `/welcome` after ~2500ms
-  2. `/welcome` shows a centered 440px-wide white panel (48px padding) with Fetch logo, heading "Connect your payroll provider", explanatory body copy, and a primary "Get Started" button that navigates to `/permissions`
-  3. `/permissions` shows a centered 768px-wide white panel with Fetch logo, heading "To connect your payroll, Fetch will need access to:", and a 2-column grid of six `PermissionItem`s (Organization, Team, Employment / Payroll, Pay Statement, SSN) with correct labels and descriptions
-  4. On `/permissions`, the "Back" outlined button returns to `/welcome` and the "Continue" primary button advances to `/select-provider` — both are real navigations, no dead buttons
-**Plans:** 4/4 plans executed
-Plans:
-- [x] 02-01-PLAN.md — Widen FlowLayout padding API to px/py (theme-spacing units); resolves Phase 1 REVIEW WR-01/WR-02
-- [x] 02-02-PLAN.md — `/` splash with logo + tagline + 500ms scale-in + 2s breathing + auto-redirect to `/welcome` (FLOW-01)
-- [x] 02-03-PLAN.md — `/welcome` 440px panel with heading + body copy + primary 'Get Started' button → `/permissions` (FLOW-02)
-- [x] 02-04-PLAN.md — `/permissions` 768px panel with 2x3 PermissionItem grid + Back (outlined) → `/welcome` + Continue (primary) → `/select-provider` (FLOW-03)
-**UI hint:** yes
+- [ ] **AUTH-01** — `/sign-in` (459:145) + `/sign-up` (459:174, `?org=existing` branch)
+- [ ] **AUTH-02** — `/join-organization` (459:204) + `/create-organization` (460:214)
+- [ ] **AUTH-03** — `/forgot-password` (460:232) → `/check-email` (460:252) → `/set-new-password` (460:267) → `/password-updated` (474:273)
 
-### Phase 3: Provider Selection & Connecting Bridge
-**Goal:** A user can pick a payroll provider, see realistic submission feedback, and be carried through the connecting bridge to the success route — with invalid entry to `/connecting` redirecting back to selection.
-**Mode:** mvp
-**Depends on:** Phase 2
-**Requirements:** FLOW-04, FLOW-05, FLOW-06, FLOW-07
-**Success Criteria** (what must be TRUE):
-  1. `/select-provider` shows a centered 498px-wide white panel with Fetch logo, heading "Select your payroll provider", body copy, and an MUI `Select` labeled "Select Payroll Provider" listing the four providers from the catalog
-  2. The "Connect" primary button is disabled until a provider is chosen, and the "Back" outlined button (fixed ~100px width) returns to `/permissions`
-  3. Clicking "Connect" swaps the button into a ~1.2s loading state (spinner + "Connecting…"), then navigates to `/connecting?provider={slug}` with the selected provider's slug
-  4. `/connecting?provider={validSlug}` shows a centered white panel with Fetch logo, `CircularProgress` spinner, heading "Establishing connection…", body "Connecting to {providerName}. You'll be redirected to sign in.", and auto-advances to `/success` after ~2500ms
-  5. Visiting `/connecting` with no `?provider=` or an unknown slug redirects immediately to `/select-provider`
-**Plans:** 2/2 plans complete
-Plans:
-- [x] 03-01-PLAN.md — `/select-provider` 498px panel with FetchLogo + heading + body + MUI Select (sourced from providers catalog) + Back (outlined, fixed ~100px → /permissions) + Connect (primary, flex-1, disabled until selection, ~1.2s loading state) → /connecting?provider={slug} (FLOW-04, FLOW-05)
-- [x] 03-02-PLAN.md — `/connecting` panel with FetchLogo + CircularProgress + 'Establishing connection…' heading + interpolated provider-name body; query-param guard (missing/invalid → router.replace('/select-provider')); 2500ms auto-advance via router.replace('/success') (FLOW-06, FLOW-07)
-**UI hint:** yes
-
-### Phase 4: Success & Quality Hardening
-**Goal:** A user reaches an on-brand success confirmation that loops back to `/`, and the codebase passes the project's strict TypeScript, hygiene, navigation, and dependency gates.
-**Mode:** mvp
-**Depends on:** Phase 3
-**Requirements:** FLOW-08, QUAL-01, QUAL-02, QUAL-03
-**Success Criteria** (what must be TRUE):
-  1. `/success` shows a Fetch-branded centered white panel with a green checkmark icon using the `#10B981` success token, heading "Connected successfully", short confirmation body copy, and a "Done" button that navigates back to `/`
-  2. End-to-end demo run from `/` → `/welcome` → `/permissions` → `/select-provider` → `/connecting?provider=gusto` → `/success` → `/` completes without dead buttons, errors, or placeholder content
-  3. `tsc --noEmit` (or equivalent strict TypeScript check) passes with zero `any` types across `src/`
-  4. Repo-wide grep for `console.log` returns zero hits in committed code, and `package.json` confirms Tailwind / shadcn / lucide-react / CVA remain absent
-**Plans:** 2/2 plans executed
-Plans:
-- [x] 04-01-PLAN.md — Replace /success Phase 1 stub with the real FLOW-08 confirmation screen (FetchLogo + green CheckCircleRoundedIcon via success.main token + 'Connected successfully' heading + body copy + 'Done' button → /) (FLOW-08)
-- [x] 04-02-PLAN.md — Codebase-wide quality-gate audit: zero `: any` (QUAL-01), zero `console.log` (QUAL-02), no dead navigation buttons (QUAL-03), plus QUAL-04 reconfirmation; produces 04-02-AUDIT.md (QUAL-01, QUAL-02, QUAL-03)
-**UI hint:** yes
-
-## Progress
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Foundation & Shared Chrome | 3/3 | Complete | 2026-05-18 |
-| 2. Pre-Provider Flow | 4/4 | Complete | 2026-05-18 |
-| 3. Provider Selection & Connecting Bridge | 2/2 | Complete   | 2026-05-18 |
-| 4. Success & Quality Hardening | 2/2 | Complete   | 2026-05-18 |
-
-## Coverage Validation
-
-**v1 Requirements mapped:** 22/22
-
-| Category | Count | Phase Distribution |
-|----------|-------|--------------------|
-| Foundation (FOUND-01..07) | 7 | All in Phase 1 |
-| Shared UI (UI-01..03) | 3 | All in Phase 1 |
-| Flow Screens (FLOW-01..08) | 8 | FLOW-01..03 in Phase 2; FLOW-04..07 in Phase 3; FLOW-08 in Phase 4 |
-| Quality (QUAL-01..04) | 4 | QUAL-04 in Phase 1 (dependency gate set at scaffolding); QUAL-01..03 in Phase 4 (codebase-wide gates) |
-
-**Orphans:** None
-**Duplicates:** None
-
-## Notes
-
-- **Rationale for coarse 4-phase shape:** The spec's own implementation order (Setup → Shared chrome → Splash → Welcome → Permissions → Select Provider → Connecting → Success) clusters into four natural delivery boundaries: (1) foundation that makes every route reachable, (2) the pre-decision narrative, (3) the decision + bridge, (4) the closer + hardening. Each phase ships a navigable demo state.
-- **MVP vertical-slice intent:** Phase 1 deliberately ships routable placeholder content under the real `FlowLayout` chrome so every subsequent phase is *swapping stubs for the real screen* rather than carving new routes. This honors the project mode constraint of an end-to-end vertical slice from day one.
-- **QUAL-04 placement:** Dependency-exclusion gate sits in Phase 1 because the moment of risk is scaffolding — if Tailwind/shadcn sneak in during setup, they'll metastasize. QUAL-01..03 stay in Phase 4 because TypeScript-strict, no-console, and no-dead-buttons can only be meaningfully verified once the whole codebase exists.
-- **Decimal-phase room reserved:** If a UI safety review or design polish pass emerges during execution, it can land as a 4.1 insertion rather than disturbing the four-phase backbone.
-
----
-*Last updated: 2026-05-18 after completing Plan 04-02 (codebase-wide quality-gate audit — QUAL-01 zero `: any`, QUAL-02 zero `console.log()` in code-file extensions, QUAL-03 no dead buttons and complete nine-edge navigation graph, QUAL-04 reconfirmed; modal-zero outcome — no source file modified). **Phase 4 now complete (2/2 plans); v1 milestone closed at 22/22 requirements.** The full demo flow `/` → `/welcome` → `/permissions` → `/select-provider` → `/connecting` → `/success` → `/` is navigable end-to-end with no placeholder screens, no dead buttons, no errors, no forbidden UI libraries, and `tsc --noEmit` clean. Audit artifact at `.planning/phases/04-success-quality-hardening/04-02-AUDIT.md`. v1 shippable.*
+**Plans:** 1 plan
+- [ ] 05-01-PLAN.md — All 8 auth routes (AUTH-01 /sign-in + /sign-up?org branch; AUTH-02 /join-organization + /create-organization; AUTH-03 the 4 password-recovery routes), assembled from DS components, fully navigable per the spec graph
