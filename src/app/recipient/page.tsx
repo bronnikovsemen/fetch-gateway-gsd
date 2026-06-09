@@ -24,8 +24,8 @@ import providers, { type Provider } from '@/lib/providers';
 //   3. Missing OR unknown slug → render null + replace-navigate back to
 //      /select-provider (replace keeps the invalid URL out of history).
 //
-// Demo behavior: "Get Started" enters the shared self tail by forwarding the
-// slug with the &2fa=1 flag to /connecting (Establishing → 2FA → Success).
+// Demo behavior: "Get Started" forwards the slug to /connecting (the final
+// "Establishing…" bridge → Success).
 
 function RecipientContent() {
   const router = useRouter();
@@ -61,7 +61,7 @@ function RecipientContent() {
         <Button
           variant="primary"
           sx={{ width: '100%' }}
-          onClick={() => router.push(`/connecting?provider=${slug}&2fa=1`)}
+          onClick={() => router.push(`/connecting?provider=${slug}`)}
         >
           Get Started
         </Button>

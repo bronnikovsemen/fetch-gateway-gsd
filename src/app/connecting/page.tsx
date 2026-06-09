@@ -14,22 +14,22 @@ import providers, { type Provider } from '@/lib/providers';
 // provider-name body copy) and FLOW-07 (?provider= query-param guard —
 // invalid/missing redirects back to the selection screen).
 //
+// /connecting is the FINAL "establishing" bridge — it is reached ONLY after the
+// user has already authenticated (credentials card, 2FA, or the Gusto authorize
+// mock), so it always advances to /success. 2FA happens BEFORE this screen
+// (credentials → /verify → /connecting → /success), never after it.
+//
 // Behavior summary:
-//   1. Read ?provider= and the demo 2FA flag ?2fa=1 from the URL
-//      (useSearchParams).
+//   1. Read ?provider= from the URL (useSearchParams).
 //   2. Look the slug up in the providers catalog (src/lib/providers.ts —
-//      single source of truth for the four supported providers). Raw
-//      query-param text is NEVER interpolated into the rendered JSX — only
-//      the trusted catalog `name` field is rendered (T-03-02-02 mitigation).
+//      single source of truth). Raw query-param text is NEVER interpolated into
+//      the rendered JSX — only the trusted catalog `name` field is rendered.
 //   3. Missing OR unknown slug → render null + replace-navigate back to the
-//      selection screen. Using replace (not push) keeps the invalid URL out
-//      of browser history so back-button does not land on a redirecting page.
-//   4. Valid slug → render the centered white panel (FetchLogo +
-//      CircularProgress + heading + provider-name body copy) and schedule a
-//      2500ms setTimeout that replace-navigates onward on completion:
-//        • ?2fa=1 present → /verify?provider={slug} (the self-branch 2FA gate),
-//        • otherwise      → /success (the no-2FA self-branch terminus).
-//      The cleanup clears the pending timer on unmount (T-03-02-01).
+//      selection screen. Using replace (not push) keeps the invalid URL out of
+//      browser history so back-button does not land on a redirecting page.
+//   4. Valid slug → render the centered white panel (FetchLogo + spinner +
+//      heading + provider-name body copy) and schedule a 2500ms setTimeout that
+//      replace-navigates to /success. The cleanup clears the timer on unmount.
 //
 // Both navigations on this page use replace-style routing, not push:
 // /connecting is THE canonical transient bridge route in the demo flow and
@@ -45,7 +45,6 @@ function ConnectingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const slugParam = searchParams.get('provider');
-  const twofa = searchParams.get('2fa') === '1';
   const provider: Provider | undefined = slugParam
     ? providers.find((p) => p.slug === slugParam)
     : undefined;
@@ -59,8 +58,11 @@ function ConnectingContent() {
 
   useEffect(() => {
     if (!provider) return;
+    // /connecting is the FINAL "establishing" bridge, reached only after the
+    // user has authenticated (credentials / 2FA / Gusto authorize). It always
+    // advances to /success — 2FA happens BEFORE this screen, never after.
     timerRef.current = setTimeout(() => {
-      router.replace(twofa ? `/verify?provider=${provider.slug}` : '/success');
+      router.replace('/success');
     }, 2500);
     return () => {
       if (timerRef.current !== null) {
@@ -68,7 +70,7 @@ function ConnectingContent() {
         timerRef.current = null;
       }
     };
-  }, [provider, twofa, router]);
+  }, [provider, router]);
 
   if (!provider) {
     return null;
@@ -90,7 +92,7 @@ function ConnectingContent() {
           variant="body2"
           sx={{ color: 'text.secondary', textAlign: 'center' }}
         >
-          {`Connecting to ${provider.name}. You'll be redirected to sign in.`}
+          {`Securely connecting to ${provider.name}. This will only take a moment.`}
         </Typography>
       </Stack>
     </FlowLayout>

@@ -14,7 +14,7 @@
 //
 // authMethod drives the self-path credential flow (/connect-method):
 //   • 'redirect'    → no modal; straight to /connecting (no 2FA)          e.g. Gusto
-//   • 'credentials' → username + password modal; /connecting?&2fa=1 (2FA) e.g. Principal
+//   • 'credentials' → /credentials card → /verify (2FA) → /connecting  e.g. Principal
 //   • 'sftp'        → host + username + password modal; /connecting (no 2FA)
 
 export type Provider = {

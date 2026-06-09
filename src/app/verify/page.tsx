@@ -14,8 +14,9 @@ import providers, { type Provider } from '@/lib/providers';
 
 // `/verify` — v2 Stage 2 self-branch 2FA gate (FLOW-11, Figma 2069:116).
 //
-// Reached from /connecting when the demo 2FA flag (?2fa=1) is set; /connecting
-// forwards the provider slug here. Guard pattern mirrors /connecting verbatim:
+// Reached from the /credentials card for credentials providers (Principal) —
+// 2FA runs BEFORE the /connecting "Establishing…" bridge. Guard mirrors
+// /connecting verbatim:
 //   1. Read ?provider= via useSearchParams (inside a <Suspense> boundary so the
 //      route still pre-renders while this subtree streams on the client).
 //   2. Resolve the slug against the providers catalog (single source of truth).
@@ -31,8 +32,9 @@ import providers, { type Provider } from '@/lib/providers';
 // exception. The active cell (next empty slot, clamped to the last index) takes
 // a 2px Brand Accent (primary.main) border; the rest take a 1px divider border.
 //
-// Demo behavior: "Verify" always navigates to /success (not a dead button — no
-// real code validation); "Resend code" clears the entered digits.
+// Demo behavior: "Verify" always navigates to /connecting (the "Establishing…"
+// bridge, which then advances to /success) — 2FA happens BEFORE establishing the
+// connection, not after. "Resend code" clears the entered digits.
 
 const CELL_COUNT = 6;
 
@@ -128,7 +130,7 @@ function VerifyContent() {
           />
         </Box>
 
-        <Button variant="primary" sx={{ width: '100%' }} onClick={() => router.push('/success')}>
+        <Button variant="primary" sx={{ width: '100%' }} onClick={() => router.push(`/connecting?provider=${provider.slug}`)}>
           Verify
         </Button>
 

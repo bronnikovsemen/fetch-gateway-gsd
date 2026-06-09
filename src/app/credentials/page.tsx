@@ -33,9 +33,10 @@ import providers, { type Provider } from '@/lib/providers';
 //      replace-navigate back to /select-provider (replace keeps the invalid /
 //      Gusto URL out of history).
 //
-// Demo behavior: "Continue" always navigates to /connecting (no real
-// validation), carrying the provider slug and — for credentials only — the 2FA
-// flag (&2fa=1 → /verify). "Back" returns to /connect-method.
+// Demo behavior: "Continue" navigates (no real validation) — credentials
+// providers (Principal) go to /verify (2FA) first, then /connecting → /success;
+// sftp goes straight to /connecting → /success. "Back" returns to
+// /connect-method.
 
 function CredentialsContent() {
   const router = useRouter();
@@ -68,8 +69,15 @@ function CredentialsContent() {
     : `Enter your ${name} credentials to connect. Read-only access.`;
 
   const handleContinue = () => {
-    const suffix = authMethod === 'credentials' ? '&2fa=1' : '';
-    router.push(`/connecting?provider=${slug}${suffix}`);
+    // Credentials providers (Principal) authenticate via 2FA FIRST, then the
+    // /connecting "Establishing…" bridge → /success. SFTP has no 2FA, so it goes
+    // straight to /connecting → /success. "Establishing" is always the LAST step
+    // before success — never before 2FA.
+    router.push(
+      authMethod === 'credentials'
+        ? `/verify?provider=${slug}`
+        : `/connecting?provider=${slug}`,
+    );
   };
 
   return (
