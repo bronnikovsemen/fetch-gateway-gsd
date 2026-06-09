@@ -25,7 +25,7 @@ function SignUpContent() {
   const org = searchParams.get('org');
 
   const [workEmail, setWorkEmail] = useState('');
-  const [connectionCode, setConnectionCode] = useState('');
+  const [invitationCode, setInvitationCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -44,9 +44,9 @@ function SignUpContent() {
           onChange={(e) => setWorkEmail(e.target.value)}
         />
         <Input
-          label="Connection code"
-          value={connectionCode}
-          onChange={(e) => setConnectionCode(e.target.value)}
+          label="Invitation code"
+          value={invitationCode}
+          onChange={(e) => setInvitationCode(e.target.value)}
         />
         <Input
           label="Password"
