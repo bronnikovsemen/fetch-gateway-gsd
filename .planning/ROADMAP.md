@@ -27,13 +27,13 @@ Phase A (DS components) shipped via quick tasks 260608-psx (OptionRow/Chip/Input
 
 **Milestone v2 complete.** Full flow navigable end-to-end on :3001 — both branches reach `/success`. Self: `/select-provider → /connect-method → /connecting?&2fa=1 → /verify → /success`. Delegate: `/connect-method → /invite → /invitation-sent → /recipient → /connecting?&2fa=1 → /verify → /success`. Also backfilled the missing `/success` route (FLOW-08).
 
-### Phase 05 — Auth Flows (in progress, branch `auth-flows`)
+### Phase 05 — Auth Flows (COMPLETE 2026-06-09, branch `auth-flows`)
 
 Eight auth routes built from the Playground auth screens in the Fetch Design System (`pZYTXYGKR5lJAcaE0SnzLV`), assembled from DS components. `/` stands in for the signed-in landing (no dashboard yet). Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`.
 
-- [ ] **AUTH-01** — `/sign-in` (459:145) + `/sign-up` (459:174, `?org=existing` branch)
-- [ ] **AUTH-02** — `/join-organization` (459:204) + `/create-organization` (460:214)
-- [ ] **AUTH-03** — `/forgot-password` (460:232) → `/check-email` (460:252) → `/set-new-password` (460:267) → `/password-updated` (474:273)
+- [x] **AUTH-01** — `/sign-in` (459:145) + `/sign-up` (459:174, `?org=existing` branch). Commit bdd91de.
+- [x] **AUTH-02** — `/join-organization` (459:204) + `/create-organization` (460:214). Commit 5d58d40.
+- [x] **AUTH-03** — `/forgot-password` (460:232) → `/check-email` (460:252) → `/set-new-password` (460:267) → `/password-updated` (474:273). Commit 6a32d62.
 
 **Plans:** 1 plan
-- [ ] 05-01-PLAN.md — All 8 auth routes (AUTH-01 /sign-in + /sign-up?org branch; AUTH-02 /join-organization + /create-organization; AUTH-03 the 4 password-recovery routes), assembled from DS components, fully navigable per the spec graph
+- [x] 05-01-PLAN.md — All 8 auth routes built from DS components, fully navigable per the spec graph. All gates (tsc/lint/lint:tokens/build) PASS; deps unchanged; all 8 routes + `?org=existing` serve 200 on :3001. Figma divergence: `/password-updated` uses a green `success.main` title with no checkmark icon (Figma-authoritative).

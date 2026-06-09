@@ -15,7 +15,16 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-08 — Milestone v2 complete; plus exploratory probes: 260608-ucf (credential modal) and 260608-ult (3-option auth-method picker — Gusto/Principal/SFTP — driving per-type credential flows), and the FetchLogo swap to the wide Fetch lockup. Spec: `.planning/v2/V2-FIGMA-SPEC.md`.
+**Last updated:** 2026-06-09 — **Phase 05 (Auth Flows) COMPLETE** on branch `auth-flows`: 8 new routes (sign-in, sign-up?org branch, join/create-organization, forgot-password → check-email → set-new-password → password-updated) built from DS components per the Figma Playground auth screens. AUTH-01/02/03 done. Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`. (Prior: Milestone v2 complete + exploratory probes 260608-ucf/ult + FetchLogo lockup swap.)
+
+### Phase 05 — Auth Flows (COMPLETE)
+
+8 `'use client'` routes from the Fetch DS Playground auth screens (file pZYTXYGKR5lJAcaE0SnzLV), assembled from DS components (FlowLayout/FetchLogo/Input/Button/Link). `/` is the signed-in landing stand-in (no dashboard yet). `?org=existing` is the demo flag for sign-up's join-vs-create branch.
+
+- [x] **AUTH-01** — /sign-in + /sign-up (Suspense ?org branch: default → /create-organization, ?org=existing → /join-organization). Commit bdd91de.
+- [x] **AUTH-02** — /join-organization + /create-organization. Commit 5d58d40.
+- [x] **AUTH-03** — /forgot-password → /check-email (incl. demo "Open the reset link" → /set-new-password) → /set-new-password → /password-updated → /sign-in. Commit 6a32d62.
+- Gates tsc/lint/lint:tokens/build PASS; deps unchanged; all 8 routes + ?org=existing serve 200 on :3001. Figma divergence: /password-updated = green `success.main` title, NO checkmark icon (Figma-authoritative; task had asked for CheckCircleRounded).
 
 ### Milestone v2 — Connection Flow v2 (in progress)
 
