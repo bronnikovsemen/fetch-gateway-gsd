@@ -4,9 +4,10 @@ import TextField from '@mui/material/TextField';
 import { tokens } from '@/theme/theme';
 
 // Input — Figma node 378:141. A thin wrapper over MUI's outlined size-small
-// TextField (its native floating-label notch matches Figma). Focus overrides
-// MUI's default purple to navy (secondary.main); the `error` prop passes
-// straight through so MUI renders the native error outline + label from
+// TextField (its native floating-label notch matches Figma). Focus uses the DS
+// Brand Accent (primary.main) for the outline + floating label — the DS updated
+// the focused input stroke from navy to accent. The `error` prop
+// passes straight through so MUI renders the native error outline + label from
 // error.main. Single size only — no md/lg variants (per spec). All colors/radius
 // flow through theme keys + DS tokens; no raw hex / px.
 
@@ -54,14 +55,14 @@ export function Input({
           borderColor: 'divider',
         },
         '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'secondary.main',
+          borderColor: 'primary.main',
           borderWidth: 2,
         },
         '& .MuiInputLabel-root': {
           color: 'text.disabled',
         },
         '& .MuiInputLabel-root.Mui-focused': {
-          color: 'secondary.main',
+          color: 'primary.main',
         },
       }}
     />
