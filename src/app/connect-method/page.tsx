@@ -66,12 +66,13 @@ function ConnectMethodContent() {
   const { name, slug, authMethod } = provider;
   const isSftp = authMethod === 'sftp';
 
-  // 'redirect' goes straight to /connecting (no modal); 'credentials'/'sftp'
+  // 'redirect' (Gusto only) opens the bespoke /gusto-login OAuth mock, which
+  // itself returns to /connecting?provider=gusto on Authorize; 'credentials'/'sftp'
   // collect details in the modal first. Only 'credentials' carries &2fa=1
   // (→ /verify); the others go Establishing → Success straight.
   const handleSelfClick = () => {
     if (authMethod === 'redirect') {
-      router.push(`/connecting?provider=${slug}`);
+      router.push('/gusto-login');
     } else {
       setOpen(true);
     }
@@ -129,11 +130,11 @@ function ConnectMethodContent() {
         <Stack spacing={2.5}>
           <Stack spacing={1}>
             <Typography variant="h5" component="h2" sx={{ color: 'text.primary' }}>
-              {isSftp ? 'Connect via SFTP' : `Sign in to ${name}`}
+              {isSftp ? 'Sign in to SFTP' : `Sign in to ${name}`}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {isSftp
-                ? 'Enter your SFTP host and credentials.'
+                ? 'Enter your SFTP administrator credentials'
                 : `Enter your ${name} credentials to connect. Read-only access.`}
             </Typography>
           </Stack>
@@ -141,26 +142,36 @@ function ConnectMethodContent() {
           {isSftp && (
             <Input
               label="Host"
-              placeholder="sftp.example.com"
+              placeholder="Enter the host"
               value={host}
               onChange={(e) => setHost(e.target.value)}
             />
           )}
           <Input
-            label="Username or email"
+            label={isSftp ? 'Username or Email' : 'Username or email'}
+            placeholder={isSftp ? 'Enter the username/email' : undefined}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <Input
             label="Password"
             type="password"
+            placeholder={isSftp ? 'Enter the password' : undefined}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button onClick={handleConnect} sx={{ width: '100%' }}>
-            Connect
+            {isSftp ? 'Sign In' : 'Connect'}
           </Button>
+          {isSftp && (
+            <Typography
+              variant="caption"
+              sx={{ color: 'text.secondary', textAlign: 'center' }}
+            >
+              Your credentials are encrypted and never stored by Fetch
+            </Typography>
+          )}
           <Stack sx={{ alignItems: 'center' }}>
             <Link onClick={() => setOpen(false)}>Cancel</Link>
           </Stack>
