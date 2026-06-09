@@ -67,7 +67,7 @@ export function FetchLogo({
     // with a `fill` image — that box has zero intrinsic width (its content is
     // out of flow), so it never widens the cluster; it just fills the tagline
     // width with height derived from the native 1960:802 ratio.
-    <Stack spacing={0.25} sx={{ alignItems: 'center', width: 'fit-content' }}>
+    <Stack spacing={0} sx={{ alignItems: 'center', width: 'fit-content' }}>
       <Box sx={{ position: 'relative', width: '100%', aspectRatio: '1960 / 802' }}>
         <Image
           src="/images/fetch-logo.png"
