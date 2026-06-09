@@ -15,7 +15,7 @@ progress:
 # State: Fetch Gateway (MUI Rebuild)
 
 **Initialized:** 2026-05-18
-**Last updated:** 2026-06-09 — **Phase 05 (Auth Flows) COMPLETE** on branch `auth-flows`: 8 new routes (sign-in, sign-up?org branch, join/create-organization, forgot-password → check-email → set-new-password → password-updated) built from DS components per the Figma Playground auth screens. AUTH-01/02/03 done. Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`. (Prior: Milestone v2 complete + exploratory probes 260608-ucf/ult + FetchLogo lockup swap.)
+**Last updated:** 2026-06-09 — FetchLogo now renders the Figma AuthLogoCluster (logo + "CONNECT · SYNC · SIMPLIFY" tagline, node 459:147) by default across all screens — reconciles the previously-deferred logo/tagline gap (commit e51f519; `tagline` prop, default true). Before that: **Phase 05 (Auth Flows) COMPLETE** on branch `auth-flows`: 8 new routes (sign-in, sign-up?org branch, join/create-organization, forgot-password → check-email → set-new-password → password-updated) built from DS components per the Figma Playground auth screens. AUTH-01/02/03 done. Spec: `.planning/phases/05-auth-flows/AUTH-FLOWS-SPEC.md`. (Prior: Milestone v2 complete + exploratory probes 260608-ucf/ult + FetchLogo lockup swap.)
 
 ### Phase 05 — Auth Flows (COMPLETE)
 
