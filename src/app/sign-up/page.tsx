@@ -45,7 +45,6 @@ function SignUpContent() {
         />
         <Input
           label="Connection code"
-          placeholder="025118"
           value={connectionCode}
           onChange={(e) => setConnectionCode(e.target.value)}
         />
