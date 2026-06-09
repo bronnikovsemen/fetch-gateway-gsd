@@ -49,6 +49,14 @@ Milestone v2 — "Connection flow v2": Select-Provider FIRST, then a "How do you
 - [x] **FLOW-09** (Stage 1 ✓): NEW `/connect-method?provider={slug}` decision screen — FetchLogo + h5 "How do you want to connect {Provider}?" + body2 subtitle, then two DS `OptionRow`s: "I'll connect it now / I have access to {Provider}" → self → `/connecting?provider=`; "Someone on my team manages it / We'll send them a secure link to connect" → delegate → `/invite?provider=`. `/select-provider` Continue now routes here (not directly to `/connecting`). Provider resolved from catalog via `?provider=` with the standard Suspense + redirect guard.
 - [x] **FLOW-11** (Stage 2 ✓): self-branch 2FA — `/connecting` routes to NEW `/verify?provider={slug}` when the demo flag `?2fa=1` is present, else straight to `/success`. `/verify` = h5 "Enter verification code" + 6-cell OTP built from token-styled `Box` primitives (no DS OTP component; `tokens.radius.md`, `divider` cells / active cell `secondary.main` navy 2px) + "Verify" Button → `/success` + navy "Resend code" Link. Self OptionRow on `/connect-method` carries `&2fa=1` to demo the full path; omitting it is the no-2FA variant.
 - [x] **FLOW-08** (backfilled in Stage 2 ✓): `/success` terminal screen — was recorded complete in Phase 4 but never existed on disk (404). Created from Figma 2069:145: FetchLogo + 56px `CheckCircleRounded` (success.main) + h5 "You’re connected" + body2 sync copy + primary "Continue" Button → `/`. Now the self path's real terminus.
+### Connection re-align (Phase 07) — match current Figma "Connection flows" (477:453)
+
+Re-align the 10 connection-flow screens to the current Figma; preserve per-type self behavior. Spec: `.planning/phases/07-connection-realign/REALIGN-SPEC.md`.
+
+- [x] **REALIGN-01** (Phase 07 ✓): pre-provider screens — /welcome ("Connect your payroll data"), /permissions (640px, "Fetch will need access to:", 2-col check-circle icons), /select-provider ("What do you want to connect?" + DS Input dropdown w/ "Connection" label + chevron, replacing the tonal grey Select).
+- [x] **REALIGN-02** (Phase 07 ✓): connection screens — /connect-method, /connecting, /verify (OTP active cell purple primary.main), /success (green success.main circle + white check).
+- [x] **REALIGN-03** (Phase 07 ✓): delegate screens — /invite (Back+Send actions row), /invitation-sent (no Pending chip / no mark per node), /recipient (no caption); + home Connection-flow description "payroll provider" → "payroll system".
+
 ### Demo home (Phase 06) — launcher + tangible connection types
 
 A demo launcher at `/` and realistic credential flows for the 3 connection types. Spec: `.planning/phases/06-demo-home/DEMO-HOME-SPEC.md`. Fetch UI = DS/theme/tokens; the Gusto mock is a scoped bespoke exception.

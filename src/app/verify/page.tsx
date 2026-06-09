@@ -29,7 +29,7 @@ import providers, { type Provider } from '@/lib/providers';
 // token-styled MUI Box primitives plus a single visually-hidden native capture
 // input (Box component="input") overlaying the row — a legitimate raw-MUI
 // exception. The active cell (next empty slot, clamped to the last index) takes
-// a 2px navy (secondary.main) border; the rest take a 1px divider border.
+// a 2px Brand Accent (primary.main) border; the rest take a 1px divider border.
 //
 // Demo behavior: "Verify" always navigates to /success (not a dead button — no
 // real code validation); "Resend code" clears the entered digits.
