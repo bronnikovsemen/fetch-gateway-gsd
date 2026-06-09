@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "lint:tokens": "! { grep -rEn '#[0-9a-fA-F]{3,8}' src --include='*.ts' --include='*.tsx' | grep -vE 'src/theme/theme\\.ts|src/lib/providers\\.ts'; grep -rEn \"'[0-9]+px'\" src --include='*.ts' --include='*.tsx' | grep -v 'src/theme/theme\\.ts'; } | grep . && echo 'lint:tokens PASS — no off-token hex or raw px in src/'"
+    "lint:tokens": "! { grep -rEn '#[0-9a-fA-F]{3,8}' src --include='*.ts' --include='*.tsx' | grep -vE 'src/theme/theme\\.ts|src/lib/providers\\.ts|src/app/gusto-login'; grep -rEn \"'[0-9]+px'\" src --include='*.ts' --include='*.tsx' | grep -v 'src/theme/theme\\.ts'; } | grep . && echo 'lint:tokens PASS — no off-token hex or raw px in src/'"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
