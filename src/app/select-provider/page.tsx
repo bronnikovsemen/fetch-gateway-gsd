@@ -6,10 +6,11 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import MenuItem from '@mui/material/MenuItem';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
-import { Input } from '@/components/Input';
 import providers, { type Provider } from '@/lib/providers';
 import { tokens } from '@/theme/theme';
 
@@ -18,8 +19,9 @@ import { tokens } from '@/theme/theme';
 //   - Centered white 440px panel, DS radius, soft shadow
 //   - Fetch logo at the top of the card
 //   - Heading + subtitle
-//   - DS Input in `select` mode (label "Connection", chevron-down, white/bordered)
-//     listing Gusto / Principal / SFTP — replaces the old tonal MUI Select.
+//   - Searchable MUI Autocomplete (label "Connection", chevron-down,
+//     white/bordered) listing Gusto / Principal / SFTP — type to filter.
+//     The CLOSED field reproduces the DS-Input look; focus = navy 2px.
 //   - Back (tonal) + Continue (brand-accent) buttons.
 //     Continue is disabled until a provider is chosen.
 //
@@ -90,19 +92,78 @@ export default function Page() {
           </Stack>
 
           <Box sx={{ width: '100%' }}>
-            <Input
-              select
-              label="Connection"
-              value={selected}
-              onChange={(e) => setSelected(e.target.value as Provider['slug'] | '')}
+            <Autocomplete
+              options={providers}
+              getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(a, b) => a.slug === b.slug}
+              value={providers.find((p) => p.slug === selected) ?? null}
+              onChange={(_, option) => setSelected(option ? option.slug : '')}
+              forcePopupIcon
+              popupIcon={<KeyboardArrowDownIcon />}
               disabled={submitting}
-            >
-              {providers.map((p) => (
-                <MenuItem key={p.slug} value={p.slug}>
-                  {p.name}
-                </MenuItem>
-              ))}
-            </Input>
+              fullWidth
+              noOptionsText="No connections found"
+              sx={{
+                // No clear "X" — only the chevron (DS Select parity). We hide the
+                // clear indicator via sx rather than `disableClearable` so the
+                // controlled value can stay nullable (empty state) under strict TS.
+                '& .MuiAutocomplete-clearIndicator': {
+                  display: 'none',
+                },
+                '& .MuiAutocomplete-popupIndicator': {
+                  color: 'action.active',
+                },
+                '& .MuiAutocomplete-popupIndicator:hover': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+              slotProps={{
+                paper: {
+                  sx: {
+                    bgcolor: 'background.paper',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: tokens.radius.md / tokens.radius.lg,
+                    mt: 0.5,
+                    '& .MuiAutocomplete-option': {
+                      color: 'text.primary',
+                      '&.Mui-focused': { backgroundColor: 'action.hover' },
+                      '&[aria-selected="true"]': { backgroundColor: 'action.selected' },
+                      '&[aria-selected="true"].Mui-focused': {
+                        backgroundColor: 'action.selected',
+                      },
+                    },
+                    '& .MuiAutocomplete-noOptions': { color: 'text.secondary' },
+                  },
+                },
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Connection"
+                  placeholder="Search or select…"
+                  slotProps={{ inputLabel: { shrink: true } }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: tokens.radius.md / tokens.radius.lg,
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'divider',
+                    },
+                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'secondary.main',
+                      borderWidth: 2,
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'text.disabled',
+                    },
+                    '& .MuiInputLabel-root.Mui-focused': {
+                      color: 'secondary.main',
+                    },
+                  }}
+                />
+              )}
+            />
           </Box>
 
           <Stack direction="row" spacing={1.5} sx={{ width: '100%', justifyContent: 'center' }}>
