@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { tokens } from '@/theme/theme';
@@ -54,19 +55,24 @@ export function FetchLogo({
     );
   }
 
-  // Cluster (default): the logo fills the SAME WIDTH as the tagline line — the
-  // tagline (nowrap) sets the cluster width, and the logo stretches to it with
-  // height auto (aspect preserved). `size` does not drive the cluster width.
+  // Cluster (default): the logo fills the SAME WIDTH as the tagline line. The
+  // tagline (nowrap) is the only width-defining child, so `width: fit-content`
+  // sizes the cluster to it. The logo sits in a `width: 100%` aspect-ratio box
+  // with a `fill` image — that box has zero intrinsic width (its content is
+  // out of flow), so it never widens the cluster; it just fills the tagline
+  // width with height derived from the native 1960:802 ratio.
   return (
-    <Stack spacing={1} sx={{ alignItems: 'stretch', width: 'fit-content' }}>
-      <Image
-        src="/images/fetch-logo.png"
-        alt={title}
-        width={1960}
-        height={802}
-        style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'fill', color }}
-        priority
-      />
+    <Stack spacing={1} sx={{ alignItems: 'center', width: 'fit-content' }}>
+      <Box sx={{ position: 'relative', width: '100%', aspectRatio: '1960 / 802' }}>
+        <Image
+          src="/images/fetch-logo.png"
+          alt={title}
+          fill
+          sizes="200px"
+          style={{ objectFit: 'contain', color }}
+          priority
+        />
+      </Box>
       <Typography
         component="p"
         sx={{
