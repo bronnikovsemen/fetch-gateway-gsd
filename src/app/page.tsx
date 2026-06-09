@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { keyframes } from '@emotion/react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import FetchLogo from '@/components/FetchLogo';
 
 // Splash screen at `/` (FLOW-01).
@@ -71,12 +70,6 @@ export default function Page() {
         >
           <FetchLogo size={56} />
         </Box>
-        <Typography
-          variant="h6"
-          sx={{ color: 'text.primary', fontWeight: 500 }}
-        >
-          Retirement runs on Fetch
-        </Typography>
       </Stack>
     </Box>
   );
