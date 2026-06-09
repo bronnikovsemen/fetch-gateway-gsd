@@ -46,21 +46,21 @@ export function FetchLogo({
   href = '/',
   trademark = true,
 }: FetchLogoProps) {
-  // Shared superscript ™ — absolutely positioned at the top-right of the
-  // wordmark INSIDE the logo box. The PNG has whitespace to the right of
-  // "Fetch", so `right` is a % of the box width that pulls the ™ in to hug the
-  // "h" rather than floating at the image's right edge. Scales with `size`
-  // (computed number, allowed by lint:tokens); theme color only. Hidden per
-  // instance via trademark={false}.
+  // Shared superscript ™ — absolutely positioned at the TOP-RIGHT of the "Fetch"
+  // wordmark inside the logo box. Anchored to the artwork's measured bounds in
+  // the PNG (content right edge ≈ 97.7% of width, top ≈ 16% down — the image has
+  // ~16% top / ~2% right padding), so `left`/`top` hug the "h" instead of the
+  // image's empty corner. Scales with `size` (computed number, allowed by
+  // lint:tokens); theme color only. Hidden per instance via trademark={false}.
   const tm = trademark ? (
     <Box
       component="span"
       aria-hidden
       sx={{
         position: 'absolute',
-        top: 0,
-        right: '6%',
-        fontSize: size * 0.35,
+        top: '8%',
+        left: '96%',
+        fontSize: size * 0.45,
         lineHeight: 1,
         fontWeight: 600,
         color: 'text.primary',
