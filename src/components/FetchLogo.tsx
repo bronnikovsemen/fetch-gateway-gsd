@@ -10,9 +10,9 @@ import { tokens } from '@/theme/theme';
 // flows uses this cluster, so it's the default here.
 //
 // Public API (named export `FetchLogo`):
-//   - `size`    — HEIGHT in px of the logo image; width derives from the native
-//                 1960:802 aspect ratio (~2.44:1 lockup). Default suits a card
-//                 header; splash/connecting heroes pass a larger height.
+//   - `size`    — HEIGHT in px of the logo, used ONLY in bare mode (tagline=false).
+//                 In cluster mode the logo fills the tagline's width, so `size`
+//                 does not drive it. Width derives from the native 1960:802 ratio.
 //   - `color`   — theme palette-token reference (default 'secondary.main', the DS
 //                 navy ink); applied via the CSS `color` channel (forward-proofs an
 //                 inline-SVG swap that reads `currentColor`). The raster is not
@@ -38,25 +38,35 @@ export function FetchLogo({
   title = 'Fetch',
   tagline = true,
 }: FetchLogoProps) {
-  const width = Math.round(size * (1960 / 802));
-  const logo = (
-    <Image
-      src="/images/fetch-logo.png"
-      alt={title}
-      width={width}
-      height={size}
-      style={{ width, height: size, display: 'block', objectFit: 'contain', color }}
-      priority
-    />
-  );
-
+  // Bare logo (tagline=false): `size` is the rendered HEIGHT; width derives from
+  // the native 1960:802 aspect ratio.
   if (!tagline) {
-    return logo;
+    const width = Math.round(size * (1960 / 802));
+    return (
+      <Image
+        src="/images/fetch-logo.png"
+        alt={title}
+        width={width}
+        height={size}
+        style={{ width, height: size, display: 'block', objectFit: 'contain', color }}
+        priority
+      />
+    );
   }
 
+  // Cluster (default): the logo fills the SAME WIDTH as the tagline line — the
+  // tagline (nowrap) sets the cluster width, and the logo stretches to it with
+  // height auto (aspect preserved). `size` does not drive the cluster width.
   return (
-    <Stack spacing={1} sx={{ alignItems: 'center' }}>
-      {logo}
+    <Stack spacing={1} sx={{ alignItems: 'stretch', width: 'fit-content' }}>
+      <Image
+        src="/images/fetch-logo.png"
+        alt={title}
+        width={1960}
+        height={802}
+        style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'fill', color }}
+        priority
+      />
       <Typography
         component="p"
         sx={{
@@ -64,6 +74,7 @@ export function FetchLogo({
           color: 'text.disabled',
           letterSpacing: '0.08em',
           whiteSpace: 'nowrap',
+          textAlign: 'center',
         }}
       >
         CONNECT · SYNC · SIMPLIFY
