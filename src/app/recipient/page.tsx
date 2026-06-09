@@ -8,6 +8,7 @@ import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
 import providers, { type Provider } from '@/lib/providers';
+import { connectNowPath } from '@/lib/connectRoute';
 
 // `/recipient` — v2 Stage 3 delegate-branch recipient landing (FLOW-10,
 // Figma 2070:162).
@@ -24,8 +25,11 @@ import providers, { type Provider } from '@/lib/providers';
 //   3. Missing OR unknown slug → render null + replace-navigate back to
 //      /select-provider (replace keeps the invalid URL out of history).
 //
-// Demo behavior: "Get Started" forwards the slug to /connecting (the final
-// "Establishing…" bridge → Success).
+// Demo behavior: "Get Started" enters the SAME per-type credential entry as the
+// self path (via the shared connectNowPath helper): Gusto → /gusto-login mock,
+// Principal → /credentials (creds) → /verify (2FA), SFTP → /credentials (host +
+// creds). No hardcoded self-tail and no &2fa=1 — the credential card / 2FA
+// ordering handles it downstream.
 
 function RecipientContent() {
   const router = useRouter();
@@ -45,7 +49,7 @@ function RecipientContent() {
     return null;
   }
 
-  const { name, slug } = provider;
+  const { name } = provider;
 
   return (
     <FlowLayout maxWidth={400} px={4} py={4}>
@@ -61,7 +65,7 @@ function RecipientContent() {
         <Button
           variant="primary"
           sx={{ width: '100%' }}
-          onClick={() => router.push(`/connecting?provider=${slug}`)}
+          onClick={() => router.push(connectNowPath(provider))}
         >
           Get Started
         </Button>

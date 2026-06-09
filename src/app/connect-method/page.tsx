@@ -8,6 +8,7 @@ import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import OptionRow from '@/components/OptionRow';
 import providers, { type Provider } from '@/lib/providers';
+import { connectNowPath } from '@/lib/connectRoute';
 
 // `/connect-method` — v2 Stage 1 decision screen (FLOW-09, Figma 2068:155).
 //
@@ -54,18 +55,13 @@ function ConnectMethodContent() {
     return null;
   }
 
-  const { name, slug, authMethod } = provider;
+  const { name, slug } = provider;
 
-  // 'redirect' (Gusto only) opens the bespoke /gusto-login OAuth mock, which
-  // itself returns to /connecting?provider=gusto on Authorize; 'credentials'/
-  // 'sftp' collect details on the /credentials card first.
-  const handleSelfClick = () => {
-    if (authMethod === 'redirect') {
-      router.push('/gusto-login');
-    } else {
-      router.push(`/credentials?provider=${slug}`);
-    }
-  };
+  // Self "connect it now" routing lives in the shared connectNowPath helper so
+  // the recipient delegate path stays identical: 'redirect' (Gusto) opens the
+  // bespoke /gusto-login OAuth mock; 'credentials'/'sftp' collect details on the
+  // /credentials card first.
+  const handleSelfClick = () => router.push(connectNowPath(provider));
 
   return (
     <FlowLayout maxWidth={440} px={4} py={4}>
