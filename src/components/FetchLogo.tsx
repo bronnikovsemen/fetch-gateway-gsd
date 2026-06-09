@@ -58,7 +58,7 @@ export function FetchLogo({
       aria-hidden
       sx={{
         position: 'absolute',
-        top: '8%',
+        top: 'calc(8% + 5px)',
         left: '96%',
         fontSize: size * 0.45,
         lineHeight: 1,
