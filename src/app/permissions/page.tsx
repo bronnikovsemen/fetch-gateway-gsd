@@ -17,9 +17,9 @@ import { tokens } from '@/theme/theme';
 //   - Equal-width Back (tonal) and Continue (brand-accent) buttons
 
 const PERMISSIONS = [
-  { label: 'Organization', description: 'Business profile, contact details, and banking information' },
+  { label: 'Organization', description: 'Business profile and banking information' },
   { label: 'Team', description: 'Roster of people and reporting structure' },
-  { label: 'Employment', description: 'Employment status, contact details, role, and compensation' },
+  { label: 'Employment', description: 'Employment status, role, and compensation' },
   { label: 'Payroll', description: 'Payments made to employees and contractors' },
   { label: 'Pay Statement', description: 'Itemized pay statements per employee' },
   { label: 'SSN', description: 'Social Security Numbers for tax reporting' },
@@ -42,10 +42,7 @@ export default function Page() {
       <Paper
           elevation={0}
           sx={{
-            // Widened from the Figma 640 so every permission description fits on
-            // ONE line (whiteSpace:nowrap on the description); at 640 the two long
-            // ones wrapped to two lines.
-            width: 880,
+            width: 640,
             maxWidth: '100%',
             bgcolor: 'background.paper',
             borderRadius: tokens.radius.sm / tokens.radius.lg,
