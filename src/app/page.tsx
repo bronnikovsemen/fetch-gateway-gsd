@@ -1,76 +1,56 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { keyframes } from '@emotion/react';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
+import OptionRow from '@/components/OptionRow';
 
-// Splash screen at `/` (FLOW-01).
+// `/` — Demo home launcher (DEMO-01).
 //
-// Sits directly on the themed page background (the brand sky-blue via the MUI
-// theme token `background.default`) — NOT inside the shared panel chrome —
-// because the spec's `### / — Splash` section says the splash has no white
-// panel (unlike every other route in the flow). The Fetch logo plays a 500ms
-// scale-in animation, then enters a continuous 2s breathing pulse, while a
-// useEffect-driven setTimeout auto-redirects to `/welcome` after 2500ms via
-// Next.js client-side routing. The timer is cleared on unmount so a fast
-// navigation away doesn't leak a stale push.
+// Repurposes the old splash screen into the demo hub. There is NO auto-redirect
+// and NO breathing/scale-in animation anymore: `/` now renders a Fetch-branded
+// launcher and stays put. From here the user picks one of three demo flows; the
+// rest of the app (`/success` "Continue", join/create-org "Create…") returns
+// here, so this is the canonical signed-in landing for the demo.
 //
-// Keyframes are declared at module scope so React doesn't recreate them on
-// every render — Emotion can cache the serialized animation name across mounts.
-
-const scaleIn = keyframes`
-  from {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-`;
-
-const breathe = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
-  100% {
-    transform: scale(1);
-  }
-`;
+// All chrome flows through DS components + theme/tokens — no off-token hex/px.
 
 export default function Page() {
   const router = useRouter();
 
-  useEffect(() => {
-    const timer = setTimeout(() => { router.push('/welcome'); }, 2500);
-    return () => clearTimeout(timer);
-  }, [router]);
-
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        bgcolor: 'background.default',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Stack spacing={3} sx={{ alignItems: 'center' }}>
-        <Box
-          sx={{
-            animation: `${scaleIn} 500ms ease-out, ${breathe} 2s ease-in-out 500ms infinite`,
-          }}
-        >
-          <FetchLogo size={56} />
-        </Box>
+    <FlowLayout maxWidth={440} px={4} py={4}>
+      <Stack spacing={3}>
+        <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
+          <FetchLogo />
+          <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
+            Fetch demo
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Pick a flow to run through the demo.
+          </Typography>
+        </Stack>
+
+        <Stack spacing={2}>
+          <OptionRow
+            title="Sign up — join an existing organization"
+            description="Your work domain already has a Fetch org"
+            onClick={() => router.push('/sign-up?org=existing')}
+          />
+          <OptionRow
+            title="Sign up — create a new organization"
+            description="Set up a brand-new Fetch organization"
+            onClick={() => router.push('/sign-up')}
+          />
+          <OptionRow
+            title="Connection flow"
+            description="Connect a payroll provider — Gusto, Principal, or SFTP"
+            onClick={() => router.push('/welcome')}
+          />
+        </Stack>
       </Stack>
-    </Box>
+    </FlowLayout>
   );
 }
