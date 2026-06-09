@@ -1,12 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import CheckCircleRounded from '@mui/icons-material/CheckCircleRounded';
+import CheckRounded from '@mui/icons-material/CheckRounded';
 import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
+import { tokens } from '@/theme/theme';
 
 // `/success` — v2 Stage 2 terminal screen (FLOW-08 backfill, Figma 2069:145).
 //
@@ -23,7 +25,21 @@ export default function Page() {
     <FlowLayout maxWidth={400} px={4} py={4}>
       <Stack spacing={2.5} sx={{ alignItems: 'center', textAlign: 'center' }}>
         <FetchLogo size={40} />
-        <CheckCircleRounded sx={{ color: 'success.main', fontSize: 56 }} />
+        <Box
+          sx={{
+            width: 56,
+            height: 56,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: 'success.main',
+            // MUI multiplies a numeric borderRadius by shape.borderRadius
+            // (= tokens.radius.lg); radius.full / radius.lg yields a full circle.
+            borderRadius: tokens.radius.full / tokens.radius.lg,
+          }}
+        >
+          <CheckRounded sx={{ fontSize: 28, color: 'background.paper' }} />
+        </Box>
         <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
           You’re connected
         </Typography>

@@ -74,21 +74,28 @@ function VerifyContent() {
           <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
             {Array.from({ length: CELL_COUNT }).map((_, i) => {
               const isActive = i === activeIndex;
+              const isFilled = i < code.length;
               return (
                 <Box
                   key={i}
                   sx={{
-                    width: 46,
-                    height: 52,
+                    width: 48,
+                    height: 56,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    bgcolor: 'background.paper',
+                    // Active & empty cells use the paper surface; filled non-active
+                    // cells use the slightly-tinted default background.
+                    bgcolor: isActive
+                      ? 'background.paper'
+                      : isFilled
+                        ? 'background.default'
+                        : 'background.paper',
                     // MUI multiplies a numeric borderRadius by shape.borderRadius
                     // (= tokens.radius.lg); this ratio yields exactly radius.md px.
                     borderRadius: tokens.radius.md / tokens.radius.lg,
                     border: isActive ? '2px solid' : '1px solid',
-                    borderColor: isActive ? 'secondary.main' : 'divider',
+                    borderColor: isActive ? 'primary.main' : 'divider',
                   }}
                 >
                   <Typography variant="h5" sx={{ color: 'text.primary' }}>

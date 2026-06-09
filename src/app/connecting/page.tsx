@@ -75,19 +75,19 @@ function ConnectingContent() {
   }
 
   return (
-    <FlowLayout maxWidth={440}>
+    <FlowLayout maxWidth={400}>
       <Stack spacing={3} sx={{ alignItems: 'center' }}>
-        <FetchLogo size={56} />
+        <FetchLogo />
         <CircularProgress color="primary" size={48} />
         <Typography
           variant="h5"
           component="h1"
-          sx={{ fontWeight: 700, color: 'text.primary', textAlign: 'center' }}
+          sx={{ color: 'text.primary', textAlign: 'center' }}
         >
           Establishing connection…
         </Typography>
         <Typography
-          variant="body1"
+          variant="body2"
           sx={{ color: 'text.secondary', textAlign: 'center' }}
         >
           {`Connecting to ${provider.name}. You'll be redirected to sign in.`}
