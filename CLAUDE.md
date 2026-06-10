@@ -3,9 +3,9 @@
 
 **Fetch Gateway (MUI Rebuild)**
 
-Fetch Gateway is an OAuth onboarding microsite for HR/payroll admins. They land on it via a link from Plantegrity, see what data Fetch will read from their payroll provider, pick the provider, and confirm — all without typing credentials into Fetch. This repo is a fresh rebuild of an older Tailwind/shadcn prototype on **MUI (Material UI)** with Next.js 15 App Router.
+Fetch Gateway is a demo prototype of the Fetch embedded connect flow. A launcher at `/` offers three flows: two sign-up paths (join / create organization) and a connection flow with three connection types — Gusto (redirect to a mock Gusto OAuth), Principal (credential card + SMS 2FA), SFTP (host + credentials). Connections can be delegated to a teammate, routed by the same auth method. Credentials for Principal/SFTP are entered on Fetch-side cards; everything is mocked.
 
-**Core Value:** A polished, on-brand five-step demo flow that takes the user from splash → success without any real OAuth, real API calls, or credential entry into Fetch. The flow must look production-quality at a 1440px desktop target.
+**Core Value:** A polished, on-brand demo flow that takes the user from the launcher through sign-up and connection paths to a success screen, with no real OAuth, API calls, or credential storage. The flow must look production-quality at a 1440px desktop target.
 
 ### Constraints
 
@@ -44,7 +44,6 @@ These DS components are the canonical implementations of their Figma counterpart
 |---|---|---|
 | Button | src/components/Button.tsx | 323:128 |
 | Input | src/components/Input.tsx | 378:141 |
-| Chip | src/components/Chip.tsx | 326:110 |
 | OptionRow | src/components/OptionRow.tsx | 426:78 |
 | Link | src/components/Link.tsx | 338:92 |
 | AuthLogoCluster / FetchLogo | src/components/FetchLogo.tsx | 397:58 |
