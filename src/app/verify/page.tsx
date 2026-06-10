@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -47,12 +47,23 @@ function VerifyContent() {
     : undefined;
 
   const [code, setCode] = useState('');
+  // The hidden capture input drives the "active cell" highlight: a cell is only
+  // shown active while the input actually holds focus (onFocus/onBlur). When
+  // blurred, every cell falls back to the 1px divider border.
+  const [isFocused, setIsFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!provider) {
       router.replace('/select-provider');
     }
   }, [provider, router]);
+
+  // Auto-focus the capture input on mount so digits register immediately,
+  // without the user having to click a cell first.
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   if (!provider) {
     return null;
@@ -75,7 +86,9 @@ function VerifyContent() {
         <Box sx={{ position: 'relative' }}>
           <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
             {Array.from({ length: CELL_COUNT }).map((_, i) => {
-              const isActive = i === activeIndex;
+              // The active highlight only shows while the capture input is
+              // focused; on blur every cell reverts to the 1px divider border.
+              const isActive = isFocused && i === activeIndex;
               const isFilled = i < code.length;
               return (
                 <Box
@@ -109,12 +122,15 @@ function VerifyContent() {
           </Stack>
           <Box
             component="input"
+            ref={inputRef}
             inputMode="numeric"
             maxLength={CELL_COUNT}
             value={code}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCode(e.target.value.replace(/\D/g, '').slice(0, CELL_COUNT))
             }
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             sx={{
               position: 'absolute',
               inset: 0,

@@ -56,7 +56,7 @@ function RecipientContent() {
       <Stack spacing={2} sx={{ alignItems: 'center', textAlign: 'center' }}>
         <FetchLogo size={40} />
         <Typography variant="h5" component="h1" sx={{ color: 'text.primary' }}>
-          {`Plantegrity asked you to connect ${name}`}
+          {`Acme Inc. asked you to connect ${name}`}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {`Acme Inc. invited you to securely connect your ${name} account. Read-only — no data is modified.`}

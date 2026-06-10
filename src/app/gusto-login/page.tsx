@@ -153,6 +153,14 @@ export default function Page() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  // Enter in the email or password field advances the signin step — same as the
+  // teal Continue button (no <form>).
+  const handleSigninKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setStep('authorize');
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -206,6 +214,7 @@ export default function Page() {
                   autoFocus
                   value={email}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  onKeyDown={handleSigninKeyDown}
                   sx={inputSx}
                 />
               </Stack>
@@ -221,6 +230,7 @@ export default function Page() {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                    onKeyDown={handleSigninKeyDown}
                     sx={{ ...inputSx, pr: 5 }}
                   />
                   <Box

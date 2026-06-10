@@ -16,6 +16,7 @@ export type InputProps = {
   label?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   placeholder?: string;
   type?: string;
   error?: boolean;
@@ -33,6 +34,7 @@ export function Input({
   label,
   value,
   onChange,
+  onKeyDown,
   placeholder,
   type = 'text',
   error = false,
@@ -49,6 +51,7 @@ export function Input({
       label={label}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       placeholder={placeholder}
       type={type}
       error={error}

@@ -80,6 +80,13 @@ function CredentialsContent() {
     );
   };
 
+  // Enter in any field submits — same as the Continue button (no <form>).
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleContinue();
+    }
+  };
+
   return (
     <FlowLayout maxWidth={400} px={4} py={4}>
       <Stack spacing={2.5} sx={{ alignItems: 'center', textAlign: 'center' }}>
@@ -97,6 +104,7 @@ function CredentialsContent() {
             placeholder="Enter the host"
             value={host}
             onChange={(e) => setHost(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
         )}
         <Input
@@ -104,6 +112,7 @@ function CredentialsContent() {
           placeholder={isSftp ? 'Enter the username/email' : undefined}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Input
           label="Password"
@@ -111,6 +120,7 @@ function CredentialsContent() {
           placeholder={isSftp ? 'Enter the password' : undefined}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
 
         {isSftp && (
