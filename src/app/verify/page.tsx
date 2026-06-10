@@ -1,15 +1,14 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import FlowLayout from '@/components/FlowLayout';
 import FetchLogo from '@/components/FetchLogo';
 import Button from '@/components/Button';
 import Link from '@/components/Link';
-import { tokens } from '@/theme/theme';
+import OTPInput from '@/components/OTPInput';
 import providers, { type Provider } from '@/lib/providers';
 
 // `/verify` — v2 Stage 2 self-branch 2FA gate (FLOW-11, Figma 2069:116).
@@ -26,17 +25,13 @@ import providers, { type Provider } from '@/lib/providers';
 //   3. Missing OR unknown slug → render null + replace-navigate back to
 //      /select-provider (replace keeps the invalid URL out of history).
 //
-// OTP: no DS OTP component exists, so the 6-cell field is assembled from
-// token-styled MUI Box primitives plus a single visually-hidden native capture
-// input (Box component="input") overlaying the row — a legitimate raw-MUI
-// exception. The active cell (next empty slot, clamped to the last index) takes
-// a 2px Brand Accent (primary.main) border; the rest take a 1px divider border.
+// OTP: the 6-cell field is the shared OTPInput DS component (Figma 448:64) — the
+// cells + visually-hidden capture input + autofocus + focus-bound active border
+// live there now, so this screen just owns the code state + navigation.
 //
 // Demo behavior: "Verify" always navigates to /connecting (the "Establishing…"
 // bridge, which then advances to /success) — 2FA happens BEFORE establishing the
 // connection, not after. "Resend code" clears the entered digits.
-
-const CELL_COUNT = 6;
 
 function VerifyContent() {
   const router = useRouter();
@@ -47,11 +42,6 @@ function VerifyContent() {
     : undefined;
 
   const [code, setCode] = useState('');
-  // The hidden capture input drives the "active cell" highlight: a cell is only
-  // shown active while the input actually holds focus (onFocus/onBlur). When
-  // blurred, every cell falls back to the 1px divider border.
-  const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!provider) {
@@ -59,18 +49,9 @@ function VerifyContent() {
     }
   }, [provider, router]);
 
-  // Auto-focus the capture input on mount so digits register immediately,
-  // without the user having to click a cell first.
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
   if (!provider) {
     return null;
   }
-
-  // Active cell = next empty slot, clamped to the final index once full.
-  const activeIndex = Math.min(code.length, CELL_COUNT - 1);
 
   return (
     <FlowLayout maxWidth={400} px={4} py={4}>
@@ -83,68 +64,7 @@ function VerifyContent() {
           We sent a 6-digit code to your phone
         </Typography>
 
-        <Box sx={{ position: 'relative' }}>
-          <Stack direction="row" spacing={1} sx={{ justifyContent: 'center' }}>
-            {Array.from({ length: CELL_COUNT }).map((_, i) => {
-              // The active highlight only shows while the capture input is
-              // focused; on blur every cell reverts to the 1px divider border.
-              const isActive = isFocused && i === activeIndex;
-              const isFilled = i < code.length;
-              return (
-                <Box
-                  key={i}
-                  sx={{
-                    width: 48,
-                    height: 56,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    // Active & empty cells use the paper surface; filled non-active
-                    // cells use the slightly-tinted default background.
-                    bgcolor: isActive
-                      ? 'background.paper'
-                      : isFilled
-                        ? 'background.default'
-                        : 'background.paper',
-                    // MUI multiplies a numeric borderRadius by shape.borderRadius
-                    // (= tokens.radius.lg); this ratio yields exactly radius.md px.
-                    borderRadius: tokens.radius.md / tokens.radius.lg,
-                    border: isActive ? '2px solid' : '1px solid',
-                    borderColor: isActive ? 'primary.main' : 'divider',
-                  }}
-                >
-                  <Typography variant="h5" sx={{ color: 'text.primary' }}>
-                    {code[i] ?? ''}
-                  </Typography>
-                </Box>
-              );
-            })}
-          </Stack>
-          <Box
-            component="input"
-            ref={inputRef}
-            inputMode="numeric"
-            maxLength={CELL_COUNT}
-            value={code}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setCode(e.target.value.replace(/\D/g, '').slice(0, CELL_COUNT))
-            }
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              opacity: 0,
-              cursor: 'text',
-              border: 'none',
-              padding: 0,
-              margin: 0,
-              background: 'transparent',
-            }}
-          />
-        </Box>
+        <OTPInput value={code} onChange={setCode} />
 
         <Button variant="primary" sx={{ width: '100%' }} onClick={() => router.push(`/connecting?provider=${provider.slug}`)}>
           Verify

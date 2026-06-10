@@ -44,6 +44,7 @@ These DS components are the canonical implementations of their Figma counterpart
 |---|---|---|
 | Button | src/components/Button.tsx | 323:128 |
 | Input | src/components/Input.tsx | 378:141 |
+| OTPInput | src/components/OTPInput.tsx | 448:64 |
 | OptionRow | src/components/OptionRow.tsx | 426:78 |
 | Link | src/components/Link.tsx | 338:92 |
 | AuthLogoCluster / FetchLogo | src/components/FetchLogo.tsx | 397:58 |

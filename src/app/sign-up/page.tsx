@@ -15,9 +15,11 @@ import Link from '@/components/Link';
 // default-exported Page() wraps SignUpContent in <Suspense> so the route still
 // pre-renders while the param-reading subtree streams on the client.
 //
-// "Create account" branches on the demo flag:
-//   • /sign-up               → /create-organization  (no existing org)
-//   • /sign-up?org=existing  → /join-organization     (org already exists)
+// "Create account" first sends the admin to /verify-email (email-ownership OTP),
+// carrying the entered email and the demo org flag. Verify-email then resumes
+// the same branch this screen used to take directly:
+//   • org unset       → /create-organization  (no existing org)
+//   • org === existing → /join-organization     (org already exists)
 
 function SignUpContent() {
   const router = useRouter();
@@ -28,6 +30,18 @@ function SignUpContent() {
   const [invitationCode, setInvitationCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleCreate = () => {
+    const base = `/verify-email?email=${encodeURIComponent(workEmail)}`;
+    router.push(org === 'existing' ? `${base}&org=existing` : base);
+  };
+
+  // Enter in any field submits — same as the Create account button (no <form>).
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      handleCreate();
+    }
+  };
 
   return (
     <FlowLayout maxWidth={400} px={4} py={4}>
@@ -42,32 +56,30 @@ function SignUpContent() {
           placeholder="you@acme.com"
           value={workEmail}
           onChange={(e) => setWorkEmail(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Input
           label="Invitation code"
           value={invitationCode}
           onChange={(e) => setInvitationCode(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Input
           label="Password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <Input
           label="Confirm password"
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
 
-        <Button
-          variant="primary"
-          sx={{ width: '100%' }}
-          onClick={() =>
-            router.push(org === 'existing' ? '/join-organization' : '/create-organization')
-          }
-        >
+        <Button variant="primary" sx={{ width: '100%' }} onClick={handleCreate}>
           Create account
         </Button>
 
